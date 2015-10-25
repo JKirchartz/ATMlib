@@ -4,11 +4,6 @@
 // TEAM a.r.g.
 // Davey Taylor
 
-// Squawk Soft-Synthesizer Library for Arduino
-//
-// Davey Taylor 2013
-// d.taylor@arduino.cc
-
 #ifndef _SQUAWK_H_
 #define _SQUAWK_H_
 #include <stddef.h>
