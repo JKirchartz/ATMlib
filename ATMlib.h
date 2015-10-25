@@ -93,31 +93,6 @@ extern uint8_t pcm;
 */
 #endif
 
-#ifdef __AVR_ATmega168__
-// Supported configurations for ATmega168
-#define SQUAWK_PWM_PIN6  OCR0A
-#define SQUAWK_PWM_PIN5  OCR0B
-#define SQUAWK_PWM_PIN11 OCR2A
-#define SQUAWK_PWM_PIN3  OCR2B
-#define SQUAWK_RLD_PORTD PORTD
-#endif
-
-#ifdef __AVR_ATmega328P__
-// Supported configurations for ATmega328P
-#define SQUAWK_PWM_PIN6  OCR0A
-#define SQUAWK_PWM_PIN5  OCR0B
-#define SQUAWK_PWM_PIN11 OCR2A
-#define SQUAWK_PWM_PIN3  OCR2B
-#define SQUAWK_RLD_PORTD PORTD
-#endif
-
-/*
-// NOT SUPPORTED YET
-#define SQUAWK_SPI SPDR
-#define SQUAWK_RLD_PORTB PORTB
-#define SQUAWK_RLD_PORTC PORTC
-*/
-
 extern void squawk_playroutine() asm("squawk_playroutine");
 
 // SAMPLE GRINDER
