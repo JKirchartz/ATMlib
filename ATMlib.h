@@ -85,12 +85,7 @@ extern uint8_t pcm;
 #define SQUAWK_PWM_PIN5  OCR3AL
 #define SQUAWK_PWM_PIN11 OCR0A
 #define SQUAWK_PWM_PIN3  OCR0B
-/*
-// NOT SUPPORTED YET
-#define SQUAWK_PWM_PIN6  OCR4D
-#define SQUAWK_PWM_PIN9  OCR4B
-#define SQUAWK_PWM_PIN10 OCR4B
-*/
+
 #endif
 
 extern void squawk_playroutine() asm("squawk_playroutine");
