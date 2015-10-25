@@ -1,4 +1,4 @@
-*COMMAND list**<br>
+**COMMAND list**<br>
     0       = stop playing note<br>
     1 … 127 = start playing note, NOTE = note_tab[COMMAND - 1];<br>
   128 … 159 = effect<br>
