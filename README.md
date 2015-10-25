@@ -1,5 +1,5 @@
 COMMAND list
-    0       = stop playing note
+    0       = stop playing note<br>
     1 … 127 = start playing note, NOTE = note_tab[COMMAND - 1];
   128 … 159 = effect
     [params] UNK    = effect specific parameters, format is effect specific
