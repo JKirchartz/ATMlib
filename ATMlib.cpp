@@ -64,8 +64,8 @@ const word noteTable[84] PROGMEM = {
     53,   50,   47,   45,   42,   40,   37,   35,   33,   31,   30,   28,
 };
 
-typdef struct ch_t {
-  uint8_t *ptr;
+typedef struct ch_t {
+  const byte *ptr;
   word stackPointer[7];
   byte stackCounter[7];
   
@@ -77,19 +77,19 @@ typdef struct ch_t {
 ch_t channel[4]; 
 
 byte trackCount;
-word *trackList;
-byte *trackBase;
+const word *trackList;
+const byte *trackBase;
 
 
-uint16_t read_vbru(const void **pp) {
+uint16_t read_vbru(const byte **pp) {
   // TODO: read variable length field, update pointer
 }
 
-int16_t read_vbrs(const void **pp) {
+int16_t read_vbrs(const byte **pp) {
   // TODO: read variable length field, update pointer
 }
 
-static inline byte *getTrackPointer(byte track) {
+static inline const byte *getTrackPointer(byte track) {
   return trackBase + pgm_read_word(&trackList[track]);
 }
 
@@ -97,9 +97,9 @@ void play(const byte *song) {
   // Read track count
   trackCount = pgm_read_byte(song++);
   // Store track list pointer
-  trackList = song++;
+  trackList = (word*)song++;
   // Store track pointer
-  trackBase = song += (trackCount << 1);
+  trackBase = (song += (trackCount << 1));
   // Fetch starting points for each track
   for(unsigned n = 0; n < 4; n++) {
     channel[n].ptr = getTrackPointer(pgm_read_byte(song++));
@@ -109,18 +109,18 @@ void play(const byte *song) {
 void tick() {
   ch_t *ch;
   
-  for(n = 0; n < 4; n++) {
+  for(unsigned n = 0; n < 4; n++) {
     ch = &channel[n];
     if(ch->delay) {
       ch->delay--;
     } else {
-      cmd = *(ch->ptr++);
+      byte cmd = *(ch->ptr++);
       if(cmd & 0x80) {
         if(cmd < 160) {
           // Effect set up commands
           switch(cmd - 128) {
             case 0: // volume
-              osc[n].volume = *(ch->ptr++);
+              osc[n].vol = *(ch->ptr++);
               break;
             // TODO: effects 0 to 31
           }
@@ -150,7 +150,7 @@ void tick() {
         } else if(cmd == 255) {
           // Send embedded data to callback
           word length = read_vbru(&ch->ptr);
-          customData(length, ch->ptr);
+          //customData(length, ch->ptr);
           ch->ptr += length;
         }
       } else {
