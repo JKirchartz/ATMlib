@@ -4,8 +4,8 @@
 // TEAM a.r.g.
 // Davey Taylor
 
-#ifndef _SQUAWK_H_
-#define _SQUAWK_H_
+#ifndef _ATMLIB_H_
+#define _ATMLIB_H_
 #include <stddef.h>
 #include <inttypes.h>
 #include "Arduino.h"
