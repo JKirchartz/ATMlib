@@ -15,10 +15,10 @@
 |   |
 | **Track 0**              |                       |                 | **Commands and parameters for track 0** |
 |                          | Command 0             | UBYTE (8-bits)  | See command list |
-|                          | *and its* Parameters    | none/variable   | *See __parameter list__ for each command* |
+|                          | *and its* Parameters  | none/variable   | *See __parameter list__ for each command* |
 |                          | …                     | …               | … |
 |                          | Command N             | UBYTE (8-bits)  | |
-|                          | *and its* Parameters    | none/variable   | |
+|                          | *and its* Parameters  | none/variable   | |
 | **…**                    | **…**                 | **…**           | **…** |
 | **Track _N_**            |                       |                 | **Commands and parameters for track _N_** *(0-255)* |
 
