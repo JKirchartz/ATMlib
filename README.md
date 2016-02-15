@@ -1,18 +1,52 @@
-**COMMAND list**<br>
-0       = stop playing note<br>
-1 … 127 = start playing note, NOTE = note_tab[COMMAND - 1];<br>
-128 … 159 = effect<br>
-*[params]* UNK    = effect specific parameters, format is effect specific<br>
-160 … 223 = delay, TICKS = COMMAND - 159; // see below<br>
-224       = delay<br>
-*[ticks]* VLE     = number of ticks to delay until next event (add 64)<br>
-225 … 251 = RESERVED<br>
-252       = call<br>
-*[track index]*<br>
-253       = loop call<br>
-*[loop count]*<br>
-*[track index]*<br>
-254       = ret<br>
-255       = data chunk<br>
-*[length]* VLE    = length in bytes of data to follow<br>
-*[data]* UNK      = binary data chunk<br>
+### FILE/ARRAY FORMAT DESCRIPTION
+
+| **Section**              | **Field**       | **Type**        | **Description** |
+| ---                      | ---             | ---             | ---             |
+| **Track table**          |                 |                 | **Number of tracks and the address of each track** |
+|                          | count           | UBYTE (8-bits)  | Number of tracks in the array |
+|                          | Address track 1 | UWORD (16-bits) | Location in the array for track 1 |
+|                          | Address track 2 | UWORD (16-bits) | Location in the array for track 2 |
+|                          | …               | …               | … |
+|                          | Address track *__N__* | UWORD (16-bits) | Location in the array for track *__N__ (0 … 255)* |
+| **Channel entry tracks** |                 |                 | **For each channel, track to start the song with** |
+|                          | Channel 0 track | UBYTE (8-bits)  | Starting track index for channel 0 |
+|                          | …               | …               | … |
+|                          | Channel 3 track | UBYTE (8-bits)  | Starting track index for channel 3 |
+| **Track 0**              |                 |                 | **Commands and parameters for track 0** |
+|                          | Command 0       | UBYTE (8-bits)  | See command list |
+|                          | + parameters    | variable        | *See __parameter list__ for each command* |
+|                          | …               | …               | … |
+|                          | Command N       | UBYTE (8-bits)  | |
+|                          | + parameters    | variable        | |
+| **…**                    | **…**           | **…**           | **…** |
+| **Track _N_**              |                 |                 | **Commands and parameters for track _N_** *(0-255)* |
+
+
+### COMMAND LIST
+
+| **Command (_Z_)** | **Parameter**        | **Type**           | **Description** |
+| ---               | ---                  | ---                | --- |
+|                 0 |                      |                    | Stop playing |
+|           1 … 127 |                      |                    | Start playing note *[__Z__ - 1]* where 0 is a C1 |
+|         128 … 159 |                      |                    | Apply an effect |
+|                   | *See __fx list__*    | -                  | - |
+|         160 … 223 |                      |                    | Delay for *[__Z__ - 159]* ticks |
+|               224 |                      |                    | Long delay |
+|                   | Ticks (*__A__*)      | VLE (8/16/24-bits) | Delay for *[__A__ + 64]* ticks |
+|     ~~225 … 251~~ |                      |                    | ~~RESERVED~~ |
+|               252 |                      |                    | Call/run/goto specified track |
+|                   | Track                | UBYTE (8-bits)     | Track index |
+|               252 |                      |                    | Repeated call/run/goto specified track |
+|                   | Loop count (*__A__*) | UBYTE (8-bits)     | Repeat *[__A__ + 2]* times (total) |
+|                   | Track                | UBYTE (8-bits)     | Track index |
+|               254 |                      |                    | Return/end of track marker |
+|               255 |                      |                    | Binary data |
+|                   | Length               |                    | Length in bytes of data to follow |
+|                   | Data                 | variable           | Binary data chunk (notify host application) |
+
+
+### FX LIST
+
+| **Effect** | **Parameter** | **Type** | **Description** |
+| ---        | ---           | ---      | ---             |
+| ~~TBD~~    | ~~TBD~~       | ~~TBD~~  | ~~TBD~~         |
