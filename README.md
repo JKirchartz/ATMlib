@@ -25,19 +25,19 @@
 
 ### COMMAND LIST
 
-| **Command (_Z_)** | **Parameter**        | **Type**           | **Description** |
+| **Command (_X_)** | **Parameter**        | **Type**           | **Description** |
 | ---               | ---                  | ---                | --- |
 |                 0 |                      |                    | Stop playing |
 |   |
-|           1 …  63 |                      |                    | Start playing note *[__Z__ - 1]* where 0 is a C1 |
+|           1 …  63 |                      |                    | Start playing note *[__X__ - 1]* where 0 is a C1 |
 |   |
 |          64 … 159 |                      |                    | Configure effects (fx) |
-|                   | *See __fx list__*    | none/variable      | Effect is *[__Z__ - 64]* |
+|                   | *See __fx list__*    | none/variable      | Effect is *[__X__ - 64]* |
 |   |
-|         160 … 223 |                      |                    | Delay for *[__Z__ - 159]* ticks |
+|         160 … 223 |                      |                    | Delay for *[__X__ - 159]* ticks |
 |   |
 |               224 |                      |                    | Long delay |
-|                   | Ticks (*__A__*)      | VLE (8/16/24-bits) | Delay for *[__A__ + 64]* ticks |
+|                   | Ticks (*__Y__*)      | VLE (8/16/24-bits) | Delay for *[__Y__ + 64]* ticks |
 |   |
 |     ~~225 … 251~~ |                      |                    | ~~RESERVED~~ |
 |   |
@@ -45,7 +45,7 @@
 |                   | Track                | UBYTE (8-bits)     | Track index |
 |   |
 |               252 |                      |                    | Repeated call/run/goto specified track |
-|                   | Loop count (*__A__*) | UBYTE (8-bits)     | Repeat *[__A__ + 2]* times (total) |
+|                   | Loop count (*__Y__*) | UBYTE (8-bits)     | Repeat *[__Y__ + 2]* times (total) |
 |                   | Track                | UBYTE (8-bits)     | Track index |
 |   |
 |               254 |                      |                    | Return/end of track marker |
@@ -57,8 +57,9 @@
 
 ### FX LIST
 
-| **Effect** | **Parameter** | **Type** | **Description** |
-| ---        | ---           | ---      | ---             |
-| ~~TBD~~    | ~~TBD~~       | ~~TBD~~  | ~~TBD~~         |
+| **Effect** | **Parameter**    | **Type**      | **Description** |
+| ---        | ---              | ---           | ---             |
+|          0 | Volume (*__Y__*) | UBYTE (8-bit) | Set volume to *[__Y__]*. <br /> **_Note:_** If the combined volume of all channels exceed 255 there may be rollover distortion. This should not be disallowed, as it may be usesful as an effects hack for the musician. |
+| ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
 
