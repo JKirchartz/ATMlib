@@ -19,7 +19,7 @@
 |                          | Command N       | UBYTE (8-bits)  | |
 |                          | + parameters    | variable        | |
 | **…**                    | **…**           | **…**           | **…** |
-| **Track N**              |                 |                 | **Commands and parameters for track __N__** *(0-255)* |
+| **Track _N_**              |                 |                 | **Commands and parameters for track _N_** *(0-255)* |
 
 
 ### COMMAND LIST
