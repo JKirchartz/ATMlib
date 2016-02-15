@@ -64,16 +64,16 @@
 
 #### Thoughts on effects:
 
-**Note:** Effects may be combined
+**Note:** These are the primitives to be implemented in the playroutine effects processor. Most will have several effect command numbers associated with them for various aspects of the same primitive. Effects can be combined but not stacked, but some combinations may have undesired/interesting interference.
 
-Volume slide
-Frequency slide
-Portamento
-Arpeggio
-Retriggering (on note or by interval)
-Envelopes (instruments)
-Vibrato
-Tremolo
-Glissando
-Transpose
-Note cut (more advanced?)
+* Volume slide
+* Frequency slide
+* Portamento
+* Arpeggio
+* Retriggering (on note or by automation)
+* Envelopes (instruments)
+* Vibrato
+* Tremolo
+* Glissando
+* Transpose (also for microtonals)
+* Note cut (with delay and automation)
