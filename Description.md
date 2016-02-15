@@ -17,5 +17,5 @@
 |  | ... | ... | ... | ... | ... | ... |
 |  | command N | UBYTE | 8-bits | no | |
 |  | parameters N | - | variable | no | |
-|  | ... | ... | ... | ... | ... | ... |
+| ... | | | | | | |
 | Track N |  |  |  |  | the commands and parameters for track N (0-255) |
