@@ -2,7 +2,7 @@
 
 | **Section**              | **Field**             | **Type**        | **Description** |
 | ---                      | ---                   | ---             | ---             |
-| **Track table**          |                       |                 | **Number of tracks and the address of each track** |
+| **Track table**          |                       |                 | **Number of tracks and their addresses** |
 |                          | count                 | UBYTE (8-bits)  | Number of tracks in the file/array |
 |                          | Address track 1       | UWORD (16-bits) | Location in the file/array for track 1 |
 |                          | …                     | …               | … |
