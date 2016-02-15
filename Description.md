@@ -33,7 +33,7 @@
 |         160 … 223 |                    |                    | Delay for *[Z - 159] ticks* |
 |               224 |                    |                    | Long delay |
 |                   | Ticks (*A*)        | VLE (8/16/24-bits) | Delay for *[A + 64] ticks* |
-|         225 … 251 |                    |                    | RESERVED |
+|     ~~225 … 251~~ |                    |                    | ~~RESERVED~~ |
 |               252 |                    |                    | Call/run/goto specified track |
 |                   | Track              | UBYTE (8-bits)     | Track index |
 |               252 |                    |                    | Repeated call/run/goto specified track |
