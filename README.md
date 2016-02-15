@@ -71,7 +71,7 @@
 * Portamento: a gradual slide from one [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") to another [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia")
 * Arpeggio: a group of [notes](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") which are played one after the other, added either going up or going down
 * Retriggering (on [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") or by automation): a sound is replayed a set number of times within a certain timeframe
-* Envelopes (instruments): the attack, sustain, and decay of a sound
+* Envelopes (instruments): the [attack, sustain, and decay](https://en.wikipedia.org/wiki/Synthesizer#Attack_Decay_Sustain_Release_.28ADSR.29_envelope "envelope wikipedia") of a sound
 * Vibrato: a slight, rapid, and regular fluctuation in the [pitch](https://en.wikipedia.org/wiki/Pitch_(music) "pitch wikipedia") of a [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia")
 * Tremolo: rapid repetition of a single tone or by rapid alternation of two tones
 * Glissando: a glide from one [pitch](https://en.wikipedia.org/wiki/Pitch_(music) "pitch wikipedia") to another
