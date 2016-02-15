@@ -3,12 +3,12 @@
 | **Section**              | **Field**             | **Type**        | **Description** |
 | ---                      | ---                   | ---             | ---             |
 | **Track table**          |                       |                 | **Number of tracks and their addresses** |
-|                          | count                 | UBYTE (8-bits)  | Number of tracks in the file/array |
+|                          | Track count           | UBYTE (8-bits)  | Number of tracks in the file/array |
 |                          | Address track 1       | UWORD (16-bits) | Location in the file/array for track 1 |
 |                          | …                     | …               | … |
 |                          | Address track *__N__* | UWORD (16-bits) | Location in the file/array for track *__N__ (0 … 255)* |
 |   |
-| **Channel entry tracks** |                       |                 | **For each channel, track to start the song with** |
+| **Channel entry tracks** |                       |                 | **For each channel, track to start with** |
 |                          | Channel 0 track       | UBYTE (8-bits)  | Starting track index for channel 0 |
 |                          | …                     | …               | … |
 |                          | Channel 3 track       | UBYTE (8-bits)  | Starting track index for channel 3 |
