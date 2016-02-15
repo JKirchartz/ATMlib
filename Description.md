@@ -43,3 +43,10 @@
 |               255 |                      |                    | Binary data |
 |                   | Length               |                    | Length in bytes of data to follow |
 |                   | Data                 | variable           | Binary data chunk (notify host application) |
+
+
+### FX LIST
+
+| **Effect** | **Parameter** | **Type** | **Description** |
+| ---        | ---           | ---      | ---             |
+| ~~TBD~~    | ~~TBD~~       | ~~TBD~~  | ~~TBD~~         |
