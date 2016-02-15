@@ -1,6 +1,6 @@
 | Part of | FieldName | Type | Length | Required | Description |
-| --- | --- | --- | --- | --- |
-| Track table | . | . | . | . |
+| --- | --- | --- | --- | --- | --- |
+| Track table | . | . | . | . | |
 
 | First Header  | Second Header |
 | --- | --- |
