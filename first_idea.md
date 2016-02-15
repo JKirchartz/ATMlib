@@ -5,6 +5,7 @@ pattern = length of the pattern?,instrument, note, volume?, effect, (every chann
 instrument = or the sample, or the synth instrument (with an optional indication of which portion of the sample can be repeated to hold a sustained note)
 
 We need people who can actually help creating such a player.
+```
 
 Song ={3, 64, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 3, 3, 3, 4, 4, 4}
 
@@ -21,3 +22,5 @@ instrument 2 = ..
 instrument 3 = ..
 instrument 4 = ..
 instrument 5 = ..
+```
+
