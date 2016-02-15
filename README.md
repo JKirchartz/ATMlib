@@ -15,10 +15,10 @@
 |   |
 | **Track 0**              |                       |                 | **Commands and parameters for track 0** |
 |                          | Command 0             | UBYTE (8-bits)  | See command list |
-|                          | Parameters            | variable        | *See __parameter list__ for each command* |
+|                          | *and its* Parameters    | none/variable   | *See __parameter list__ for each command* |
 |                          | …                     | …               | … |
 |                          | Command N             | UBYTE (8-bits)  | |
-|                          | Parameters            | variable        | |
+|                          | *and its* Parameters    | none/variable   | |
 | **…**                    | **…**                 | **…**           | **…** |
 | **Track _N_**            |                       |                 | **Commands and parameters for track _N_** *(0-255)* |
 
@@ -29,10 +29,10 @@
 | ---               | ---                  | ---                | --- |
 |                 0 |                      |                    | Stop playing |
 |   |
-|           1 … 127 |                      |                    | Start playing note *[__Z__ - 1]* where 0 is a C1 |
+|           1 …  63 |                      |                    | Start playing note *[__Z__ - 1]* where 0 is a C1 |
 |   |
-|         128 … 159 |                      |                    | Apply an effect |
-|                   | *See __fx list__*    | -                  | - |
+|          64 … 159 |                      |                    | Configure effects (fx) |
+|                   | *See __fx list__*    | none/variable      | Effect is *[__Z__ - 64]* |
 |   |
 |         160 … 223 |                      |                    | Delay for *[__Z__ - 159]* ticks |
 |   |
@@ -60,3 +60,5 @@
 | **Effect** | **Parameter** | **Type** | **Description** |
 | ---        | ---           | ---      | ---             |
 | ~~TBD~~    | ~~TBD~~       | ~~TBD~~  | ~~TBD~~         |
+
+
