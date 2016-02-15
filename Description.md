@@ -2,6 +2,9 @@
 | --- | --- | --- | --- | --- | --- |
 | Track table |  |  |  |  | amount of tracks and the address of each track  |
 |  | count | UBYTE | 8-bits | yes | tells the playroutine how many tracks there are in the array |
+|  | Address track 1 | UWORD | 16-bits | yes | tells the playroutine the place in the array where track 1 is |
+|  | Address track 2 | UWORD | 16-bits | yes | tells the playroutine the place in the array where track 2 is |
+|  | ... | ... | ... | ... | ... | ... |
 |  | Address track # | UWORD | 16-bits | yes | tells the playroutine the place in the array where track # is |
 | Channel entry tracks |  |  |  |  | track indexes for what track to start the song with for each channel |
 |  | Channel 0 track | UBYTE | 8-bits | yes | tells the playroutine which track channel 0 starts with |
