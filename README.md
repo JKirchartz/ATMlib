@@ -1,25 +1,25 @@
 ### FILE/ARRAY FORMAT DESCRIPTION
 
-| **Section**              | **Field**       | **Type**        | **Description** |
-| ---                      | ---             | ---             | ---             |
-| **Track table**          |                 |                 | **Number of tracks and the address of each track** |
-|                          | count           | UBYTE (8-bits)  | Number of tracks in the file/array |
-|                          | Address track 1 | UWORD (16-bits) | Location in the file/array for track 1 |
-|                          | Address track 2 | UWORD (16-bits) | Location in the file/array for track 2 |
-|                          | …               | …               | … |
+| **Section**              | **Field**             | **Type**        | **Description** |
+| ---                      | ---                   | ---             | ---             |
+| **Track table**          |                       |                 | **Number of tracks and the address of each track** |
+|                          | count                 | UBYTE (8-bits)  | Number of tracks in the file/array |
+|                          | Address track 1       | UWORD (16-bits) | Location in the file/array for track 1 |
+|                          | Address track 2       | UWORD (16-bits) | Location in the file/array for track 2 |
+|                          | …                     | …               | … |
 |                          | Address track *__N__* | UWORD (16-bits) | Location in the file/array for track *__N__ (0 … 255)* |
-| **Channel entry tracks** |                 |                 | **For each channel, track to start the song with** |
-|                          | Channel 0 track | UBYTE (8-bits)  | Starting track index for channel 0 |
-|                          | …               | …               | … |
-|                          | Channel 3 track | UBYTE (8-bits)  | Starting track index for channel 3 |
-| **Track 0**              |                 |                 | **Commands and parameters for track 0** |
-|                          | Command 0       | UBYTE (8-bits)  | See command list |
-|                          | + parameters    | variable        | *See __parameter list__ for each command* |
-|                          | …               | …               | … |
-|                          | Command N       | UBYTE (8-bits)  | |
-|                          | + parameters    | variable        | |
-| **…**                    | **…**           | **…**           | **…** |
-| **Track _N_**              |                 |                 | **Commands and parameters for track _N_** *(0-255)* |
+| **Channel entry tracks** |                       |                 | **For each channel, track to start the song with** |
+|                          | Channel 0 track       | UBYTE (8-bits)  | Starting track index for channel 0 |
+|                          | …                     | …               | … |
+|                          | Channel 3 track       | UBYTE (8-bits)  | Starting track index for channel 3 |
+| **Track 0**              |                       |                 | **Commands and parameters for track 0** |
+|                          | Command 0             | UBYTE (8-bits)  | See command list |
+|                          | Parameters            | variable        | *See __parameter list__ for each command* |
+|                          | …                     | …               | … |
+|                          | Command N             | UBYTE (8-bits)  | |
+|                          | Parameters            | variable        | |
+| **…**                    | **…**                 | **…**           | **…** |
+| **Track _N_**            |                       |                 | **Commands and parameters for track _N_** *(0-255)* |
 
 
 ### COMMAND LIST
