@@ -9,9 +9,9 @@
 |                          | Address track *__N__* | UWORD (16-bits) | Location in the file/array for track *__N__ (0 … 255)* |
 |   |
 | **Channel entry tracks** |                       |                 | **For each channel, track to start with** |
-|                          | Channel 0 track       | UBYTE (8-bits)  | Starting track index for channel 0 |
+|                          | Channel 1 track       | UBYTE (8-bits)  | Starting track index for channel 1 |
 |                          | …                     | …               | … |
-|                          | Channel 3 track       | UBYTE (8-bits)  | Starting track index for channel 3 |
+|                          | Channel 4 track       | UBYTE (8-bits)  | Starting track index for channel 4 |
 |   |
 | **Track 0**              |                       |                 | **Commands and parameters for track 0** |
 |                          | Command 0             | UBYTE (8-bits)  | See command list |
