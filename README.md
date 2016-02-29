@@ -27,9 +27,9 @@
 
 | **Command (_X_)** | **Parameter**        | **Type**           | **Description** |
 | ---               | ---                  | ---                | --- |
-|                 0 |                      |                    | Stop playing |
+|           0 …  62 |                      |                    | Start playing note *[__X__]* where 0 is a C1 |
 |   |
-|           1 …  63 |                      |                    | Start playing note *[__X__ - 1]* where 0 is a C1 |
+|                63 |                      |                    | Stop playing |
 |   |
 |          64 … 159 |                      |                    | Configure effects (fx) |
 |                   | *See __fx list__*    | none/variable      | Effect is *[__X__ - 64]* |
