@@ -44,7 +44,7 @@
 |               252 |                      |                    | Call/run/goto specified track |
 |                   | Track                | UBYTE (8-bits)     | Track index |
 |   |
-|               252 |                      |                    | Repeated call/run/goto specified track |
+|               253 |                      |                    | Repeated call/run/goto specified track |
 |                   | Loop count (*__Y__*) | UBYTE (8-bits)     | Repeat *[__Y__ + 2]* times (total) |
 |                   | Track                | UBYTE (8-bits)     | Track index |
 |   |
