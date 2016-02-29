@@ -51,7 +51,7 @@
 |               254 |                      |                    | Return/end of track marker |
 |   |
 |               255 |                      |                    | Binary data |
-|                   | Length               |                    | Length in bytes of data to follow |
+|                   | Length               | VLE (8/16/24-bits) | Length in bytes of data to follow |
 |                   | Data                 | variable           | Binary data chunk (notify host application) |
 
 
