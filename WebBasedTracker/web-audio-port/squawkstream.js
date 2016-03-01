@@ -106,6 +106,13 @@ function SquawkStream(sampleRate) {
             if(ctr > 0) {
               // Repeat track
               ctr--;
+              // Note to self: This is broken!
+              // Loops last called track instead of playing track.
+              // Possible solutions:
+              //   Search for track based on address?
+              //     Pro: No extra RAM Con: Slow
+              //   Push "track" to stack
+              //     Pro: Fast Con: Requires extra RAM
               ptr = trackAddress(track);
             } else {
               // Check stack depth

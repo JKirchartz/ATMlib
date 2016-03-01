@@ -2,14 +2,13 @@
 #define EXAMPLE_SONG_H
       
 var music = [   // A) Sample music =>
-	0x07,       // Number of tracks
+	0x06,       // Number of tracks
 	0x00, 0x13, // Address of track 0
 	0x00, 0x14, // Address of track 1
 	0x00, 0x1D, // Address of track 2
 	0x00, 0x21, // Address of track 3
 	0x00, 0x32, // Address of track 4
 	0x00, 0x38, // Address of track 5
-	0x00, 0x49, // Address of track 6
 	0x02,       // Channel 0 entry track (PULSE)
 	0x04,       // Channel 1 entry track (SQUARE)
 	0x00,       // Channel 2 entry track (TRIANGLE)

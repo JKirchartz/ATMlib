@@ -11,16 +11,17 @@
       // Configuration
       var emulateSampleRate = 16000.0;  // Emulation sample rate
       var masterVolume      = 1.0;      // Master volume
+      // Note to self: Addresses could (should?) be derived from RETs (at expense of RAM)
+      
       // Synthesizer topology
       var music = [  // A) Sample music =>
-        0x07,          // Number of tracks
+        0x06,          // Number of tracks
         0x00, 0x00,    // Address of track 0 (autofilled)
         0x00, 0x00,    // Address of track 1 (autofilled)
         0x00, 0x00,    // Address of track 2 (autofilled)
         0x00, 0x00,    // Address of track 3 (autofilled)
         0x00, 0x00,    // Address of track 4 (autofilled)
         0x00, 0x00,    // Address of track 5 (autofilled)
-        0x00, 0x00,    // Address of track 6 (autofilled)
         0x02,          // Channel 0 entry track (PULSE)
         0x04,          // Channel 1 entry track (SQUARE)
         0x00,          // Channel 2 entry track (TRIANGLE)
