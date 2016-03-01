@@ -8,8 +8,7 @@
  *   setVolume(volume)
  *   play(optional: !pause)
  *   pause(optional: !play)
- */
-
+ */
 function WebAudioStream() {
   
   var bufferSize   = 1024; // Buffer size to use
@@ -26,8 +25,7 @@ function WebAudioStream() {
     audioCtx = new AudioContext();
   } catch(e) {
     throw "Web Audio API is not available";
-  }
-
+  }
   // Set up audio stream
   pcmNode = audioCtx.createScriptProcessor(bufferSize, 0, 1);
  
@@ -49,13 +47,10 @@ function WebAudioStream() {
         lastSample = output[i - 1];
       }
     }
-  }
-
+  }
   // Connect script processor directly to output
-  pcmNode.connect(audioCtx.destination);
-
-  // == INTERFACE == //
-
+  pcmNode.connect(audioCtx.destination);
+  // == INTERFACE == //
   // Retrieve system native samplerate
   function _getSampleRate() {
     return audioCtx.sampleRate;

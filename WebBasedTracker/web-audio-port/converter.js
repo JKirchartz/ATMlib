@@ -5,15 +5,11 @@
  * Exposes:
  *   connect(sampleSource)
  *   sample()
- */
-
-
-function SampleRateConverter(fromSampleRate, toSampleRate) {
-
+ */
+function SampleRateConverter(fromSampleRate, toSampleRate) {
   var delta = fromSampleRate / toSampleRate
   var index = 0.0;
-  var samples = new Array();
-
+  var samples = new Array();
   // == INTERFACE == //
   
   // Connects to a sample source (object providing .sample())
@@ -34,7 +30,5 @@ function SampleRateConverter(fromSampleRate, toSampleRate) {
     
   // References
   this.connect = _connect;
-  this.sample = _sample;
-
-}
-
+  this.sample = _sample;
+}

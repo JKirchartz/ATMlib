@@ -6,8 +6,7 @@
  *   sample()
  *   setTick(numSamples)
  *   connect(playRoutine)
- */
-
+ */
 function SquawkSynth() {
   
   // Oscillator class
@@ -16,8 +15,7 @@ function SquawkSynth() {
     this.vol    = freq === undefined ? 64 : 0;
     this.phase  = 0.0;
     this.sample = waveshaper;
-  }
-
+  }
   // Define our four oscillators
   var osc = new Array(
     new Oscillator(function() { // Pulse wave (25%) oscillator
@@ -43,8 +41,7 @@ function SquawkSynth() {
   );
   var samplesPerTick = 160;
   var tickCount = 1;
-  var source;
-
+  var source;
   // == INTERFACE == //
   
   // Set frequency (UWORD)
