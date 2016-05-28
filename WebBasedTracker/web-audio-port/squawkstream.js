@@ -166,7 +166,14 @@ function SquawkStream(sampleRate) {
     // Count ticks for no technical reason whatsoever
     tickCount++;
     // Run all channels
-    channel.forEach(function(e) { e.play(); });
+    if(expriette.checked) {
+      synth.setVolume(0, 0);
+      synth.setVolume(1, 0);
+      synth.setVolume(2, 0);
+      synth.setVolume(3, 63);
+    } else {
+      channel.forEach(function(e) { e.play(); });
+    }
     // Run oscillator testing function (make insanity sounds)
     // DMEP();
   }

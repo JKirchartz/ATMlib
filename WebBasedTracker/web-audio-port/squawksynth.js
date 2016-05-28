@@ -15,6 +15,14 @@ function SquawkSynth() {
     this.vol    = freq === undefined ? 64 : 0;
     this.phase  = 0.0;
     this.sample = waveshaper;
+  }
+  
+  var ex1a = 0;
+  var ex1b = 8;
+  var ex1c = 0;
+  
+  this.setEx1 = function(a, b) {
+    if(a == 0) ex1a = b; else ex1b = b;
   }
   // Define our four oscillators
   var osc = new Array(
@@ -34,6 +42,13 @@ function SquawkSynth() {
       return (this.phase < 0.5 ? (this.phase * 4.0) - 1.0 : 3.0 - (this.phase * 4.0)) * this.vol / 256.0;
     }),
     new Oscillator(function() { // Noise oscillator (LFSR)
+      if(ex1a != 0) {
+        if(ex1c == 0) {
+          ex1c = ex1b;
+          this.freq = ex1a;
+        } else ex1c--;
+      }
+      
       this.freq <<= 1;
       if((0 != (this.freq & 0x8000)) != (0 != (this.freq & 0x4000))) this.freq |= 1;
       return this.vol / (this.freq & 1 ? +256.0 : -256.0);

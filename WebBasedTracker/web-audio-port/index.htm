@@ -1,5 +1,6 @@
 ﻿<html>
-  <head>
+  <head>
+
     <title>What in the name of...?</title>
     
     <script src="squawksynth.js"></script>
@@ -7,31 +8,37 @@
     <script src="converter.js"></script>
     <script src="squawkstream.js"></script>
     
-    <script language="JavaScript">
+    <script language="JavaScript">
+
       // Configuration
       var emulateSampleRate = 16000.0;  // Emulation sample rate
-      var masterVolume      = 1.0;      // Master volume
+      var masterVolume      = 1.0;      // Master volume
+
       // Note to self: Addresses could (should?) be derived from RETs (at expense of RAM)
       
       // Synthesizer topology
       var music = [  // A) Sample music =>
-        0x06,          // Number of tracks
+        0x07,          // Number of tracks
         0x00, 0x00,    // Address of track 0 (autofilled)
         0x00, 0x00,    // Address of track 1 (autofilled)
         0x00, 0x00,    // Address of track 2 (autofilled)
         0x00, 0x00,    // Address of track 3 (autofilled)
         0x00, 0x00,    // Address of track 4 (autofilled)
         0x00, 0x00,    // Address of track 5 (autofilled)
+        0x00, 0x00,    // Address of track 6 (autofilled)
         0x02,          // Channel 0 entry track (PULSE)
         0x04,          // Channel 1 entry track (SQUARE)
-        0x00,          // Channel 2 entry track (TRIANGLE)
-        0x06,          // Channel 3 entry track (NOISE)
+        0x02,          // Channel 2 entry track (TRIANGLE)
+        0x06,          // Channel 3 entry track (NOISE)
+
         // Track names in quotations are used by the auto-fill algorithm,
         // which looks for strings in the array representing track-start
         // markers. These markers are used to fill in the track address
-        // table at the top of the array - so you don't have to! Wohoo!
+        // table at the top of the array - so you don't have to! Wohoo!
+
         "Track 0",
-        0xFE,          // RETURN (empty track used for silent channels)
+        0xFE,          // RETURN (empty track used for silent channels)
+
         "Track 1",
         0x00 + 20,     // NOTE ON: note = 20
         0x9F +  5,     // DELAY: ticks = 5
@@ -41,10 +48,12 @@
         0x9F +  5,     // DELAY: ticks = 5
         0x3F,          // NOTE OFF
         0x9F +  5,     // DELAY: ticks = 5
-        0xFE,          // RETURN
+        0xFE,          // RETURN
+
         "Track 2",
         0xFD, 31, 1,   // REPEAT: track = 1, count = 32
-        0xFE,          // RETURN
+        0xFE,          // RETURN
+
         "Track 3",
         0x00 +  8,     // NOTE ON: note = 20
         0x9F +  3,     // DELAY: ticks = 3
@@ -62,11 +71,13 @@
         0x9F +  3,     // DELAY: ticks = 3
         0x3F,          // NOTE OFF
         0x9F +  1,     // DELAY: ticks = 1
-        0xFE,          // RETURN
+        0xFE,          // RETURN
+
         "Track 4",
         0x40, 48,      // FX: SET VOLUME: volume = 48
         0xFD, 31, 3,   // REPEAT: track = 3, count = 32
-        0xFE,          // RETURN
+        0xFE,          // RETURN
+
         "Track 5",
         0xE0, 15,      // LONG DELAY: ticks = 80
         0x40, 63,      // FX: SET VOLUME: volume = 63
@@ -78,15 +89,19 @@
         0x40, 15,      // FX: SET VOLUME: volume = 15
         0x9F + 4,      // DELAY: ticks = 4
         0x40,  0,      // FX: SET VOLUME: volume = 0
-        0xFE,          // RETURN
+        0xFE,          // RETURN
+
         "Track 6",
         0xFD, 7, 5,    // REPEAT: track = 5, count = 8
-        0xFE,          // RETURN
-      ];
+        0xFE,          // RETURN
+
+      ];
+
       var player;    // B) Reads music data, controls synthesizer =>
       var synth;     // C) Oscillators generate samples, sends them to converter =>
       var converter; // D) Converts emulated sample rate to system native rate, sends to output =>
-      var output;    // E) Plays sample stream, acts as a sink, is thus the source of all system timing.
+      var output;    // E) Plays sample stream, acts as a sink, is thus the source of all system timing.
+
       // Let's get this show on the road!
       function setup() {
         // Initialize synthesizer
@@ -121,10 +136,12 @@
         output.play(!pause.checked);
         // Refresh stats every 10mS or so
         setInterval(refreshStats, 10);
-      }
+      }
+
       function refreshStats() {
         count.innerHTML = player.getTickCount().toString();
-      }
+      }
+
     </script>
   </head>
   <body onload="setup();" style="font-family: Courier New; text-align: center;">
@@ -135,6 +152,12 @@
     <input type="checkbox" id="mute" onchange="output.setVolume(this.checked ? 0.0 : masterVolume);"> <b>MUTE</b> FOR THE LOVE OF ALL THINGS SACRED!</input><br>
     <input type="checkbox" id="noise"> <b>RETRIG</b> NOISE TEST (WHAT IF U HAD ROBOT EARS?)</input><br>
     <input type="checkbox" id="pause" onchange="output.pause(this.checked);"> <b>PAUSE</b> MAKES THE GEARS STOP TURNING...</input><br>
+    <input type="checkbox" id="expriette" onchange="ex1panel.style.display = this.checked ? 'block' : 'none';"> <b>EXPRIETTE</b> (EXPERIMENT ONE)</input><br>
+    <div id="ex1panel" style="display:none;">
+      Length: <input onchange="synth.setEx1(0, parseInt(this.value));" value="8"><br>
+      Start: <input onchange="synth.setEx1(1, parseInt(this.value));" value="16">
+    </div>
+    
     ...BUT REMEMBER, JOE WILL DANCE INTO ETERNITY!
   </body>
 </html>
