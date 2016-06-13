@@ -1,7 +1,7 @@
 #ifndef EXAMPLE_SONG_H
 #define EXAMPLE_SONG_H
       
-var music = [   // A) Sample music =>
+Melody music[] = {   // A) Sample music =>
 	0x06,       // Number of tracks
 	0x00, 0x13, // Address of track 0
 	0x00, 0x14, // Address of track 1
@@ -72,28 +72,6 @@ var music = [   // A) Sample music =>
 //	"Track 6",
 	0xFD, 7, 5,    // REPEAT: track = 5, count = 8
 	0xFE,          // RETURN
-];
-
-const unsigned char PROGMEM exampleSong[] =
-{
-  // Track Table
-  4, 										//Number of tracks in the file/array
-
-  0,										//Location in the file/array for track 1
-  0,										//Location in the file/array for track 2
-  0,										//Location in the file/array for track 3
-  0,										//Location in the file/array for track 4
-
-  // Channel entry Tracks
-  0,										//Starting track index for channel 0
-  0,										//Starting track index for channel 1
-  0,										//Starting track index for channel 2
-  0,										//Starting track index for channel 3
-
-  // TracK 0
-
-
-
 };
 
 #endif

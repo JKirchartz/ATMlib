@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include "Arglib.h"
-#include "ATMlib.h"
 #include "bitmaps.h"
 
 //define menu states (on main menu)
