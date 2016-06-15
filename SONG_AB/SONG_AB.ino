@@ -17,6 +17,7 @@
 #include "menu.h"
 #include "game.h"
 
+
 extern Melody music[];
 
 typedef void (*FunctionPointer) ();

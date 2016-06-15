@@ -20,8 +20,11 @@
 #define STATE_GAME_OVER              9
 
 
+SQUAWK_CONSTRUCT_ISR(SQUAWK_PWM_PIN5)
+
 Arduboy arduboy;
 Sprites sprites(arduboy);
+SquawkSynth Squawk;
 
 byte gameState = STATE_MENU_INTRO;   // start the game with the TEAM a.r.g. logo
 byte menuSelection = STATE_MENU_PLAY; // PLAY menu item is pre-selected
