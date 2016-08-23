@@ -1,12 +1,53 @@
-#include <Arduino.h>
-#include "Arglib.h"
-#include "bitmaps.h"
-#include "song.h"
+/*
+  Arduboy Tracker Music Library for Arduino Leonardo "Arduboy"
 
-Arduboy arduboy;
-Sprites sprites(arduboy);
+  2015
+  TEAM a.r.g.
+  Davey Taylor
+*/
 
-extern Melody music[];             // Squawk 2 melody
+#ifndef _ATMLIB_H_
+#define _ATMLIB_H_
+#include <stddef.h>
+#include <inttypes.h>
+#include "Arduino.h"
+
+#define Melody const uint8_t PROGMEM
+
+
+class SquawkStream {
+  public:
+    virtual ~SquawkStream() = 0;
+    virtual uint8_t read() = 0;
+    virtual void seek(size_t offset) = 0;
+};
+
+inline SquawkStream::~SquawkStream() { }
+
+class SquawkSynth {
+
+  protected:
+    // Load and play specified melody
+    void play(SquawkStream *melody);
+
+  public:
+    SquawkSynth() {};
+
+    // Initialize Squawk to generate samples at sample_rate Hz
+    void begin(uint16_t sample_rate);
+
+    // Load and play specified melody
+    // melody needs to point to PROGMEM data
+    void play(const uint8_t *melody);
+
+    // Tune Squawk to a different frequency - default is 1.0
+    void tune(float tuning);
+
+    // Change the tempo - default is 50
+    void tempo(uint16_t tempo);
+};
+
+extern SquawkSynth Squawk;
 
 // oscillator structure
 typedef struct {
@@ -18,12 +59,18 @@ typedef struct {
 typedef osc_t Oscillator;
 
 // oscillator memory
-osc_t osc[4];
-uint8_t pcm;
+extern osc_t osc[4];
+extern uint8_t pcm;
+// channel 0 is pulse wave @ 25% duty
+// channel 1 is square wave
+// channel 2 is triangle wave
+// channel 3 is noise
+
 extern void tick() asm("squawk_playroutine");
-static uint16_t sample_rate;
-uint16_t cia, cia_count;
-bool half;
+
+
+extern uint16_t cia, cia_count;
+extern bool half;
 ISR(TIMER4_OVF_vect, ISR_NAKED) {
   asm volatile(
     "push r2                                          " "\n\t"
@@ -176,183 +223,5 @@ ISR(TIMER4_OVF_vect, ISR_NAKED) {
   );
 }
 
-const word noteTable[64] PROGMEM = {
-  262,  277,  294,  311,  330,  349,  370,  392,  415,  440,  466,  494,
-  523,  554,  587,  622,  659,  698,  740,  784,  831,  880,  932,  988,
-  1047, 1109, 1175, 1245, 1319, 1397, 1480, 1568, 1661, 1760, 1865, 1976,
-  2093, 2217, 2349, 2489, 2637, 2794, 2960, 3136, 3322, 3520, 3729, 3951,
-  4186, 4435, 4699, 4978, 5274, 5588, 5920, 6272, 6645, 7040, 7459, 7902,
-  8372, 8870, 9397,    0,
-};
 
-typedef struct ch_t {
-  const byte *ptr;
-  word stackPointer[7];
-  byte stackCounter[7];
-
-  byte stackIndex;
-  word delay;
-  byte counter;
-  byte track;
-};
-ch_t channel[4];
-
-byte trackCount;
-const word *trackList;
-const byte *trackBase;
-
-uint16_t read_vle(const byte **pp) {
-  word q = 0;
-  byte d;
-  do {
-    q <<= 7;
-    d = pgm_read_byte(*pp++);
-    q |= (d & 0x7F);
-  } while (d & 0x80);
-  return q;
-}
-
-static inline const byte *getTrackPointer(byte track) {
-  return trackBase + pgm_read_word(&trackList[track]);
-}
-
-void play(const byte *song) {
-  // Read track count
-  trackCount = pgm_read_byte(song++);
-  // Store track list pointer
-  trackList = (word*)song;
-  // Store track pointer
-  trackBase = (song += (trackCount << 1)) + 4;
-  // Fetch starting points for each track
-  for (unsigned n = 0; n < 4; n++) {
-
-    channel[n].ptr = getTrackPointer(pgm_read_byte(song++));
-    Serial.print(n, HEX);
-    Serial.print(" ");
-    Serial.println(channel[n].ptr - trackBase, HEX);
-  }
-}
-
-void tick() {
-  ch_t *ch;
-
-  Serial.println("");
-  for (unsigned n = 0; n < 4; n++) {
-    ch = &channel[n];
-    Serial.println("");
-    Serial.print(n);
-    Serial.print("");
-    Serial.print(ch->ptr - trackBase, HEX);
-    if (ch->delay) {
-      ch->delay--;
-    } else {
-      do {
-        byte cmd = pgm_read_byte(ch->ptr++);
-        Serial.println("");
-        Serial.print(cmd, HEX);
-        if (cmd < 64) {
-          // 0 … 63 : NOTE ON/OFF
-          osc[n].freq = pgm_read_word(&noteTable[cmd]);
-          ch->delay = 1;
-        } else if (cmd < 160) {
-          // 64 … 159 : SETUP FX
-          switch (cmd - 64) {
-            case 0: // Set volume
-              osc[n].vol = pgm_read_byte(ch->ptr++);
-              Serial.print(" ");
-              Serial.print(osc[n].vol, HEX);
-              break;
-          }
-        } else if (cmd < 224) {
-          // 160 … 223 : DELAY
-          ch->delay = cmd - 159;
-        } else if (cmd == 224) {
-          // 224: LONG DELAY
-          ch->delay = read_vle(&ch->ptr) + 65;
-        } else if (cmd < 252) {
-          // 225 … 251 : RESERVED
-        } else if (cmd == 252 || cmd == 253) {
-          // 252 (253) : CALL (REPEATEDLY)
-          // Stack PUSH
-          ch->stackCounter[ch->stackIndex] = ch->counter;
-          ch->counter = cmd == 252 ? 1 : pgm_read_byte(ch->ptr++);
-          Serial.print(" ");
-          Serial.print(ch->counter, HEX);
-          ch->track = pgm_read_byte(ch->ptr++);
-          Serial.print(" ");
-          Serial.print(ch->track, HEX);
-          ch->stackPointer[ch->stackIndex] = ch->ptr - trackBase;
-          ch->stackIndex++;
-          ch->ptr = getTrackPointer(ch->track);
-        } else if (cmd == 254) {
-          // 254 : RETURN
-          if (ch->counter > 0) {
-            // Repeat track
-            ch->counter--;
-            // Note to self: This is broken!
-            // Loops last called track instead of playing track.
-            // Possible solutions:
-            //   Search for track based on address?
-            //     Pro: No extra RAM Con: Slow
-            //   Push "track" to stack
-            //     Pro: Fast Con: Requires extra RAM
-            ch->ptr = getTrackPointer(ch->track);
-          } else {
-            // Check stack depth
-            if (ch->stackIndex == 0) {
-              // End-Of-File
-              ch->delay = 0xFFFF;
-            } else {
-              // Stack POP
-              ch->stackIndex--;
-              ch->ptr = ch->stackPointer[ch->stackIndex] + trackBase;
-              ch->counter = ch->stackCounter[ch->stackIndex];
-            }
-          }
-        } else if (cmd == 255) {
-          // 255 : EMBEDDED DATA
-          ch->ptr += read_vle(&ch->ptr);
-        }
-      } while (ch->delay == 0);
-      ch->delay--;
-    }
-  }
-}
-
-
-void setup() {
-  arduboy.start();
-  arduboy.setFrameRate(60);                                 // set the frame rate of the game at 60 fps
-
-  pinMode(5, OUTPUT);
-  pinMode(13, OUTPUT);
-  Serial.begin(9600);
-
-  /* BEGIN */
-  TCCR4A = 0b01000010;
-  TCCR4B = 0b00000001;
-  OCR4C  = 0xFF;
-  OCR4A  = 0x80;
-  TIMSK4 = 0b00000100;
-
-  sample_rate = 15625;
-  cia = sample_rate / 25; // 25 == tempo
-  osc[3].freq = 0x0001; // Seed LFSR
-  /* END-BEGIN */
-
-  // Begin playback of melody.
-  play(music); // init squawk 2 playroutine
-}
-
-void loop() {
-  char q = Serial.read();
-  if (q == 'p') play(music);
-  if (q == 'x') tick();
-  delay(1);
-  if (!(arduboy.nextFrame())) return;
-  arduboy.clearDisplay();
-  for (byte i = 0; i < 4; i++) sprites.drawSelfMasked(32 * i, 10, TEAMarg, i);
-  sprites.drawSelfMasked(43, 50, TEAM_argPart5, 0);
-  arduboy.display();
-}
-
+#endif
