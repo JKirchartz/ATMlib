@@ -11,7 +11,7 @@ Song testmusic[] = {   // A) Sample music =>
   0x0E, 0x00, // Address of track 3
   0x1F, 0x00, // Address of track 4
   0x25, 0x00, // Address of track 5
-  0x36, 0x00, // Address of track 6
+  0x44, 0x00, // Address of track 6
   0x02,       // Channel 0 entry track (PULSE)
   0x04,       // Channel 1 entry track (SQUARE)
   0x00,       // Channel 2 entry track (TRIANGLE)
@@ -60,20 +60,33 @@ Song testmusic[] = {   // A) Sample music =>
   0xFE,          // RETURN
 
   //"Track 5",
-  0xE0, 15,      // LONG DELAY: ticks = 80
+  //0xE0, 15,      // LONG DELAY: ticks = 80
   0x40, 63,      // FX: SET VOLUME: volume = 63
-  0x9F + 4,      // DELAY: ticks = 4
+  0x9F + 2,      // DELAY: ticks = 4
   0x40, 47,      // FX: SET VOLUME: volume = 47
-  0x9F + 4,      // DELAY: ticks = 4
+  0x9F + 2,      // DELAY: ticks = 4
   0x40, 31,      // FX: SET VOLUME: volume = 31
-  0x9F + 4,      // DELAY: ticks = 4
+  0x9F + 2,      // DELAY: ticks = 4
   0x40, 15,      // FX: SET VOLUME: volume = 15
-  0x9F + 4,      // DELAY: ticks = 4
+  0x9F + 2,      // DELAY: ticks = 4
   0x40,  0,      // FX: SET VOLUME: volume = 0
+  0x9F + 4,      // DELAY: ticks = 4
+  
+  0x40, 63,      // FX: SET VOLUME: volume = 63
+  0x9F + 1,      // DELAY: ticks = 4
+  0x40, 47,      // FX: SET VOLUME: volume = 47
+  0x9F + 1,      // DELAY: ticks = 4
+  0x40, 31,      // FX: SET VOLUME: volume = 31
+  0x9F + 1,      // DELAY: ticks = 4
+  0x40, 15,      // FX: SET VOLUME: volume = 15
+  0x9F + 1,      // DELAY: ticks = 4
+  0x40,  0,      // FX: SET VOLUME: volume = 0
+  0x9F + 8,      // DELAY: ticks = 4
+  
   0xFE,          // RETURN
 
   //"Track 6",
-  0xFD, 7, 5,    // REPEAT: track = 5, count = 8
+  0xFD, 31, 5,    // REPEAT: track = 5, count = 32
   0xFE          // RETURN
 };
 

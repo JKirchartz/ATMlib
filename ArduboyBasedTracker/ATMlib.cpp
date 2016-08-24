@@ -18,7 +18,7 @@ bool half;
 
 
 // Locals
-static uint16_t tick_rate = 50;
+static uint16_t tick_rate = 25;
 static uint16_t sample_rate;
 
 //Imports
