@@ -14,18 +14,18 @@ byte trackCount;
 const word *trackList;
 const byte *trackBase;
 uint8_t pcm;
-
-extern uint16_t cia;
 bool half;
+
 
 // Locals
 static uint16_t tick_rate = 50;
 static uint16_t sample_rate;
 
+//Imports
+extern uint16_t cia;
 
 // Exports
 osc_t osc[4];
-ch_t channel[4];
 
 
 const word noteTable[64] PROGMEM = {
@@ -36,6 +36,19 @@ const word noteTable[64] PROGMEM = {
   4186, 4435, 4699, 4978, 5274, 5588, 5920, 6272, 6645, 7040, 7459, 7902,
   8372, 8870, 9397,    0,
 };
+
+typedef struct ch_t {
+  const byte *ptr;
+  word stackPointer[7];
+  byte stackCounter[7];
+
+  byte stackIndex;
+  word delay;
+  byte counter;
+  byte track;
+};
+
+ch_t channel[4];
 
 uint16_t read_vle(const byte **pp) {
   word q = 0;
@@ -58,7 +71,7 @@ ATMSynth ATM;
 // Sets up the ports, and the sample grinding ISR
 void ATMSynth::begin(uint16_t hz) {
   sample_rate = hz;
-  cia = sample_rate / 25; // 25 == tempo
+  cia = sample_rate / tick_rate;
 
   osc[3].freq = 0x0001; // Seed LFSR
   

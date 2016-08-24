@@ -16,7 +16,6 @@ extern byte trackCount;
 extern const word *trackList;
 extern const byte *trackBase;
 extern uint8_t pcm;
-//extern uint16_t cia, cia_count;
 
 extern bool half;
 
@@ -59,18 +58,6 @@ typedef struct {
 typedef osc_t Oscillator;
 
 extern osc_t osc[4];
-
-
-typedef struct ch_t {
-  const byte *ptr;
-  word stackPointer[7];
-  byte stackCounter[7];
-
-  byte stackIndex;
-  word delay;
-  byte counter;
-  byte track;
-};
 
 
 uint16_t read_vle(const byte **pp);
