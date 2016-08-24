@@ -1,7 +1,9 @@
 #ifndef SONG_H
 #define SONG_H
 
-Melody music[] = {   // A) Sample music =>
+#define Song const uint8_t PROGMEM
+
+Song testmusic[] = {   // A) Sample music =>
   0x07,       // Number of tracks
   0x00, 0x00, // Address of track 0
   0x01, 0x00, // Address of track 1

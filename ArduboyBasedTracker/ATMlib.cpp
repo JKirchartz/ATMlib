@@ -8,36 +8,25 @@
 
 #include "ATMlib.h"
 
-// SquawkStream class for PROGMEM data
-class StreamROM : public SquawkStream {
-  private:
-    uint8_t *p_start;
-    uint8_t *p_cursor;
-  public:
-    StreamROM(const uint8_t *p_rom = NULL) { p_start = p_cursor = (uint8_t*)p_rom; }
-    uint8_t read() { return pgm_read_byte(p_cursor++); }
-    void seek(size_t offset) { p_cursor = p_start + offset; }
-};
+SQUAWK_CONSTRUCT_ISR(OCR4A)
 
-//Locals
-static float    tuning = 1.0;
-static uint32_t tuning_long;
+byte trackCount;
+const word *trackList;
+const byte *trackBase;
+uint8_t pcm;
+
+extern uint16_t cia;
+bool half;
+
+// Locals
 static uint16_t tick_rate = 50;
 static uint16_t sample_rate;
 
-static SquawkStream *stream;
-static uint16_t stream_base;
-static StreamROM rom;
-
-
-// Imports
-//extern uint16_t cia;
 
 // Exports
 osc_t osc[4];
-uint8_t pcm = 128;
-uint16_t cia,cia_count;
-bool half;
+ch_t channel[4];
+
 
 const word noteTable[64] PROGMEM = {
   262,  277,  294,  311,  330,  349,  370,  392,  415,  440,  466,  494,
@@ -47,85 +36,6 @@ const word noteTable[64] PROGMEM = {
   4186, 4435, 4699, 4978, 5274, 5588, 5920, 6272, 6645, 7040, 7459, 7902,
   8372, 8870, 9397,    0,
 };
-
-// Squawk object
-SquawkSynth Squawk;
-
-typedef struct ch_t {
-  const byte *ptr;
-  word stackPointer[7];
-  byte stackCounter[7];
-
-  byte stackIndex;
-  word delay;
-  byte counter;
-  byte track;
-};
-
-ch_t channel[4];
-
-byte trackCount;
-const word *trackList;
-const byte *trackBase;
-
-/*
-   uint16_t read_vbru(const byte **pp) {
-  // TODO: read variable length field, update pointer
-  }
-
-  int16_t read_vbrs(const byte **pp) {
-  // TODO: read variable length field, update pointer
-  }
-*/
-
-static inline const byte *getTrackPointer(byte track) {
-  return trackBase + pgm_read_word(&trackList[track]);
-}
-
-void SquawkSynth::begin(uint16_t hz) {
-  word isr_rr;
-
-  sample_rate = hz;
-  tuning_long = (long)(((double)3669213184.0 / (double)sample_rate) * (double)tuning);
-  cia = sample_rate / tick_rate;
-
-  TCCR4A = 0b01000010;
-  TCCR4B = 0b00000001;
-  OCR4C  = 0xFF;
-  OCR4A  = 0x80;
-  TIMSK4 = 0b00000100;
-
-  // Seed LFSR
-  osc[3].freq = 0x0001;
-}
-
-void SquawkSynth::play(const byte *song) {
-  // Read track count
-  trackCount = pgm_read_byte(song++);
-  // Store track list pointer
-  trackList = (word*)song;
-  // Store track pointer
-  trackBase = (song += (trackCount << 1)) + 4;
-  // Fetch starting points for each track
-  for (unsigned n = 0; n < 4; n++) {
-
-    channel[n].ptr = getTrackPointer(pgm_read_byte(song++));
-    //Serial.print(n, HEX);
-    //Serial.print(" ");
-    //Serial.println(channel[n].ptr - trackBase, HEX);
-  }
-}
-
-void SquawkSynth::tune(float new_tuning) {
-  tuning = new_tuning;
-  tuning_long = (long)(((double)3669213184.0 / (double)sample_rate) * (double)tuning);
-}
-
-// Sets tempo
-void SquawkSynth::tempo(uint16_t new_tempo) {
-  tick_rate = new_tempo;
-  cia = sample_rate / tick_rate; // not atomic?
-}
 
 uint16_t read_vle(const byte **pp) {
   word q = 0;
@@ -138,23 +48,76 @@ uint16_t read_vle(const byte **pp) {
   return q;
 }
 
-void tick() {
+static inline const byte *getTrackPointer(byte track) {
+  return trackBase + pgm_read_word(&trackList[track]);
+}
+
+ATMSynth ATM;
+
+// Initializes ATMSynth
+// Sets up the ports, and the sample grinding ISR
+void ATMSynth::begin(uint16_t hz) {
+  sample_rate = hz;
+  cia = sample_rate / 25; // 25 == tempo
+
+  osc[3].freq = 0x0001; // Seed LFSR
+  
+  pinMode(5, OUTPUT);
+  pinMode(13, OUTPUT);
+  TCCR4A = 0b01000010;    // Fast-PWM 8-bit
+  TCCR4B = 0b00000001;    // 62500Hz
+  OCR4C  = 0xFF;          // Resolution to 8-bit (TOP=0xFF)
+  OCR4A  = 0x80;
+  TIMSK4 = 0b00000100;    
+}
+
+// Load a melody stream and start grinding samples
+void ATMSynth::play(const byte *song) {
+  // Read track count
+  trackCount = pgm_read_byte(song++);
+  // Store track list pointer
+  trackList = (word*)song;
+  // Store track pointer
+  trackBase = (song += (trackCount << 1)) + 4;
+  // Fetch starting points for each track
+  for (unsigned n = 0; n < 4; n++) {
+    channel[n].ptr = getTrackPointer(pgm_read_byte(song++));
+  }
+}
+
+// Pause playback
+void ATMSynth::pause() {
+  TIMSK4 = 0; // Disable interrupt
+}
+
+// Start grinding samples
+void ATMSynth::play() {
+  TIMSK4 = 0b00000100; // Enable interrupt
+}
+
+// Stop playing, unload melody
+void ATMSynth::stop() {
+  pause();
+  trackCount = 0; // Unload melody
+}
+
+// Sets tempo
+void ATMSynth::tempo(uint16_t new_tempo) {
+  tick_rate = new_tempo;
+  cia = sample_rate / tick_rate; // not atomic?
+}
+
+
+void ATM_playroutine() {
   ch_t *ch;
 
-  //Serial.println("");
   for (unsigned n = 0; n < 4; n++) {
     ch = &channel[n];
-    //Serial.println("");
-    //Serial.print(n);
-    //Serial.print("");
-    //Serial.print(ch->ptr - trackBase, HEX);
     if (ch->delay) {
       ch->delay--;
     } else {
       do {
         byte cmd = pgm_read_byte(ch->ptr++);
-        //Serial.println("");
-        //Serial.print(cmd, HEX);
         if (cmd < 64) {
           // 0 … 63 : NOTE ON/OFF
           osc[n].freq = pgm_read_word(&noteTable[cmd]);
@@ -164,8 +127,6 @@ void tick() {
           switch (cmd - 64) {
             case 0: // Set volume
               osc[n].vol = pgm_read_byte(ch->ptr++);
-              //Serial.print(" ");
-              //Serial.print(osc[n].vol, HEX);
               break;
           }
         } else if (cmd < 224) {
@@ -181,11 +142,7 @@ void tick() {
           // Stack PUSH
           ch->stackCounter[ch->stackIndex] = ch->counter;
           ch->counter = cmd == 252 ? 1 : pgm_read_byte(ch->ptr++);
-          //Serial.print(" ");
-          //Serial.print(ch->counter, HEX);
           ch->track = pgm_read_byte(ch->ptr++);
-          //Serial.print(" ");
-          //Serial.print(ch->track, HEX);
           ch->stackPointer[ch->stackIndex] = ch->ptr - trackBase;
           ch->stackIndex++;
           ch->ptr = getTrackPointer(ch->track);
@@ -223,5 +180,3 @@ void tick() {
     }
   }
 }
-
-
