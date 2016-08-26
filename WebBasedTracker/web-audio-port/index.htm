@@ -29,8 +29,8 @@
         0x00, 0x00,    // Address of track 7 (autofilled)
         0x00, 0x00,    // Address of track 8 (autofilled)
         0x00,          // Channel 0 entry track (PULSE)
-        0x08,          // Channel 1 entry track (SQUARE)
-        0x00,          // Channel 2 entry track (TRIANGLE)
+        0x00,          // Channel 1 entry track (SQUARE)
+        0x08,          // Channel 2 entry track (TRIANGLE)
         0x06,          // Channel 3 entry track (NOISE)
 
         // Track names in quotations are used by the auto-fill algorithm,
@@ -81,9 +81,9 @@
         0xFE,          // RETURN
 
         "Track 5",
-        0x40, 63,      // FX: SET VOLUME: volume = 63
+        0x40, 32,      // FX: SET VOLUME: volume = 32
         0x9F + 1,      // DELAY: ticks = 1
-        0x40, 31,      // FX: SET VOLUME: volume = 31
+        0x40, 17,      // FX: SET VOLUME: volume = 17
         0x9F + 1,      // DELAY: ticks = 1
         0x40,  0,      // FX: SET VOLUME: volume = 0
         0x9F + 14,      // DELAY: ticks = 14
@@ -98,6 +98,33 @@
         0x9F + 2,      // DELAY: ticks = 2
         0x40,  0,      // FX: SET VOLUME: volume = 0
         0x9F + 8,      // DELAY: ticks = 8
+
+        0x40, 32,      // FX: SET VOLUME: volume = 32
+        0x9F + 1,      // DELAY: ticks = 1
+        0x40, 17,      // FX: SET VOLUME: volume = 17
+        0x9F + 1,      // DELAY: ticks = 1
+        0x40,  0,      // FX: SET VOLUME: volume = 0
+        0x9F + 6,      // DELAY: ticks = 14
+
+        0x40, 32,      // FX: SET VOLUME: volume = 32
+        0x9F + 1,      // DELAY: ticks = 1
+        0x40, 17,      // FX: SET VOLUME: volume = 17
+        0x9F + 1,      // DELAY: ticks = 1
+        0x40,  0,      // FX: SET VOLUME: volume = 0
+        0x9F + 6,      // DELAY: ticks = 14
+
+        0x40, 63,      // FX: SET VOLUME: volume = 63
+        0x9F + 2,      // DELAY: ticks = 2
+        0x40, 47,      // FX: SET VOLUME: volume = 47
+        0x9F + 2,      // DELAY: ticks = 2
+        0x40, 31,      // FX: SET VOLUME: volume = 31
+        0x9F + 2,      // DELAY: ticks = 2
+        0x40, 15,      // FX: SET VOLUME: volume = 15
+        0x9F + 2,      // DELAY: ticks = 2
+        0x40,  0,      // FX: SET VOLUME: volume = 0
+        0x9F + 8,      // DELAY: ticks = 8
+
+
         0xFE,          // RETURN
 
         "Track 6",
@@ -105,10 +132,22 @@
         0xFE,          // RETURN
 
         "Track 7",
-        0x00 + 20,     // NOTE ON: note = 20
-        0x9F +  2,     // DELAY: ticks = 2
+        0x00 +  0,     // NOTE ON: note = 20
+        0x9F +  4,     // DELAY: ticks = 2
         0x3F,          // NOTE OFF
-        0x9F + 30,     // DELAY: ticks = 30
+        0x9F + 26,     // DELAY: ticks = 30
+
+        0x00 +  0,     // NOTE ON: note = 20
+        0x9F +  4,     // DELAY: ticks = 2
+        0x3F,          // NOTE OFF
+        0x9F +  2,     // DELAY: ticks = 30
+
+        0x00 +  0,     // NOTE ON: note = 20
+        0x9F +  4,     // DELAY: ticks = 2
+        0x3F,          // NOTE OFF
+        0x9F + 18,     // DELAY: ticks = 30
+
+
         0xFE,    
 
         "Track 8",
