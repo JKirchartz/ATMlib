@@ -16,15 +16,18 @@ void setup() {
   // Begin playback of song.
   ATM.play(testmusic);
   // Lower the tempo ever so slightly
-  ATM.tempo(25);
+  ATM.tempo(50);
 }
 
 void loop() {
 
   if (!(arduboy.nextFrame())) return;
+  arduboy.poll();
   arduboy.clearDisplay();
   for (byte i = 0; i < 4; i++) sprites.drawSelfMasked(32 * i, 10, TEAMarg, i);
   sprites.drawSelfMasked(43, 50, TEAM_argPart5, 0);
+  if (arduboy.justPressed(A_BUTTON)) ATM.pause();
+  if (arduboy.justPressed(B_BUTTON)) ATM.play();
   arduboy.display();
 }
 

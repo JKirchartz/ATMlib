@@ -28,8 +28,8 @@
         0x00, 0x00,    // Address of track 6 (autofilled)
         0x00, 0x00,    // Address of track 7 (autofilled)
         0x00, 0x00,    // Address of track 8 (autofilled)
-        0x00,          // Channel 0 entry track (PULSE)
-        0x00,          // Channel 1 entry track (SQUARE)
+        0x04,          // Channel 0 entry track (PULSE)
+        0x02,          // Channel 1 entry track (SQUARE)
         0x08,          // Channel 2 entry track (TRIANGLE)
         0x06,          // Channel 3 entry track (NOISE)
 
@@ -42,14 +42,13 @@
         0xFE,          // RETURN (empty track used for silent channels)
 
         "Track 1",
-        0x00 + 20,     // NOTE ON: note = 20
-        0x9F +  5,     // DELAY: ticks = 5
-        0x3F,          // NOTE OFF
-        0x9F +  5,     // DELAY: ticks = 5
-        0x00 + 21,     // NOTE ON: note = 21
-        0x9F +  5,     // DELAY: ticks = 5
-        0x3F,          // NOTE OFF
-        0x9F +  5,     // DELAY: ticks = 5
+        0x00 + 00,     // NOTE ON: note = 20
+        0x9F + 63,     // DELAY: ticks = 5
+        0x9F + 64,     // DELAY: ticks = 5
+        0x00 + 05,     // NOTE ON: note = 20
+        0x9F + 63,     // DELAY: ticks = 5
+        0x00 + 04,     // NOTE ON: note = 20
+        0x9F + 63,     // DELAY: ticks = 5
         0xFE,          // RETURN
 
         "Track 2",

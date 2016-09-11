@@ -69,7 +69,7 @@ extern void ATM_playroutine() asm("ATM_playroutine");
 
 
 #define SQUAWK_CONSTRUCT_ISR(TARGET_REGISTER) \
-uint16_t cia, cia_count; \
+uint16_t cia, __attribute__((used)) cia_count; \
 ISR(TIMER4_OVF_vect, ISR_NAKED) { \
   asm volatile( \
                 "push r2                                          " "\n\t" \

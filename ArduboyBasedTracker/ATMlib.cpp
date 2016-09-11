@@ -13,8 +13,8 @@ SQUAWK_CONSTRUCT_ISR(OCR4A)
 byte trackCount;
 const word *trackList;
 const byte *trackBase;
-uint8_t pcm;
-bool half;
+uint8_t pcm __attribute__((used));
+bool half __attribute__((used));
 
 
 // Locals
@@ -37,7 +37,7 @@ const word noteTable[64] PROGMEM = {
   8372, 8870, 9397,    0,
 };
 
-typedef struct ch_t {
+struct ch_t {
   const byte *ptr;
   word stackPointer[7];
   byte stackCounter[7];
@@ -120,7 +120,7 @@ void ATMSynth::tempo(uint16_t new_tempo) {
   cia = sample_rate / tick_rate; // not atomic?
 }
 
-
+__attribute__((used))
 void ATM_playroutine() {
   ch_t *ch;
 
