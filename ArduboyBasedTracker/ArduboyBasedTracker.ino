@@ -4,8 +4,10 @@
 #include "bitmaps.h"
 #include "song.h"
 
+
 Arduboy arduboy;
 Sprites sprites(arduboy);
+
 
 void setup() {
   arduboy.start();
@@ -14,9 +16,9 @@ void setup() {
   //Initializes ATMSynth and samplerate
   ATM.begin(15625);
   // Begin playback of song.
-  ATM.play(testmusic);
+  //ATM.play(testmusic);
   // Lower the tempo ever so slightly
-  ATM.tempo(50);
+  //ATM.tempo(50);
 }
 
 void loop() {
@@ -26,8 +28,17 @@ void loop() {
   arduboy.clearDisplay();
   for (byte i = 0; i < 4; i++) sprites.drawSelfMasked(32 * i, 10, TEAMarg, i);
   sprites.drawSelfMasked(43, 50, TEAM_argPart5, 0);
-  if (arduboy.justPressed(A_BUTTON)) ATM.pause();
-  if (arduboy.justPressed(B_BUTTON)) ATM.play();
-  arduboy.display();
+  if (arduboy.justPressed(A_BUTTON))
+  {
+    for (int n = 1000; n < 4000; n += 40) {
+      osc[0].vol = 63;
+      osc[0].freq = n;
+      delay(1);
+      osc[0].vol = 0;
+    }
+    //ATM.pause();
+  }
+  if (arduboy.justPressed(B_BUTTON)) //ATM.play();
+    arduboy.display();
 }
 
