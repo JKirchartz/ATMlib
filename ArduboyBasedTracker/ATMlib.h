@@ -3,7 +3,7 @@
 
   2015
   TEAM a.r.g.
-  Davey Taylor
+  Davey Taylor aka STG
 */
 
 #ifndef _ATMLIB_H_
