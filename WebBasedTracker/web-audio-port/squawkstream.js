@@ -3,7 +3,8 @@
  *   setSource(data)
  *   tick()
  *   getTickCount()
- */
+ */
+
 // Note frequencies (scales with sample rate for now)
 var noteTable = [
    262,  277,  294,  311,  330,  349,  370,  392,  415,  440,  466,  494,
@@ -12,11 +13,13 @@ var noteTable = [
   2093, 2217, 2349, 2489, 2637, 2794, 2960, 3136, 3322, 3520, 3729, 3951,
   4186, 4435, 4699, 4978, 5274, 5588, 5920, 6272, 6645, 7040, 7459, 7902,
   8372, 8870, 9397,    0, 
-];
+];
+
 function SquawkStream(sampleRate) {
   var synth;
   var data;
-  var tickCount = 0;
+  var tickCount = 0;
+
   // Oscillator DMEP-type testing (Destroy My Ears, Plz)
   var testIx = 0.0;
   function DMEP() {
@@ -29,10 +32,12 @@ function SquawkStream(sampleRate) {
     synth.setFrequency(2, Math.floor(((Math.sin(testIx * 13) + 1.0) / 2.0) * (8192 - 256)) + 256);
     synth.setVolume(3, Math.floor(((Math.sin(testIx * 17) + 1.0) / 2.0) * 64));
     if(noise.checked) synth.setFrequency(3, 1);
-  }
+  }
+
   // Data access functions (big-endian)
   function readByte(address) { return data[address]; }
-  function trackAddress(track) { return (data[(track << 1) + 1] << 8) | data[(track << 1) + 2]; }
+  function trackAddress(track) { return (data[(track << 1) + 1] << 8) | data[(track << 1) + 2]; }
+
   // Channel class - contains the core mysic data processing code
   function Channel(id) {
     var ptr          = 0; // Pointer (into stream)
@@ -41,7 +46,13 @@ function SquawkStream(sampleRate) {
     var stackCounter = new Array();
     var stackIndex   = 0;
     var delay        = 0;
-    var track        = 0;
+    var track        = 0;
+
+    // fx
+    var volSlide     = 0;
+    var volConfig    = 0;
+    var volCount     = 0;
+
     // == BIG-ENDIAN DATA ACCESS FUNCTIONS == //
     function readByte() { return typeof data == "function" ? data() : data[ptr++]; }
     function readWord() { return (readByte() << 8) | readByte(); }
@@ -54,17 +65,20 @@ function SquawkStream(sampleRate) {
       } while(d & 0x80);
       return word & 0xFFFF;
     }
-    // ====================================== //
+    // ====================================== //
+
     // == INTERFACE == //
       
     // Returns channel ID, used for iteration
     function _id() {
       return id;
-    };
+    };
+
     // Force write pointer, used during track entry point setup
     function _jumpTo(address) {
       ptr = address;
-    }
+    }
+
     // All hail "THE PLAYROUTINE"
     function _play() {
       if(delay > 0) {
@@ -82,6 +96,16 @@ function SquawkStream(sampleRate) {
             switch(fx) {
               case 0: // Set volume
                 synth.setVolume(id, readByte());
+                break;
+              case 1: // Slide volume ON
+                volSlide = readByte();
+                break;
+              case 2: // Slide volume ON advanced
+                volSlide = readByte();
+                volConfig = readByte();
+                break;
+              case 3: // Slide volume OFF (same as 0x01 0x00)
+                volSlide = 0;
                 break;
             }
           } else if(cmd < 224) {
@@ -131,7 +155,19 @@ function SquawkStream(sampleRate) {
             ptr += readVLE();
           }
         } while(delay == 0);
+        // Apply volume slides
         delay--;
+        if(volSlide) {
+          if(!volCount) {
+            var v = osc[n].vol;
+            v += volSlide;
+            if(!(volConfig & 0x80)) {
+              if(v < 0) v = 0;
+              else if(v > 255) v = 0;
+            }
+          }
+        if(volCount++ > (volConfig & 0x7F)) volCount = 0;
+      }
       }
       // TODO: run effects here
       if(noise.checked) synth.setFrequency(3, 1);
@@ -141,14 +177,16 @@ function SquawkStream(sampleRate) {
     this.id = _id;
     this.jumpTo = _jumpTo;
     this.play = _play;
-  }
+  }
+
   // Define playback channels
   var channel = [
     new Channel(0),
     new Channel(1),
     new Channel(2),
     new Channel(3)
-  ];
+  ];
+
   // == INTERFACE == //
   
   // Called by synth when connecting graph
@@ -156,11 +194,13 @@ function SquawkStream(sampleRate) {
   function _setup(squawkSynth) {
     synth = squawkSynth;
     synth.setTick(sampleRate / 40); // Default to 40 ticks per second 
-  };
+  };
+
   // Retrieve tick counter
   function _getTickCount() {
     return tickCount;
-  }
+  }
+
   // Called by synthesizer each tick
   function _tick() {
     // Count ticks for no technical reason whatsoever
@@ -176,7 +216,8 @@ function SquawkStream(sampleRate) {
     }
     // Run oscillator testing function (make insanity sounds)
     // DMEP();
-  }
+  }
+
   // Set source of music data to either a callback function or an array
   function _setSource(source) {
     if(typeof source == "function") {
@@ -186,7 +227,8 @@ function SquawkStream(sampleRate) {
       data = source;
     } else {
       // Source from array.
-      // Mimics playback on embedded device.
+      // Mimics playback on embedded device.
+
       // Auto-fill algorithm (for track addresses)
       var temp = new Array();
       for(var n = 0, a = 0, b = 0; n < source.length; n++) {
@@ -202,12 +244,14 @@ function SquawkStream(sampleRate) {
       
       // Copy to typed array
       data = new Uint8Array(new ArrayBuffer(b));
-      for(var n = 0; n < b; n++) data[n] = temp[n];
+      for(var n = 0; n < b; n++) data[n] = temp[n];
+
       // Set up entry tracks for each channel
       var entryBase = (readByte(0) << 1) + 1;
       channel.forEach(function(e) { e.jumpTo(trackAddress(readByte(entryBase + e.id()))); });
     }
-  }
+  }
+
   // References
   this.setup = _setup;
   this.getTickCount = _getTickCount;

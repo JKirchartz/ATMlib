@@ -46,6 +46,11 @@ struct ch_t {
   word delay;
   byte counter;
   byte track;
+
+  // fx
+  char volSlide;
+  byte volConfig;
+  byte volCount;
 };
 
 ch_t channel[4];
@@ -74,14 +79,14 @@ void ATMSynth::begin(uint16_t hz) {
   cia = sample_rate / tick_rate;
 
   osc[3].freq = 0x0001; // Seed LFSR
-  
+
   pinMode(5, OUTPUT);
   pinMode(13, OUTPUT);
   TCCR4A = 0b01000010;    // Fast-PWM 8-bit
   TCCR4B = 0b00000001;    // 62500Hz
   OCR4C  = 0xFF;          // Resolution to 8-bit (TOP=0xFF)
   OCR4A  = 0x80;
-  TIMSK4 = 0b00000100;    
+  TIMSK4 = 0b00000100;
 }
 
 // Load a melody stream and start grinding samples
@@ -141,6 +146,16 @@ void ATM_playroutine() {
             case 0: // Set volume
               osc[n].vol = pgm_read_byte(ch->ptr++);
               break;
+            case 1: // Slide volume ON
+              ch->volSlide = pgm_read_byte(ch->ptr++);
+              break;
+            case 2: // Slide volume ON advanced
+              ch->volSlide = pgm_read_byte(ch->ptr++);
+              ch->volConfig = pgm_read_byte(ch->ptr++);
+              break;
+            case 3: // Slide volume OFF (same as 0x01 0x00)
+              ch->volSlide = 0;
+              break;
           }
         } else if (cmd < 224) {
           // 160 … 223 : DELAY
@@ -189,7 +204,20 @@ void ATM_playroutine() {
           ch->ptr += read_vle(&ch->ptr);
         }
       } while (ch->delay == 0);
+
+      // Apply volume slides
       ch->delay--;
+      if (ch->volSlide) {
+        if (!ch->volCount) {
+          char v = osc[n].vol;
+          v += ch->volSlide;
+          if (!(ch->volConfig & 0x80)) {
+          if (v < 0) v = 0;
+            else if (v > 255) v = 0;
+          }
+        }
+        if (ch->volCount++ > (ch->volConfig & 0x7F)) ch->volCount = 0;
+      }
     }
   }
 }
