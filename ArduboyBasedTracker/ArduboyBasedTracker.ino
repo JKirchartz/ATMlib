@@ -16,9 +16,9 @@ void setup() {
   //Initializes ATMSynth and samplerate
   ATM.begin(15625);
   // Begin playback of song.
-  //ATM.play(testmusic);
+  ATM.play(testmusic);
   // Lower the tempo ever so slightly
-  //ATM.tempo(50);
+  ATM.tempo(50);
 }
 
 void loop() {
@@ -30,15 +30,18 @@ void loop() {
   sprites.drawSelfMasked(43, 50, TEAM_argPart5, 0);
   if (arduboy.justPressed(A_BUTTON))
   {
-    for (int n = 1000; n < 4000; n += 40) {
+    /*
+      for (int n = 1000; n < 4000; n += 40) {
       osc[0].vol = 63;
       osc[0].freq = n;
       delay(1);
       osc[0].vol = 0;
-    }
-    //ATM.pause();
+
+      }
+    */
+    ATM.pause();
   }
-  if (arduboy.justPressed(B_BUTTON)) //ATM.play();
-    arduboy.display();
+  if (arduboy.justPressed(B_BUTTON)) ATM.play();
+  arduboy.display();
 }
 
