@@ -19,6 +19,7 @@ void setup() {
   ATM.play(testmusic);
   // Lower the tempo ever so slightly
   ATM.tempo(50);
+  Serial.begin(9600);
 }
 
 void loop() {
