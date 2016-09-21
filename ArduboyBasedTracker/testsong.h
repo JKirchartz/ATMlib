@@ -1,9 +1,9 @@
-#ifndef SONG_H
-#define SONG_H
+#ifndef TESTSONG_H
+#define TESTSONG_H
 
 #define Song const uint8_t PROGMEM
 
-Song music[] = {   // A) Sample music =>
+Song testmusic[] = {   // A) Sample music =>
   0x09,       // Number of tracks
   0x00, 0x00, // Address of track 0
   0x03, 0x00, // Address of track 1
@@ -101,7 +101,7 @@ Song music[] = {   // A) Sample music =>
   0x9F + 1,      // DELAY: ticks = 1
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 6,      // DELAY: ticks = 14
-  
+
   0x40, 48,      // FX: SET VOLUME: volume = 48
   0x9F + 2,      // DELAY: ticks = 2
   0x40, 38,      // FX: SET VOLUME: volume = 38
@@ -116,12 +116,13 @@ Song music[] = {   // A) Sample music =>
   0xFE,          // RETURN
 
   //"Track 7"
-  0x40, 48,      // FX: SET VOLUME: volume = 48
+  0x40, 0,      // FX: SET VOLUME: volume = 48
   0xFD, 32, 8,    // REPEAT: count = 32 - track = 8
 
   0xFE,          // RETURN
 
   //"Track 8"
+  0x41,   2,     // FX: SLIDE ON VOLUME: 4
   0x00 +  0,     // NOTE ON: note = 0
   0x9F +  4,     // DELAY: ticks = 4
   0x3F,          // NOTE OFF

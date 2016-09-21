@@ -3,6 +3,7 @@
 #include "ATMlib.h"
 #include "bitmaps.h"
 #include "song.h"
+#include "testsong.h"
 
 
 Arduboy arduboy;

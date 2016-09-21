@@ -145,9 +145,10 @@ void ATM_playroutine() {
           switch (cmd - 64) {
             case 0: // Set volume
               osc[n].vol = pgm_read_byte(ch->ptr++);
-              Serial.println("volume SET");
+              Serial.print("SET ");
               break;
             case 1: // Slide volume ON
+              Serial.print("SLIDE ON ");
               ch->volSlide = pgm_read_byte(ch->ptr++);
               break;
             case 2: // Slide volume ON advanced
@@ -158,7 +159,9 @@ void ATM_playroutine() {
               ch->volSlide = 0;
               break;
           }
-          Serial.print("volume: ");
+          Serial.print("volume for channel ");
+          Serial.print(n);
+          Serial.print(" : ");
           Serial.println(osc[n].vol, DEC);
         } else if (cmd < 224) {
           // 160 … 223 : DELAY
@@ -212,12 +215,18 @@ void ATM_playroutine() {
       ch->delay--;
       if (ch->volSlide) {
         if (!ch->volCount) {
-          char v = osc[n].vol;
+
+          char v = osc[n].vol ;
           v += ch->volSlide;
+
+          
+
           if (!(ch->volConfig & 0x80)) {
             if (v < 0) v = 0;
             else if (v > 255) v = 0;
           }
+
+          osc[n].vol = v;
         }
         if (ch->volCount++ > (ch->volConfig & 0x7F)) ch->volCount = 0;
       }
