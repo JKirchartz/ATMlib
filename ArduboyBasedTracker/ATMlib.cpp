@@ -145,24 +145,37 @@ void ATM_playroutine() {
           switch (cmd - 64) {
             case 0: // Set volume
               osc[n].vol = pgm_read_byte(ch->ptr++);
-              Serial.print("SET ");
+              //Serial.print("SET ");
               break;
             case 1: // Slide volume ON
-              Serial.print("SLIDE ON ");
+              //Serial.print("SLIDE ON WITH ");
               ch->volSlide = pgm_read_byte(ch->ptr++);
+              //Serial.print(ch->volSlide);
+              //Serial.print(" volume for channel ");
+              //Serial.print(n);
+              //Serial.print(" = ");
+              //Serial.println(osc[n].vol, DEC);
               break;
             case 2: // Slide volume ON advanced
+              Serial.print("SLIDE ON advanced WITH ");
               ch->volSlide = pgm_read_byte(ch->ptr++);
               ch->volConfig = pgm_read_byte(ch->ptr++);
+              Serial.print(ch->volSlide);
+              Serial.print(" volume for channel ");
+              Serial.print(n);
+              Serial.print(" = ");
+              Serial.println(osc[n].vol, DEC);
               break;
             case 3: // Slide volume OFF (same as 0x01 0x00)
               ch->volSlide = 0;
               break;
           }
-          Serial.print("volume for channel ");
-          Serial.print(n);
-          Serial.print(" : ");
-          Serial.println(osc[n].vol, DEC);
+          /*
+            Serial.print(" volume for channel ");
+            Serial.print(n);
+            Serial.print(" = ");
+            Serial.println(osc[n].vol, DEC);
+          */
         } else if (cmd < 224) {
           // 160 … 223 : DELAY
           ch->delay = cmd - 159;
@@ -215,20 +228,20 @@ void ATM_playroutine() {
       ch->delay--;
       if (ch->volSlide) {
         if (!ch->volCount) {
-
           char v = osc[n].vol ;
           v += ch->volSlide;
-
-          
-
           if (!(ch->volConfig & 0x80)) {
             if (v < 0) v = 0;
             else if (v > 255) v = 0;
           }
-
           osc[n].vol = v;
         }
-        if (ch->volCount++ > (ch->volConfig & 0x7F)) ch->volCount = 0;
+        Serial.print("volume ");
+        Serial.println (osc[n].vol);
+        if (ch->volCount++ > (ch->volConfig & 0x7F))
+        {
+          ch->volCount = 0;
+        }
       }
     }
   }
