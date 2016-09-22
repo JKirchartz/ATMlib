@@ -41,9 +41,8 @@ void loop() {
 
       }
     */
-    ATM.pause();
   }
-  if (arduboy.justPressed(B_BUTTON)) ATM.play();
+  if (arduboy.justPressed(B_BUTTON)) ATM.playPause();
   arduboy.display();
 }
 
