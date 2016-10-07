@@ -77,13 +77,13 @@ Song testmusic[] = {   // A) Sample music =>
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 14,      // DELAY: ticks = 14
 
-  0x40, 48,      // FX: SET VOLUME: volume = 48
+  0x40, 32,      // FX: SET VOLUME: volume = 48
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 38,      // FX: SET VOLUME: volume = 38
+  0x40, 24,      // FX: SET VOLUME: volume = 38
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 28,      // FX: SET VOLUME: volume = 28
+  0x40, 16,      // FX: SET VOLUME: volume = 28
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 18,      // FX: SET VOLUME: volume = 18
+  0x40,  8,      // FX: SET VOLUME: volume = 18
   0x9F + 2,      // DELAY: ticks = 2
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 8,      // DELAY: ticks = 8
@@ -93,22 +93,22 @@ Song testmusic[] = {   // A) Sample music =>
   0x40, 16,      // FX: SET VOLUME: volume = 16
   0x9F + 1,      // DELAY: ticks = 1
   0x40,  0,      // FX: SET VOLUME: volume = 0
-  0x9F + 6,      // DELAY: ticks = 6
+  0x9F + 6,      // DELAY: ticks = 14
 
   0x40, 32,      // FX: SET VOLUME: volume = 32
   0x9F + 1,      // DELAY: ticks = 1
   0x40, 16,      // FX: SET VOLUME: volume = 16
   0x9F + 1,      // DELAY: ticks = 1
   0x40,  0,      // FX: SET VOLUME: volume = 0
-  0x9F + 6,      // DELAY: ticks = 6
+  0x9F + 6,      // DELAY: ticks = 14
 
-  0x40, 48,      // FX: SET VOLUME: volume = 48
+  0x40, 32,      // FX: SET VOLUME: volume = 48
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 38,      // FX: SET VOLUME: volume = 38
+  0x40, 24,      // FX: SET VOLUME: volume = 38
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 28,      // FX: SET VOLUME: volume = 28
+  0x40, 16,      // FX: SET VOLUME: volume = 28
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 18,      // FX: SET VOLUME: volume = 18
+  0x40,  8,      // FX: SET VOLUME: volume = 18
   0x9F + 2,      // DELAY: ticks = 2
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 8,      // DELAY: ticks = 8
@@ -116,13 +116,12 @@ Song testmusic[] = {   // A) Sample music =>
   0xFE,          // RETURN
 
   //"Track 7"
-  0x40, 0,      // FX: SET VOLUME: volume = 48
+  0x40, 48,      // FX: SET VOLUME: volume = 48
   0xFD, 32, 8,    // REPEAT: count = 32 - track = 8
 
   0xFE,          // RETURN
 
   //"Track 8"
-  0x41,   2,     // FX: SLIDE ON VOLUME: 4
   0x00 +  0,     // NOTE ON: note = 0
   0x9F +  4,     // DELAY: ticks = 4
   0x3F,          // NOTE OFF

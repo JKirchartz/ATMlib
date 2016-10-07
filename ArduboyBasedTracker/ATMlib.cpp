@@ -13,7 +13,7 @@ SQUAWK_CONSTRUCT_ISR(OCR4A)
 byte trackCount;
 const word *trackList;
 const byte *trackBase;
-uint8_t pcm __attribute__((used));
+uint8_t pcm __attribute__((used)) = 128;
 bool half __attribute__((used));
 
 
