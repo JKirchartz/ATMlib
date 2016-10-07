@@ -77,13 +77,13 @@ Song music[] = {   // A) Sample music =>
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 14,      // DELAY: ticks = 14
 
-  0x40, 32,      // FX: SET VOLUME: volume = 48
+  0x40, 32,      // FX: SET VOLUME: volume = 32
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 24,      // FX: SET VOLUME: volume = 38
+  0x40, 24,      // FX: SET VOLUME: volume = 24
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 16,      // FX: SET VOLUME: volume = 28
+  0x40, 16,      // FX: SET VOLUME: volume = 16
   0x9F + 2,      // DELAY: ticks = 2
-  0x40,  8,      // FX: SET VOLUME: volume = 18
+  0x40,  8,      // FX: SET VOLUME: volume =  8
   0x9F + 2,      // DELAY: ticks = 2
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 8,      // DELAY: ticks = 8
@@ -102,13 +102,13 @@ Song music[] = {   // A) Sample music =>
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 6,      // DELAY: ticks = 14
   
-  0x40, 32,      // FX: SET VOLUME: volume = 48
+  0x40, 32,      // FX: SET VOLUME: volume = 32
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 24,      // FX: SET VOLUME: volume = 38
+  0x40, 24,      // FX: SET VOLUME: volume = 24
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 16,      // FX: SET VOLUME: volume = 28
+  0x40, 16,      // FX: SET VOLUME: volume = 16
   0x9F + 2,      // DELAY: ticks = 2
-  0x40,  8,      // FX: SET VOLUME: volume = 18
+  0x40,  8,      // FX: SET VOLUME: volume =  8
   0x9F + 2,      // DELAY: ticks = 2
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 8,      // DELAY: ticks = 8

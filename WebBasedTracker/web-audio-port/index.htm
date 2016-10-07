@@ -28,7 +28,7 @@
         0x00, 0x00,    // Address of track 6 (autofilled)
         0x00, 0x00,    // Address of track 7 (autofilled)
         0x00, 0x00,    // Address of track 8 (autofilled)
-        0x00,          // Channel 0 entry track (PULSE)
+        0x07,          // Channel 0 entry track (PULSE)
         0x00,          // Channel 1 entry track (SQUARE)
         0x00,          // Channel 2 entry track (TRIANGLE)
         0x05,          // Channel 3 entry track (NOISE)
@@ -75,7 +75,6 @@
         0xFE,          // RETURN
 
         "Track 4",
-        0x40, 48,      // FX: SET VOLUME: volume = 48
         0xFD, 32, 3,   // REPEAT: count = 32, track = 3
         0xFE,          // RETURN
 
@@ -86,39 +85,46 @@
         "Track 6",
         0x40, 32,      // FX: SET VOLUME: volume = 32
         0x9F + 1,      // DELAY: ticks = 1
-        0x40, 17,      // FX: SET VOLUME: volume = 17
+        0x40, 16,      // FX: SET VOLUME: volume = 16
         0x9F + 1,      // DELAY: ticks = 1
         0x40,  0,      // FX: SET VOLUME: volume = 0
         0x9F + 14,      // DELAY: ticks = 14
 
-        0x40, 63,      // FX: SET VOLUME: volume = 63
+        0x40, 32,      // FX: SET VOLUME: volume = 32
         0x9F + 2,      // DELAY: ticks = 2
-        0x40, 47,      // FX: SET VOLUME: volume = 47
+        0x40, 24,      // FX: SET VOLUME: volume = 24
         0x9F + 2,      // DELAY: ticks = 2
-        0x40, 31,      // FX: SET VOLUME: volume = 31
+        0x40, 16,      // FX: SET VOLUME: volume = 16
         0x9F + 2,      // DELAY: ticks = 2
-        0x40, 15,      // FX: SET VOLUME: volume = 15
+        0x40,  8,      // FX: SET VOLUME: volume =  8
         0x9F + 2,      // DELAY: ticks = 2
         0x40,  0,      // FX: SET VOLUME: volume = 0
         0x9F + 8,      // DELAY: ticks = 8
 
         0x40, 32,      // FX: SET VOLUME: volume = 32
         0x9F + 1,      // DELAY: ticks = 1
-        0x40, 17,      // FX: SET VOLUME: volume = 17
+        0x40, 16,      // FX: SET VOLUME: volume = 16
         0x9F + 1,      // DELAY: ticks = 1
         0x40,  0,      // FX: SET VOLUME: volume = 0
         0x9F + 6,      // DELAY: ticks = 14
 
         0x40, 32,      // FX: SET VOLUME: volume = 32
         0x9F + 1,      // DELAY: ticks = 1
-        0x40, 17,      // FX: SET VOLUME: volume = 17
+        0x40, 16,      // FX: SET VOLUME: volume = 16
         0x9F + 1,      // DELAY: ticks = 1
         0x40,  0,      // FX: SET VOLUME: volume = 0
         0x9F + 6,      // DELAY: ticks = 14
-
-// here we test a volume slide
-        0x41, 8,      // FX: SET VOLUME: volume = 63
-        0x9F + 16,     // DELAY: ticks = 16
+        
+        0x40, 32,      // FX: SET VOLUME: volume = 32
+        0x9F + 2,      // DELAY: ticks = 2
+        0x40, 24,      // FX: SET VOLUME: volume = 24
+        0x9F + 2,      // DELAY: ticks = 2
+        0x40, 16,      // FX: SET VOLUME: volume = 16
+        0x9F + 2,      // DELAY: ticks = 2
+        0x40,  8,      // FX: SET VOLUME: volume =  8
+        0x9F + 2,      // DELAY: ticks = 2
+        0x40,  0,      // FX: SET VOLUME: volume = 0
+        0x9F + 8,      // DELAY: ticks = 8
 
         0xFE,          // RETURN
 
