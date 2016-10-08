@@ -59,10 +59,13 @@
 
 | **Effect** | **Parameter**    | **Type**      | **Description** |
 | ---        | ---              | ---           | ---             |
-|          0 | Volume (*__Y__*) | UBYTE (8-bit) | Set volume to *[__Y__]*. <br /> **_Note:_** If the combined volume of all channels exceed 255 there may be rollover distortion. This should not be disallowed, as it may be usesful as an effects hack for the musician. There should however be a non-interfering warning when a musician enters a value above 63 for ch 1-3 or 32 for ch 4 (noise). ch 4 the volume is counted double, so 32 is actually 64 |
-|          1 | slide Volume ON (*__Y__*) | UBYTE (8-bit) | Slide the volume with an amount (positive or negative) of *[__Y__]* for every tick.<br /> This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
-|          2 | slide Volume ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the volume with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
+|          0 | set Volume (*__Y__*) | UBYTE (8-bit) | Set volume to *[__Y__]*. <br /> **_Note:_** If the combined volume of all channels exceed 255 there may be rollover distortion. This should not be disallowed, as it may be usesful as an effects hack for the musician. There should however be a non-interfering warning when a musician enters a value above 63 for ch 1-3 or 32 for ch 4 (noise). ch 4 the volume is counted double, so 32 is actually 64 |
+|          1 | slide Volume ON (*__Y__*) | UBYTE (8-bit) | Slide the volume with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_**  This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
+|          2 | slide Volume ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the volume with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_**  This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
 |          3 | slide Volume OFF |  |  stops the volume slide |
+|          4 | slide Frequency ON (*__Y__*) | UBYTE (8-bit) | Slide the frequency with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_** |
+|          5 | slide Frequency ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the frequency with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_**  |
+|          6 | slide Frequency OFF |  |  stops the frequency slide |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
 #### Thoughts on effects:

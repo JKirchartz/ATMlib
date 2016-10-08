@@ -47,10 +47,15 @@ struct ch_t {
   byte counter;
   byte track;
 
-  // fx
+  // Volume FX
   char volSlide;
   byte volConfig;
   byte volCount;
+
+  // Frequency FX
+  int16_t freqSlide;
+  int freqConfig;
+  int freqCount;
 };
 
 ch_t channel[4];
@@ -105,7 +110,7 @@ void ATMSynth::play(const byte *song) {
 
 // Start grinding samples or Pause playback
 void ATMSynth::playPause() {
-  TIMSK4 = TIMSK4^0b00000100; // Disable interrupt
+  TIMSK4 = TIMSK4 ^ 0b00000100; // Disable interrupt
 }
 
 
@@ -141,37 +146,28 @@ void ATM_playroutine() {
           switch (cmd - 64) {
             case 0: // Set volume
               osc[n].vol = pgm_read_byte(ch->ptr++);
-              //Serial.print("SET ");
               break;
             case 1: // Slide volume ON
-              //Serial.print("SLIDE ON WITH ");
               ch->volSlide = pgm_read_byte(ch->ptr++);
-              //Serial.print(ch->volSlide);
-              //Serial.print(" volume for channel ");
-              //Serial.print(n);
-              //Serial.print(" = ");
-              //Serial.println(osc[n].vol, DEC);
               break;
             case 2: // Slide volume ON advanced
-              Serial.print("SLIDE ON advanced WITH ");
               ch->volSlide = pgm_read_byte(ch->ptr++);
               ch->volConfig = pgm_read_byte(ch->ptr++);
-              Serial.print(ch->volSlide);
-              Serial.print(" volume for channel ");
-              Serial.print(n);
-              Serial.print(" = ");
-              Serial.println(osc[n].vol, DEC);
               break;
             case 3: // Slide volume OFF (same as 0x01 0x00)
               ch->volSlide = 0;
               break;
+            case 4: // Slide frequency ON
+              ch->freqSlide = pgm_read_byte(ch->ptr++);
+              break;
+            case 5: // Slide frequency ON advanced
+              ch->freqSlide = pgm_read_byte(ch->ptr++);
+              ch->freqConfig = pgm_read_byte(ch->ptr++);
+              break;
+            case 6: // Slide frequency OFF 
+              ch->freqSlide = 0;
+              break;
           }
-          /*
-            Serial.print(" volume for channel ");
-            Serial.print(n);
-            Serial.print(" = ");
-            Serial.println(osc[n].vol, DEC);
-          */
         } else if (cmd < 224) {
           // 160 … 223 : DELAY
           ch->delay = cmd - 159;
@@ -220,11 +216,11 @@ void ATM_playroutine() {
         }
       } while (ch->delay == 0);
 
-      // Apply volume slides
       ch->delay--;
+      // Apply volume slides
       if (ch->volSlide) {
         if (!ch->volCount) {
-          char v = osc[n].vol ;
+          char v = osc[n].vol;
           v += ch->volSlide;
           if (!(ch->volConfig & 0x80)) {
             if (v < 0) v = 0;
@@ -237,6 +233,24 @@ void ATM_playroutine() {
         if (ch->volCount++ > (ch->volConfig & 0x7F))
         {
           ch->volCount = 0;
+        }
+      }
+      // Apply frequency slides
+      if (ch-> freqSlide)
+      {
+        if (!ch-> freqCount)
+        {
+          int16_t f = osc[n].freq;
+          f += ch ->freqSlide;
+          if (!(ch->freqConfig & 0x24B6)) {
+            if (f < 262) f = 262;
+            else if (f > 9397) f = 262;
+          }
+          osc[n].freq = f;
+        }
+        if (ch-> freqCount++ > (ch->freqConfig & 0x24B5))
+        {
+          ch->freqCount = 0;
         }
       }
     }
