@@ -14,8 +14,8 @@ Song testmusic[] = {   // A) Sample music =>
   0x2B, 0x00, // Address of track 6
   0x65, 0x00, // Address of track 7
   0x6B, 0x00, // Address of track 8
-  0x07,       // Channel 0 entry track (PULSE)
-  0x00,       // Channel 1 entry track (SQUARE)
+  0x00,       // Channel 0 entry track (PULSE)
+  0x07,       // Channel 1 entry track (SQUARE)
   0x00,       // Channel 2 entry track (TRIANGLE)
   0x05,       // Channel 3 entry track (NOISE)
 
@@ -77,15 +77,15 @@ Song testmusic[] = {   // A) Sample music =>
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 14,      // DELAY: ticks = 14
 
-  0x40, 32,      // FX: SET VOLUME: volume = 48
+  0x40, 32,      // FX: SET VOLUME: volume = 32
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 24,      // FX: SET VOLUME: volume = 38
+  0x40, 24,      // FX: SET VOLUME: volume = 24
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 16,      // FX: SET VOLUME: volume = 28
+  0x40, 16,      // FX: SET VOLUME: volume = 16
   0x9F + 2,      // DELAY: ticks = 2
-  0x40,  8,      // FX: SET VOLUME: volume = 18
+  0x40,  8,      // FX: SET VOLUME: volume =  8
   0x9F + 2,      // DELAY: ticks = 2
-  0x40,  0,      // FX: SET VOLUME: volume = 0
+  0x40,  0,      // FX: SET VOLUME: volume =  0
   0x9F + 8,      // DELAY: ticks = 8
 
   0x40, 32,      // FX: SET VOLUME: volume = 32
@@ -102,40 +102,44 @@ Song testmusic[] = {   // A) Sample music =>
   0x40,  0,      // FX: SET VOLUME: volume = 0
   0x9F + 6,      // DELAY: ticks = 14
 
-  0x40, 32,      // FX: SET VOLUME: volume = 48
+  0x40, 32,      // FX: SET VOLUME: volume = 32
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 24,      // FX: SET VOLUME: volume = 38
+  0x40, 24,      // FX: SET VOLUME: volume = 24
   0x9F + 2,      // DELAY: ticks = 2
-  0x40, 16,      // FX: SET VOLUME: volume = 28
+  0x40, 16,      // FX: SET VOLUME: volume = 16
   0x9F + 2,      // DELAY: ticks = 2
-  0x40,  8,      // FX: SET VOLUME: volume = 18
+  0x40,  8,      // FX: SET VOLUME: volume =  8
   0x9F + 2,      // DELAY: ticks = 2
-  0x40,  0,      // FX: SET VOLUME: volume = 0
+  0x40,  0,      // FX: SET VOLUME: volume =  0
   0x9F + 8,      // DELAY: ticks = 8
 
   0xFE,          // RETURN
 
   //"Track 7"
-  0x40, 48,      // FX: SET VOLUME: volume = 48
-  0xFD, 32, 8,    // REPEAT: count = 32 - track = 8
+  0x40, 63,      // FX: SET VOLUME: volume = 00
+  0xFD, 128, 8,   // REPEAT: count = 32 - track = 8
 
   0xFE,          // RETURN
 
   //"Track 8"
-  0x00 +  0,     // NOTE ON: note = 0
-  0x9F +  4,     // DELAY: ticks = 4
-  0x3F,          // NOTE OFF
-  0x9F + 26,     // DELAY: ticks = 26
+  0x00 +  30,     // NOTE ON: note = 0
+  0x9F +  2,     // DELAY: ticks = 1
+  0x44, -64,       // FX: SLIDE FREQUENCY ON: steps = 128
+  0x9F +  2,     // DELAY: ticks = 1
+  0x44, 64,       // FX: SLIDE FREQUENCY ON: steps = 128
+  0x9F +  12,     // DELAY: ticks = 1
 
-  0x00 +  0,     // NOTE ON: note = 0
-  0x9F +  4,     // DELAY: ticks = 4
-  0x3F,          // NOTE OFF
-  0x9F +  2,     // DELAY: ticks = 2
+  //0x9F + 26,     // DELAY: ticks = 26
 
-  0x00 +  0,     // NOTE ON: note = 0
-  0x9F +  4,     // DELAY: ticks = 4
-  0x3F,          // NOTE OFF
-  0x9F + 18,     // DELAY: ticks = 18
+
+  //0x9F +  4,     // DELAY: ticks = 4
+  //0x3F,          // NOTE OFF
+  //0x9F +  2,     // DELAY: ticks = 2
+
+
+  //0x9F +  4,     // DELAY: ticks = 4
+  //0x3F,          // NOTE OFF
+  //0x9F + 18,     // DELAY: ticks = 18
 
   0xFE,          // RETURN
 };

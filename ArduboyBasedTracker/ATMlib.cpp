@@ -53,9 +53,9 @@ struct ch_t {
   byte volCount;
 
   // Frequency FX
-  int16_t freqSlide;
-  int freqConfig;
-  int freqCount;
+  char freqSlide;
+  byte freqConfig;
+  byte freqCount;
 };
 
 ch_t channel[4];
@@ -158,11 +158,11 @@ void ATM_playroutine() {
               ch->volSlide = 0;
               break;
             case 4: // Slide frequency ON
-              ch->freqSlide = pgm_read_byte(ch->ptr++);
+              ch->freqSlide = pgm_read_word(ch->ptr++);
               break;
             case 5: // Slide frequency ON advanced
-              ch->freqSlide = pgm_read_byte(ch->ptr++);
-              ch->freqConfig = pgm_read_byte(ch->ptr++);
+              ch->freqSlide = pgm_read_word(ch->ptr++);
+              ch->freqConfig = pgm_read_word(ch->ptr++);
               break;
             case 6: // Slide frequency OFF 
               ch->freqSlide = 0;
@@ -240,7 +240,7 @@ void ATM_playroutine() {
       {
         if (!ch-> freqCount)
         {
-          int16_t f = osc[n].freq;
+          uint16_t f = osc[n].freq;
           f += ch ->freqSlide;
           if (!(ch->freqConfig & 0x24B6)) {
             if (f < 262) f = 262;

@@ -85,7 +85,7 @@ Song music[] = {   // A) Sample music =>
   0x9F + 2,      // DELAY: ticks = 2
   0x40,  8,      // FX: SET VOLUME: volume =  8
   0x9F + 2,      // DELAY: ticks = 2
-  0x40,  0,      // FX: SET VOLUME: volume = 0
+  0x40,  0,      // FX: SET VOLUME: volume =  0
   0x9F + 8,      // DELAY: ticks = 8
 
   0x40, 32,      // FX: SET VOLUME: volume = 32
@@ -110,7 +110,7 @@ Song music[] = {   // A) Sample music =>
   0x9F + 2,      // DELAY: ticks = 2
   0x40,  8,      // FX: SET VOLUME: volume =  8
   0x9F + 2,      // DELAY: ticks = 2
-  0x40,  0,      // FX: SET VOLUME: volume = 0
+  0x40,  0,      // FX: SET VOLUME: volume =  0
   0x9F + 8,      // DELAY: ticks = 8
 
   0xFE,          // RETURN
@@ -123,17 +123,17 @@ Song music[] = {   // A) Sample music =>
 
   //"Track 8"
   0x00 +  0,     // NOTE ON: note = 0
-  0x9F +  4,     // DELAY: ticks = 4
+  0x9F +  4,     // DELAY: ticks =  4
   0x3F,          // NOTE OFF
   0x9F + 26,     // DELAY: ticks = 26
 
   0x00 +  0,     // NOTE ON: note = 0
-  0x9F +  4,     // DELAY: ticks = 4
+  0x9F +  4,     // DELAY: ticks =  4
   0x3F,          // NOTE OFF
-  0x9F +  2,     // DELAY: ticks = 2
+  0x9F +  2,     // DELAY: ticks =  2
 
   0x00 +  0,     // NOTE ON: note = 0
-  0x9F +  4,     // DELAY: ticks = 4
+  0x9F +  4,     // DELAY: ticks =  4
   0x3F,          // NOTE OFF
   0x9F + 18,     // DELAY: ticks = 18
 

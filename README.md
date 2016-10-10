@@ -63,8 +63,8 @@
 |          1 | slide Volume ON (*__Y__*) | UBYTE (8-bit) | Slide the volume with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_**  This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
 |          2 | slide Volume ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the volume with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_**  This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
 |          3 | slide Volume OFF |  |  stops the volume slide |
-|          4 | slide Frequency ON (*__Y__*) | UBYTE (8-bit) | Slide the frequency with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_** |
-|          5 | slide Frequency ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the frequency with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_**  |
+|          4 | slide Frequency ON (*__Y__*) | UBYTE (8-bit) | Slide the frequency with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_** The amount of slide is limited between -127 to 127|
+|          5 | slide Frequency ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the frequency with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_** The amount of slide and ticks devider is limited between -127 to 127 |
 |          6 | slide Frequency OFF |  |  stops the frequency slide |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
