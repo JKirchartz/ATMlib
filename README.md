@@ -66,7 +66,7 @@
 |          4 | slide Frequency ON (*__Y__*) | UBYTE (8-bit) | Slide the frequency with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_** The amount of slide is limited between -127 to 127|
 |          5 | slide Frequency ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the frequency with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_** The amount of slide and ticks devider is limited between -127 to 127 |
 |          6 | slide Frequency OFF |  |  stops the frequency slide |
-|          7 | Arpeggio ON (*__X__*)(*__Y__*)(*__Z__*) | UBYTE (8-bit) UBYTE (8-bit) UBYTE (8-bit) | Next to the current playing note, play a second note *[__X__]* and a third note *[__Y__]* for every *[__Z__]* ticks.<br /> **_Note:_** Arpeggio is used for playing 3 notes out of a chord indivually, but the music editorprogam should add the correct additional notes |
+|          7 | Arpeggio ON (*__X__*)(*__Y__*)(*__Z__*) | UBYTE (8-bit) UBYTE (8-bit) UBYTE (8-bit) | Next to the current playing note, play a second note *[__X__]* and a third note *[__Y__]* for every *[__Z__]* ticks, including retriggering flag.<br /> **_Note:_** *[__Z__]* includes 2 parameters: AAAAAxxx, where the 5 upper bits are used for tick amount and the 3 lower bits for setting a flag to retrigger arpeggio each note or not. Arpeggio is used for playing 3 notes out of a chord indivually, but the music editorprogam should add the correct additional notes |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
 #### Thoughts on effects:

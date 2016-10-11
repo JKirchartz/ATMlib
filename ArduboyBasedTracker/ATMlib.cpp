@@ -4,6 +4,7 @@
   2015
   TEAM a.r.g.
   Davey Taylor aka STG
+  JO3RI
 */
 
 #include "ATMlib.h"
@@ -164,7 +165,9 @@ void ATM_playroutine() {
               ch->freqSlide = pgm_read_word(ch->ptr++);
               ch->freqConfig = pgm_read_word(ch->ptr++);
               break;
-            case 6: // Slide frequency OFF 
+            case 6: // Slide frequency OFF
+              ch->freqSlide = 0;
+            case 7: // Arpeggio ON
               ch->freqSlide = 0;
               break;
           }
