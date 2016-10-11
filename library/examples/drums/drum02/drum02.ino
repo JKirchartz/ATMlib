@@ -28,8 +28,8 @@ void loop() {
   arduboy.clearDisplay();
   for (byte i = 0; i < 4; i++) sprites.drawSelfMasked(32 * i, 10, TEAMarg, i);
   sprites.drawSelfMasked(43, 50, TEAM_argPart5, 0);
-  if (arduboy.justPressed(A_BUTTON)) ATM.stop();
   if (arduboy.justPressed(B_BUTTON)) ATM.playPause();
+  if (arduboy.justPressed(A_BUTTON)) ATM.playPause();
   arduboy.display();
 }
 
