@@ -57,6 +57,12 @@ struct ch_t {
   char freqSlide;
   byte freqConfig;
   byte freqCount;
+
+  // Arpeggio FX
+  byte arpSecondNote;
+  byte arpThirdNote;
+  byte arpConfig;
+  bool arpFlag;
 };
 
 ch_t channel[4];
@@ -167,8 +173,12 @@ void ATM_playroutine() {
               break;
             case 6: // Slide frequency OFF
               ch->freqSlide = 0;
-            case 7: // Arpeggio ON
-              ch->freqSlide = 0;
+              break;
+            case 7: // Set Arpeggio
+              ch->arpSecondNote = pgm_read_word(ch->ptr++);
+              ch->arpThirdNote = pgm_read_word(ch->ptr++); 
+              ch->arpConfig = pgm_read_word(ch->ptr) >> 3;
+              ch->arpFlag = pgm_read_word(ch->ptr++) & B00000001;
               break;
           }
         } else if (cmd < 224) {
@@ -256,6 +266,8 @@ void ATM_playroutine() {
           ch->freqCount = 0;
         }
       }
+      
+      
     }
   }
 }
