@@ -40,13 +40,23 @@ const word noteTable[64] PROGMEM = {
 
 struct ch_t {
   const byte *ptr;
+  byte note;
+
+  // Nesting
   word stackPointer[7];
   byte stackCounter[7];
-
+  byte stackTrack[7]; // note 1
   byte stackIndex;
+  
+  // Looping
   word delay;
   byte counter;
   byte track;
+  
+  // External FX
+  word freq;
+  byte vol;
+  bool mute;
 
   // Volume FX
   char volSlide;
@@ -59,10 +69,9 @@ struct ch_t {
   byte freqCount;
 
   // Arpeggio FX
-  byte arpSecondNote;
-  byte arpThirdNote;
-  byte arpConfig;
-  bool arpFlag;
+  byte arpNotes; // notes: base, base+[7:4], base+[7:4]+[3:0]
+  byte arpTiming; // [4:0] = tick count, [5] = retrig, [6] = only two, [7] = reserved
+  byte arpCount;
 };
 
 ch_t channel[4];
@@ -91,6 +100,7 @@ void ATMSynth::begin(uint16_t hz) {
   cia = sample_rate / tick_rate;
 
   osc[3].freq = 0x0001; // Seed LFSR
+  channel[3].freq = 0x0001; // xFX
 
   pinMode(5, OUTPUT);
   pinMode(13, OUTPUT);
@@ -120,7 +130,6 @@ void ATMSynth::playPause() {
   TIMSK4 = TIMSK4 ^ 0b00000100; // Disable interrupt
 }
 
-
 // Stop playing, unload melody
 void ATMSynth::stop() {
   TIMSK4 = 0; // Disable interrupt
@@ -133,6 +142,14 @@ void ATMSynth::tempo(uint16_t new_tempo) {
   cia = sample_rate / tick_rate; // not atomic?
 }
 
+void mutebeforexfx(byte ch) {
+  channel[ch].mute = true;
+}
+
+void unmuteafterfx(byte ch) {
+  channel[ch].mute = false;
+}
+
 __attribute__((used))
 void ATM_playroutine() {
   ch_t *ch;
@@ -142,17 +159,67 @@ void ATM_playroutine() {
     if (ch->delay) {
       ch->delay--;
     } else {
+
+      
+      // Apply volume slides
+      if(ch->volSlide) {
+        if(!ch->volCount) {
+          char v = ch->vol;
+          v += ch->volSlide;
+          if(!(ch->volConfig & 0x80)) {
+            if(v < 0) v = 0;
+            else if(v > 255) v = 0;
+          }
+          ch->vol = v;
+        }
+        if(ch->volCount++ > (ch->volConfig & 0x7F)) {
+          ch->volCount = 0;
+        }
+      }
+      
+      // Apply frequency slides
+      if(ch-> freqSlide) {
+        if(!ch->freqCount) {
+          uint16_t f = ch->freq;
+          f += ch ->freqSlide;
+          if(!(ch->freqConfig & 0x24B6)) {
+            if(f < 262) f = 262;
+            else if(f > 9397) f = 262;
+          }
+          ch->freq = f;
+        }
+        if(ch-> freqCount++ > (ch->freqConfig & 0x24B5)) {
+          ch->freqCount = 0;
+        }
+      }
+      
+      // Apply Arpeggio
+      if(ch->arpNotes) {
+        if((ch->arpCount & 0x3F) > (ch->arpTiming & 0x3F)) {
+          if(ch->arpCount & 0xC0 == 0x00) ch->arpCount = 0x40;
+          else if(ch->arpCount & 0xC0 == 0x40) ch->arpCount = (ch->arpTiming & 0x40) ? 0x00 : 0x80;
+          else if(ch->arpCount & 0xC0 == 0x80) ch->arpCount = 0x00;
+          if(ch->arpCount & 0xC0 == 0x00)
+            ch->freq = pgm_read_word(&noteTable[ch->note]);
+          else if(ch->arpCount & 0xC0 == 0x40)
+            ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4)]);
+          else if(ch->arpCount & 0xC0 == 0x80) 
+            ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4) + (ch->arpNotes & 0xF)]);
+        } else ch->arpCount++;
+      }
+      
       do {
         byte cmd = pgm_read_byte(ch->ptr++);
         if (cmd < 64) {
           // 0 … 63 : NOTE ON/OFF
-          osc[n].freq = pgm_read_word(&noteTable[cmd]);
+          ch->freq = pgm_read_word(&noteTable[ch->note = cmd]);
+          if(ch->arpTiming & 32) ch->arpCount = 0;
           ch->delay = 1;
         } else if (cmd < 160) {
           // 64 … 159 : SETUP FX
           switch (cmd - 64) {
             case 0: // Set volume
-              osc[n].vol = pgm_read_byte(ch->ptr++);
+              ch->vol = pgm_read_byte(ch->ptr++);
               break;
             case 1: // Slide volume ON
               ch->volSlide = pgm_read_byte(ch->ptr++);
@@ -175,10 +242,11 @@ void ATM_playroutine() {
               ch->freqSlide = 0;
               break;
             case 7: // Set Arpeggio
-              ch->arpSecondNote = pgm_read_word(ch->ptr++);
-              ch->arpThirdNote = pgm_read_word(ch->ptr++); 
-              ch->arpConfig = pgm_read_word(ch->ptr) >> 3;
-              ch->arpFlag = pgm_read_word(ch->ptr++) & B00000001;
+              ch->arpNotes = pgm_read_word(ch->ptr++);
+              ch->arpTiming = pgm_read_word(ch->ptr++);
+              break;
+            case 8: // Arpeggio off
+              ch->arpNotes = 0;
               break;
           }
         } else if (cmd < 224) {
@@ -193,6 +261,7 @@ void ATM_playroutine() {
           // 252 (253) : CALL (REPEATEDLY)
           // Stack PUSH
           ch->stackCounter[ch->stackIndex] = ch->counter;
+          ch->stackTrack[ch->stackIndex] = ch->track; // note 1
           ch->counter = cmd == 252 ? 1 : pgm_read_byte(ch->ptr++);
           ch->track = pgm_read_byte(ch->ptr++);
           ch->stackPointer[ch->stackIndex] = ch->ptr - trackBase;
@@ -203,12 +272,12 @@ void ATM_playroutine() {
           if (ch->counter > 0) {
             // Repeat track
             ch->counter--;
-            // Note to self: This is broken!
+            // Note to self: This is broken! (not anymore - note 1)
             // Loops last called track instead of playing track.
             // Possible solutions:
             //   Search for track based on address?
             //     Pro: No extra RAM Con: Slow
-            //   Push "track" to stack
+            //   Push "track" to stack (simplest - at least for now)
             //     Pro: Fast Con: Requires extra RAM
             ch->ptr = getTrackPointer(ch->track);
           } else {
@@ -221,6 +290,7 @@ void ATM_playroutine() {
               ch->stackIndex--;
               ch->ptr = ch->stackPointer[ch->stackIndex] + trackBase;
               ch->counter = ch->stackCounter[ch->stackIndex];
+              ch->track = ch->stackTrack[ch->stackIndex]; // note 1
             }
           }
         } else if (cmd == 255) {
@@ -230,44 +300,11 @@ void ATM_playroutine() {
       } while (ch->delay == 0);
 
       ch->delay--;
-      // Apply volume slides
-      if (ch->volSlide) {
-        if (!ch->volCount) {
-          char v = osc[n].vol;
-          v += ch->volSlide;
-          if (!(ch->volConfig & 0x80)) {
-            if (v < 0) v = 0;
-            else if (v > 255) v = 0;
-          }
-          osc[n].vol = v;
-        }
-        Serial.print("volume ");
-        Serial.println (osc[n].vol);
-        if (ch->volCount++ > (ch->volConfig & 0x7F))
-        {
-          ch->volCount = 0;
-        }
-      }
-      // Apply frequency slides
-      if (ch-> freqSlide)
-      {
-        if (!ch-> freqCount)
-        {
-          uint16_t f = osc[n].freq;
-          f += ch ->freqSlide;
-          if (!(ch->freqConfig & 0x24B6)) {
-            if (f < 262) f = 262;
-            else if (f > 9397) f = 262;
-          }
-          osc[n].freq = f;
-        }
-        if (ch-> freqCount++ > (ch->freqConfig & 0x24B5))
-        {
-          ch->freqCount = 0;
-        }
-      }
-      
-      
+    
+    if(!ch->mute) {
+      if(n != 3) osc[n].freq = ch->freq;
+      osc[n].vol = ch->vol;
+     }
     }
   }
 }
