@@ -28,23 +28,23 @@ Song music[] = {
   0xFD, 3, 3,     // REPEAT: count = 3 - track = 3
   0x9F + 4,       // DELAY: ticks = 4
 
-  0xFD, 2, 4,     // REPEAT: count = 0 - track = 4
+  0xFD, 2, 4,     // REPEAT: count = 2 - track = 4
   0x9F + 4,       // DELAY: ticks = 4
 
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0xFD, 3, 3,     // REPEAT: count = 0 - track = 3
+  0xFD, 3, 3,     // REPEAT: count = 3 - track = 3
   0x9F + 4,       // DELAY: ticks = 4
 
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0xFD, 3, 3,     // REPEAT: count = 0 - track = 3
+  0xFD, 3, 3,     // REPEAT: count = 3 - track = 3
   0x9F + 4,       // DELAY: ticks = 4
 
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0xFD, 3, 3,     // REPEAT: count = 0 - track = 3
+  0xFD, 3, 3,     // REPEAT: count = 3 - track = 3
   0x9F + 4,       // DELAY: ticks = 4
 
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0xFD, 3, 3,     // REPEAT: count = 0 - track = 3
+  0xFD, 3, 3,     // REPEAT: count = 3 - track = 3
   0x9F + 12,      // DELAY: ticks = 12
 
   0xFE,           // RETURN
