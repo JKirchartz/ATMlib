@@ -8,7 +8,7 @@ Song music[] = {
   0x00, 0x00,    // Address of track 0
   0x03, 0x00,    // Address of track 1
   0x09, 0x00,    // Address of track 2
-  0x0E, 0x00,    // Address of track 3
+  0x11, 0x00,    // Address of track 3
   0x01,          // Channel 0 entry track (PULSE)
   0x00,          // Channel 1 entry track (SQUARE)
   0x00,          // Channel 2 entry track (TRIANGLE)
@@ -25,7 +25,7 @@ Song music[] = {
 
   //"Track 2"
   0x00 +  36,    // NOTE ON: note = 36
-  0x47, 67, 8,
+  0xFD, 11, 3,   // REPEAT: count = 32 - track = 2
   0x9F + 32,     // DELAY: ticks = 16
   0x3F,          // NOTE OFF
   0x9F + 32,     // DELAY: ticks = 16
@@ -33,8 +33,6 @@ Song music[] = {
 
   //"Track 3"
   0x47, 67, 4,   // FX: ARPEGGIO ON: notes =  +4 +3 - ticks = 4
-  0x9F + 32,     // DELAY: ticks = 16
-  0x3F,          // NOTE OFF
   0xFE,          // RETURN
 };
 
