@@ -272,13 +272,6 @@ void ATM_playroutine() {
           if (ch->counter > 0) {
             // Repeat track
             ch->counter--;
-            // Note to self: This is broken! (not anymore - note 1)
-            // Loops last called track instead of playing track.
-            // Possible solutions:
-            //   Search for track based on address?
-            //     Pro: No extra RAM Con: Slow
-            //   Push "track" to stack (simplest - at least for now)
-            //     Pro: Fast Con: Requires extra RAM
             ch->ptr = getTrackPointer(ch->track);
           } else {
             // Check stack depth
