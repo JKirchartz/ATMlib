@@ -194,38 +194,43 @@ void ATM_playroutine() {
       }
 
       // Apply Arpeggio
+
       if (ch->arpNotes) {
         Serial.println("arpeggio triggered");
-        Serial.print(ch->arpCount, DEC);
-        Serial.print(" : ");
-        Serial.println(ch->arpTiming, DEC);
 
-        
         if ((ch->arpCount & 0x1F) < (ch->arpTiming & 0x1F)) ch->arpCount++;
-        else 
+        else
         {
           if ((ch->arpCount & 0xE0) == 0x00)ch->arpCount = 0x41;
-          else if ((ch->arpCount & 0xE0) == 0x40) ch->arpCount = (ch->arpTiming & 0x40) ? 0x01 : 0x81;
-          else if ((ch->arpCount & 0xE0) == 0x80) ch->arpCount = 0x01;
+          else if ((ch->arpCount & 0xE0) == 0x40)
+          {
+            ch->arpCount = (ch->arpTiming & 0x40) ? 0x01 : 0x81;
+            //ch->arpNotes = (ch->arpTiming & 0x20) ? ch->arpNotes : 0x00; break;
+          }
+          else if ((ch->arpCount & 0xE0) == 0x80)
+          {
+            ch->arpCount = 0x01;
+            //ch->arpNotes = (ch->arpTiming & 0x20) ? ch->arpNotes : 0x00; break;
+          }
         }
-        
+
 
         if ((ch->arpCount & 0xE0) == 0x00)
         {
           ch->freq = pgm_read_word(&noteTable[ch->note]);
-          Serial.print("first Note: ");
+          Serial.print("first Freq: ");
           Serial.println(ch->freq, DEC);
         }
         else if ((ch->arpCount & 0xE0) == 0x40)
         {
           ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4)]);
-          Serial.print("Second Note: ");
+          Serial.print("Second Freq: ");
           Serial.println(ch->freq, DEC);
         }
         else if ((ch->arpCount & 0xE0) == 0x80)
         {
           ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4) + (ch->arpNotes & 0x0F)]);
-          Serial.print("Third Note: ");
+          Serial.print("Third freq: ");
           Serial.println(ch->freq, DEC);
         }
       }

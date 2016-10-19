@@ -20,15 +20,12 @@ Song music[] = {
 
   //"Track 1"
   0x40, 63,      // FX: SET VOLUME: volume = 63
-  0xFD, 32, 2,   // REPEAT: count = 32 - track = 2
+  0xFD, 12, 2,   // REPEAT: count = 32 - track = 2
   0xFE,          // RETURN
 
   //"Track 2"
   0x00 +  36,    // NOTE ON: note = 36
-  0xFD, 11, 3,   // REPEAT: count = 32 - track = 2
-  0x9F + 32,     // DELAY: ticks = 16
-  0x3F,          // NOTE OFF
-  0x9F + 32,     // DELAY: ticks = 16
+  0x47, 67, 4,   // FX: ARPEGGIO ON: notes =  +4 +3 - ticks = 4
   0xFE,          // RETURN
 
   //"Track 3"
