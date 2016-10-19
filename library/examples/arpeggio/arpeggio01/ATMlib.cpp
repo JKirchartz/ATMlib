@@ -72,6 +72,10 @@ struct ch_t {
   byte arpNotes; // notes: base, base+[7:4], base+[7:4]+[3:0]
   byte arpTiming; // [4:0] = tick count, [5] = retrig, [6] = only two, [7] = reserved
   byte arpCount;
+
+  // Retrig
+  byte reConfig;
+  byte reCount;
 };
 
 ch_t channel[4];
@@ -156,81 +160,72 @@ void ATM_playroutine() {
 
   for (unsigned n = 0; n < 4; n++) {
     ch = &channel[n];
+
+    // Noise retriggering
+    if(ch->reConfig) {
+      if(ch->reCount >= (ch->reConfig & 3)) {
+        osc[n].freq = pgm_read_word(&noteTable[ch->reConfig >> 2]);
+        ch->reCount = 0;
+      } else ch->reCount++;
+    }
+
+    // Apply volume slides
+    if (ch->volSlide) {
+      if(!ch->volCount) {
+        int16_t v = ch->vol;
+        v += ch->volSlide;
+        if (!(ch->volConfig & 0x80)) {
+          if (v < 0) v = 0;
+          else if (v > 63) v = 63;
+        }
+        ch->vol = v;
+      }
+      if (ch->volCount++ > (ch->volConfig & 0x7F)) {
+        ch->volCount = 0;
+      }
+    }
+
+    // Apply frequency slides
+    if (ch-> freqSlide) {
+      if (!ch->freqCount) {
+        uint16_t f = ch->freq;
+        f += ch ->freqSlide;
+        if (!(ch->freqConfig & 0x80)) {
+          if (f < 262) f = 262;
+          else if (f > 9397) f = 9397;
+        }
+        ch->freq = f;
+      }
+      if (ch->freqCount++ > (ch->freqConfig & 0x7F)) {
+        ch->freqCount = 0;
+      }
+    }
+
+    // Apply Arpeggio
+    if (ch->arpNotes && ch->note < 63) {
+      if ((ch->arpCount & 0x1F) < (ch->arpTiming & 0x1F))
+        ch->arpCount++;
+      else {
+             if ((ch->arpCount & 0xE0) == 0x00) ch->arpCount = 0x20;
+        else if ((ch->arpCount & 0xE0) == 0x20) ch->arpCount = (ch->arpTiming & 0x40) ? 0x00 : 0x40;
+        else if ((ch->arpCount & 0xE0) == 0x40) ch->arpCount = 0x00;
+
+             if ((ch->arpCount & 0xE0) == 0x00) ch->freq = pgm_read_word(&noteTable[ch->note]);
+        else if ((ch->arpCount & 0xE0) == 0x20) ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4)]);
+        else if ((ch->arpCount & 0xE0) == 0x40) ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4) + (ch->arpNotes & 0x0F)]);
+      }
+    }
+    
     if (ch->delay) {
       ch->delay--;
     } else {
-
-
-      // Apply volume slides
-      if (ch->volSlide) {
-        if (!ch->volCount) {
-          char v = ch->vol;
-          v += ch->volSlide;
-          if (!(ch->volConfig & 0x80)) {
-            if (v < 0) v = 0;
-            else if (v > 255) v = 0;
-          }
-          ch->vol = v;
-        }
-        if (ch->volCount++ > (ch->volConfig & 0x7F)) {
-          ch->volCount = 0;
-        }
-      }
-
-      // Apply frequency slides
-      if (ch-> freqSlide) {
-        if (!ch->freqCount) {
-          uint16_t f = ch->freq;
-          f += ch ->freqSlide;
-          if (!(ch->freqConfig & 0x24B6)) {
-            if (f < 262) f = 262;
-            else if (f > 9397) f = 262;
-          }
-          ch->freq = f;
-        }
-        if (ch-> freqCount++ > (ch->freqConfig & 0x24B5)) {
-          ch->freqCount = 0;
-        }
-      }
-
-      // Apply Arpeggio
-      if (ch->arpNotes) {
-        //Serial.println("arpeggio triggered");
-
-        if ((ch->arpCount & 0x1F) < (ch->arpTiming & 0x1F)) ch->arpCount++;
-        else
-        {
-          if ((ch->arpCount & 0xE0) == 0x00)ch->arpCount = 0x41;
-          else if ((ch->arpCount & 0xE0) == 0x40) ch->arpCount = (ch->arpTiming & 0x40) ? 0x01 : 0x81;
-          else if ((ch->arpCount & 0xE0) == 0x80) ch->arpCount = 0x01;
-        }
-        if ((ch->arpCount & 0xE0) == 0x00)
-        {
-          ch->freq = pgm_read_word(&noteTable[ch->note]);
-          //Serial.print("first Freq: ");
-          //Serial.println(ch->freq, DEC);
-        }
-        else if ((ch->arpCount & 0xE0) == 0x40)
-        {
-          ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4)]);
-          //Serial.print("Second Freq: ");
-          //Serial.println(ch->freq, DEC);
-        }
-        else if ((ch->arpCount & 0xE0) == 0x80)
-        {
-          ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4) + (ch->arpNotes & 0x0F)]);
-          //Serial.print("Third freq: ");
-          //Serial.println(ch->freq, DEC);
-        }
-        if ((ch->arpCount) == (0x80 - (ch->arpTiming & 0x40) + (ch->arpTiming & 0x1F))) ch->arpNotes = (ch->arpTiming & 0x20) ? ch->arpNotes : 0x00;
-      }
 
       do {
         byte cmd = pgm_read_byte(ch->ptr++);
         if (cmd < 64) {
           // 0 … 63 : NOTE ON/OFF
           ch->freq = pgm_read_word(&noteTable[ch->note = cmd]);
-          if (ch->arpTiming & 32) ch->arpCount = 0;
+          if (ch->arpTiming & 32) ch->arpCount = 0; // ARP retriggering
           ch->delay = 1;
         } else if (cmd < 160) {
           // 64 … 159 : SETUP FX
@@ -264,6 +259,12 @@ void ATM_playroutine() {
               break;
             case 8: // Arpeggio off
               ch->arpNotes = 0;
+              break;
+            case 9: // Retriggering (noise)
+              ch->reConfig = pgm_read_byte(ch->ptr++);
+              break;
+            case 10: // Retriggering (noise)
+              ch->reConfig = 0;
               break;
           }
         } else if (cmd < 224) {
@@ -311,10 +312,17 @@ void ATM_playroutine() {
 
       ch->delay--;
 
-      if (!ch->mute) {
-        if (n != 3) osc[n].freq = ch->freq;
+    }
+
+    if (!ch->mute) {
+      if(n == 3) {
+        // Half volume, no frequency for noise channel
+        osc[n].vol = ch->vol >> 1;
+      } else {
+        osc[n].freq = ch->freq;
         osc[n].vol = ch->vol;
       }
     }
+
   }
 }
