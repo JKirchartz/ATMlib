@@ -194,45 +194,35 @@ void ATM_playroutine() {
       }
 
       // Apply Arpeggio
-
       if (ch->arpNotes) {
-        Serial.println("arpeggio triggered");
+        //Serial.println("arpeggio triggered");
 
         if ((ch->arpCount & 0x1F) < (ch->arpTiming & 0x1F)) ch->arpCount++;
         else
         {
           if ((ch->arpCount & 0xE0) == 0x00)ch->arpCount = 0x41;
-          else if ((ch->arpCount & 0xE0) == 0x40)
-          {
-            ch->arpCount = (ch->arpTiming & 0x40) ? 0x01 : 0x81;
-            //ch->arpNotes = (ch->arpTiming & 0x20) ? ch->arpNotes : 0x00; break;
-          }
-          else if ((ch->arpCount & 0xE0) == 0x80)
-          {
-            ch->arpCount = 0x01;
-            //ch->arpNotes = (ch->arpTiming & 0x20) ? ch->arpNotes : 0x00; break;
-          }
+          else if ((ch->arpCount & 0xE0) == 0x40) ch->arpCount = (ch->arpTiming & 0x40) ? 0x01 : 0x81;
+          else if ((ch->arpCount & 0xE0) == 0x80) ch->arpCount = 0x01;
         }
-
-
         if ((ch->arpCount & 0xE0) == 0x00)
         {
           ch->freq = pgm_read_word(&noteTable[ch->note]);
-          Serial.print("first Freq: ");
-          Serial.println(ch->freq, DEC);
+          //Serial.print("first Freq: ");
+          //Serial.println(ch->freq, DEC);
         }
         else if ((ch->arpCount & 0xE0) == 0x40)
         {
           ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4)]);
-          Serial.print("Second Freq: ");
-          Serial.println(ch->freq, DEC);
+          //Serial.print("Second Freq: ");
+          //Serial.println(ch->freq, DEC);
         }
         else if ((ch->arpCount & 0xE0) == 0x80)
         {
           ch->freq = pgm_read_word(&noteTable[ch->note + (ch->arpNotes >> 4) + (ch->arpNotes & 0x0F)]);
-          Serial.print("Third freq: ");
-          Serial.println(ch->freq, DEC);
+          //Serial.print("Third freq: ");
+          //Serial.println(ch->freq, DEC);
         }
+        if ((ch->arpCount) == (0x80 - (ch->arpTiming & 0x40) + (ch->arpTiming & 0x1F))) ch->arpNotes = (ch->arpTiming & 0x20) ? ch->arpNotes : 0x00;
       }
 
       do {
@@ -269,8 +259,8 @@ void ATM_playroutine() {
               ch->freqSlide = 0;
               break;
             case 7: // Set Arpeggio
-              ch->arpNotes = pgm_read_byte(ch->ptr++);
-              ch->arpTiming = pgm_read_byte(ch->ptr++);
+              ch->arpNotes = pgm_read_byte(ch->ptr++);    // 0x40 + 0x03
+              ch->arpTiming = pgm_read_byte(ch->ptr++);   // 0x80 + 0x40 + 0x20 + amount
               break;
             case 8: // Arpeggio off
               ch->arpNotes = 0;
