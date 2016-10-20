@@ -74,7 +74,7 @@ Song music[] = {
   0xFE,                         // RETURN
   // } ticks = 96, bytes = 18
 
-  // Track5() {
+  // Track6() {
   0x40, 31,
   0x4C, -12,
   0xFD, 0, 2,                    // REPEAT: count = 1, track = 2

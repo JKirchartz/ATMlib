@@ -38,6 +38,28 @@ const word noteTable[64] PROGMEM = {
   8372, 8870, 9397,
 };
 
+
+const char sine_tbl[32] PROGMEM = {
+  0x00, 0x0C, 0x18, 0x25, 0x30, 0x3C, 0x47, 0x51, 0x5A, 0x62, 0x6A, 0x70, 0x76, 0x7A, 0x7D, 0x7F,
+  0x7F, 0x7F, 0x7D, 0x7A, 0x76, 0x70, 0x6A, 0x62, 0x5A, 0x51, 0x47, 0x3C, 0x30, 0x25, 0x18, 0x0C,
+};
+
+// Look up or generate waveform for ProTracker vibrato/tremolo oscillator
+static int8_t do_osc(byte waveForm) {
+
+  switch (waveForm & 0xC0) {
+    case 0: // Sine
+      break;
+    case 1: // Saw
+      break;
+    case 2: // Square
+      break;
+    case 3: // Noise (random)
+      break;
+  }
+
+}
+
 struct ch_t {
   const byte *ptr;
   byte note;
@@ -69,16 +91,21 @@ struct ch_t {
   byte freqCount;
 
   // Arpeggio FX
-  byte arpNotes; // notes: base, base+[7:4], base+[7:4]+[3:0]
-  byte arpTiming; // [4:0] = tick count, [5] = retrig, [6] = only two, [7] = reserved
+  byte arpNotes;       // notes: base, base+[7:4], base+[7:4]+[3:0]
+  byte arpTiming;      // [7] = reserved, [6] = not third note ,[5] = retrigger, [4:0] = tick count
   byte arpCount;
 
   // Retrig
-  byte reConfig;
+  byte reConfig;       // [7:2] = , [1:0] = speed
   byte reCount;
 
-  // tranposition
-  char tran;
+  // transposition
+  char tranConfig;
+
+  //Tremolo or Vibrato
+  byte treviDepth;
+  byte treviConfig;
+  byte treviCount;
 };
 
 ch_t channel[4];
@@ -165,8 +192,8 @@ void ATM_playroutine() {
     ch = &channel[n];
 
     // Noise retriggering
-    if(ch->reConfig) {
-      if(ch->reCount >= (ch->reConfig & 3)) {
+    if (ch->reConfig) {
+      if (ch->reCount >= (ch->reConfig & 0x03)) {
         osc[n].freq = pgm_read_word(&noteTable[ch->reConfig >> 2]);
         ch->reCount = 0;
       } else ch->reCount++;
@@ -174,7 +201,7 @@ void ATM_playroutine() {
 
     // Apply volume slides
     if (ch->volSlide) {
-      if(!ch->volCount) {
+      if (!ch->volCount) {
         int16_t v = ch->vol;
         v += ch->volSlide;
         if (!(ch->volConfig & 0x80)) {
@@ -215,10 +242,34 @@ void ATM_playroutine() {
         byte arpNote = ch->note;
         if ((ch->arpCount & 0xE0) != 0x00) arpNote += (ch->arpNotes >> 4);
         if ((ch->arpCount & 0xE0) == 0x40) arpNote += (ch->arpNotes & 15);
-        ch->freq = pgm_read_word(&noteTable[arpNote + ch->tran]);
+        ch->freq = pgm_read_word(&noteTable[arpNote + ch->tranConfig]);
       }
     }
-    
+
+    // Apply Tremolo or Vibrato
+    if (ch->treviDepth) {
+      if (!ch->treviCount) {
+        //Tremolo (0) or Vibrato (1) ?
+        if (!(ch->treviConfig & 0x40)) {
+          char v;
+          v += do_osc(ch->treviDepth);
+          if (v < 0) v = 0;
+          else if (v > 63) v = 63;
+          ch->vol = v;
+        }
+        else {
+          int16_t f;
+          f += do_osc(ch->treviDepth);
+          if (f < 262) f = 262;
+          else if (f > 9397) f = 9397;
+          ch->freq = f;
+        }
+      }
+      if (ch->treviCount++ > (ch->treviConfig & 0x1F)) {
+        ch->treviCount = 0;
+      }
+    }
+
     if (ch->delay) {
       ch->delay--;
     } else {
@@ -227,7 +278,7 @@ void ATM_playroutine() {
         byte cmd = pgm_read_byte(ch->ptr++);
         if (cmd < 64) {
           // 0 … 63 : NOTE ON/OFF
-          if(ch->note = cmd) ch->note += ch->tran;
+          if (ch->note = cmd) ch->note += ch->tranConfig;
           ch->freq = pgm_read_word(&noteTable[ch->note]);
           if (ch->arpTiming & 32) ch->arpCount = 0; // ARP retriggering
           ch->delay = 1;
@@ -264,22 +315,28 @@ void ATM_playroutine() {
             case 8: // Arpeggio off
               ch->arpNotes = 0;
               break;
-            case 9: // Retriggering (noise)
-              ch->reConfig = pgm_read_byte(ch->ptr++);
+            case 9: // Set Retriggering (noise)
+              ch->reConfig = pgm_read_byte(ch->ptr++);    // RETRIG: point = 1 (*4), speed = 0 (0 = fastest, 1 = faster , 2 = fast)
               break;
-            case 10: // Retriggering (noise)
+            case 10: // Retriggering (noise) OFF
               ch->reConfig = 0;
               break;
-            case 11: // tranpose
-              ch->tran += (char)pgm_read_byte(ch->ptr++);
+            case 11: // ADD Transposition
+              ch->tranConfig += (char)pgm_read_byte(ch->ptr++);
               break;
-            case 12: // tranpose set
-              ch->tran = pgm_read_byte(ch->ptr++);
+            case 12: // SET Transposition
+              ch->tranConfig = pgm_read_byte(ch->ptr++);
               break;
-            case 13: // tranpose clear
-              ch->tran = 0;
+            case 13: // Transposition OFF
+              ch->tranConfig = 0;
               break;
-              
+            case 14: // SET Tremolo or Vibrato
+              ch->treviDepth = pgm_read_byte(ch->ptr++);
+              ch->treviConfig = pgm_read_byte(ch->ptr++);
+              break;
+            case 15: // Tremolo or Vibrato  OFF
+              ch->treviDepth = 0;
+              break;
           }
         } else if (cmd < 224) {
           // 160 … 223 : DELAY
@@ -329,7 +386,7 @@ void ATM_playroutine() {
     }
 
     if (!ch->mute) {
-      if(n == 3) {
+      if (n == 3) {
         // Half volume, no frequency for noise channel
         osc[n].vol = ch->vol >> 1;
       } else {

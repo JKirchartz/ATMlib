@@ -9,9 +9,9 @@
 |                          | Address track *__N__* | UWORD (16-bits) | Location in the file/array for track *__N__ (0 … 255)* |
 |   |
 | **Channel entry tracks** |                       |                 | **For each channel, track to start with** |
-|                          | Channel 1 track       | UBYTE (8-bits)  | Starting track index for channel 1 |
+|                          | Channel 0 track       | UBYTE (8-bits)  | Starting track index for channel 0 |
 |                          | …                     | …               | … |
-|                          | Channel 4 track       | UBYTE (8-bits)  | Starting track index for channel 4 |
+|                          | Channel 3 track       | UBYTE (8-bits)  | Starting track index for channel 3 |
 |   |
 | **Track 0**              |                       |                 | **Commands and parameters for track 0** |
 |                          | Command 0             | UBYTE (8-bits)  | See command list |
@@ -59,18 +59,25 @@
 
 | **Effect** | **Parameter**    | **Type**      | **Description** |
 | ---        | ---              | ---           | ---             |
-|          0 | set Volume (*__Y__*) | UBYTE (8-bit) | Set volume to *[__Y__]*. <br /> **_Note:_**<br /> If the combined volume of all channels exceed 255 there may be rollover distortion. This should not be disallowed, as it may be usesful as an effects hack for the musician. There should however be a non-interfering warning when a musician enters a value above 63 for ch 1-3 or 32 for ch 4 (noise). ch 4 the volume is counted double, so 32 is actually 64 |
-|          1 | slide Volume ON (*__Y__*) | UBYTE (8-bit) | Slide the volume with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_**<br />  This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
-|          2 | slide Volume ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the volume with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_**<br />  This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
-|          3 | slide Volume OFF |  |  stops the volume slide |
-|          4 | slide Frequency ON (*__Y__*) | UBYTE (8-bit) | Slide the frequency with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_**<br /> The amount of slide is limited between -127 to 127|
-|          5 | slide Frequency ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the frequency with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_**<br /> The amount of slide and ticks devider is limited between -127 to 127 |
-|          6 | slide Frequency OFF |  |  stops the frequency slide |
-|          7 | set Arpeggio (*__X__*)(*__Y__*) | UBYTE (8-bit) UBYTE (8-bit) | Next to the current playing note, play a second and third note *[__X__]* for every *[__Y__]* ticks. *[__X__]* includes 2 parameters: AAAABBBB, where AAAA = base + amount to second note and BBBB = second note + amount to third note.<br /> *[__Y__]* includes 4 parameters: FEDCCCCC, where F = reserved, E = toggle no third note, D = toggle retrigger, CCCCC = tick amount.<br />**_Note:_**<br />Arpeggio is used for playing 3 notes out of a chord indivually |
-|		   8 | set Arpeggio OFF |  | stops the arpeggio. <br /> **_Note:_**<br />  When the retrigger bit has been set, this is the way to stop the retrigger |
-|		   9 | set Tremolo      | (*__X__*)(*__Y__*) |  <br /> **_Note:_**<br />  WWDDDDDD and RxxAAAAA |
-|		  10 | set Tremolo  OFF |  | stops the arpeggio. <br /> **_Note:_**<br />  When the retrigger bit has been set, this is the way to stop the retrigger  |
+| **0**      | set Volume (*__Y__*) | UBYTE (8-bit) | Set volume to *[__Y__]*. <br /> **_Note:_**<br /> If the combined volume of all channels exceed 255 there may be rollover distortion. This should not be disallowed, as it may be usesful as an effects hack for the musician. There should however be a non-interfering warning when a musician enters a value above 63 for ch 1-3 or 32 for ch 4 (noise). ch 4 the volume is counted double, so 32 is actually 64 |
+| **1**      | slide Volume ON (*__Y__*) | UBYTE (8-bit) | Slide the volume with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_**<br />  This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
+| **2**      | slide Volume ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the volume with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_**<br />  This results in a fade-in or fade-out effect. The volume is not limited, but rols over when it exceeds 127 or goes below 0. However there should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
+| **3**      | slide Volume OFF |  |  stops the volume slide |
+| **4**      | slide Frequency ON (*__Y__*) | UBYTE (8-bit) | Slide the frequency with an amount (positive or negative) of *[__Y__]* for every tick.<br /> **_Note:_**<br /> The amount of slide is limited between -127 to 127|
+| **5**      | slide Frequency ON advanced (*__Y__*) (*__Z__*)| UBYTE (8-bit) UBYTE (8-bit) |  Slide the frequency with an amount (positive or negative) of *[__Y__]* for every [*__Z__*] ticks.<br /> **_Note:_**<br /> The amount of slide and ticks devider is limited between -127 to 127 |
+| **6**      | slide Frequency OFF |  |  stops the frequency slide |
+| **7**      | set Arpeggio (*__X__*)(*__Y__*) | UBYTE (8-bit) UBYTE (8-bit) | Next to the current playing note, play a second and third note *[__X__]* for every *[__Y__]* ticks. *[__X__]* includes 2 parameters: AAAABBBB, where AAAA = base + amount to second note and BBBB = second note + amount to third note.<br /> *[__Y__]* includes 4 parameters: FEDCCCCC, where F = reserved, E = toggle no third note, D = toggle retrigger, CCCCC = tick amount.<br />**_Note:_**<br />Arpeggio is used for playing 3 notes out of a chord indivually |
+| **8**      | Arpeggio OFF |  | stops the arpeggio |
+| **9**      | set Retriggering (*__X__*) | UBYTE (8-bit) | Noise channel consists of white noise. By setting retriggering *[__X__]* it swithes the entrypoint at a given speed. *[__X__]*  includes 2 parameters: AAAAAABB , where AAAAAA = entry point and BB = speed (0 = fastest, 1 = faster , 2 = fast)|
+| **A**      | Retriggering off | | stops the retriggering for the noise on channel 3 |
+| **B**      | add Transposition | UBYTE (8-bit) | shifts the played notes by adding *[__X__]* to the existing transposition for all playing notes.<br />**_Note:_**<br /> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
+| **C**      | set Transposition | UBYTE (8-bit) | shifts the played notes by setting the transposition to [__X__]* for all playing notes.<br />**_Note:_**<br /> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
+| **D**      | Transposition OFF |  | stops the transposition |
+| **E**      | set Tremolo or Vibrato |  | (*__Y__*)(*__Z__*) | *[__Y__]*  includes 2 parameters: WWDDDDDD Waveform (0 = sine, 1 = saw, 2= square, 3= noise), Depth. *[__Y__]* and includes 4 parameters: RTxAAAAA Retrig, TremoloOrVibrato, reserved , amount<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined|
+| **F**      | Tremolo or Vibrato OFF|  | stops the tremolo or vibrato |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
+
+
 
 #### Thoughts on effects:
 
@@ -81,9 +88,9 @@
 * Portamento: a gradual slide from one [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") to another [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia").
 * Arpeggio: a group of [notes](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") which are rapidly and automatically played one after the other.
 * Retriggering (on [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") or by automation): oscillators are restarted either automatically or at the start of each new note.
-* Envelopes (instruments): the [attack, sustain, and decay](https://en.wikipedia.org/wiki/Synthesizer#Attack_Decay_Sustain_Release_.28ADSR.29_envelope "envelope wikipedia") of a sound.
-* Vibrato: a slight, rapid and regular fluctuation in the [pitch](https://en.wikipedia.org/wiki/Pitch_(music) "pitch wikipedia") of a [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia").
+* Transposition (also for microtonals): play [notes](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") in a different key, or fine tune notes to provide microtonals; frequencies that are in between notes.
 * Tremolo: a slight, rapid and regular fluctuation in the amplitude/volume of a [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia").
+* Vibrato: a slight, rapid and regular fluctuation in the [pitch](https://en.wikipedia.org/wiki/Pitch_(music) "pitch wikipedia") of a [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia").
+* Envelopes (instruments): the [attack, sustain, and decay](https://en.wikipedia.org/wiki/Synthesizer#Attack_Decay_Sustain_Release_.28ADSR.29_envelope "envelope wikipedia") of a sound.
 * Glissando: controls if and how a gradual frequency slide "snaps" to adjacent notes.
-* Transpose (also for microtonals): play [notes](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") in a different key, or fine tune notes to provide microtonals; frequencies that are in between notes.
 * Note cut (with delay and automation): provides a method to stutter and adjust note timing.
