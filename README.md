@@ -29,7 +29,7 @@
 | ---               | ---                  | ---                | ---             |
 |                0  |                      |                    | Stop playing    |
 |   |
-|           1 …  63 |                      |                    | Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone table](./frequencyToTone.md "Frequency to Tone table")|
+|           1 …  63 |                      |                    | Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone](./frequencyToTone.md "Frequency to Tone table")|
 |   |
 |          64 … 159 |                      |                    | Configure effects (fx) |
 |                   | *See __fx list__*    | none/variable      | Effect is *[__X__ - 64]* |
