@@ -30,7 +30,8 @@ osc_t osc[4];
 
 
 const word noteTable[64] PROGMEM = {
-  0, 262,  277,  294,  311,  330,  349,  370,  392,  415,  440,  466,  494,
+  0,
+  262,  277,  294,  311,  330,  349,  370,  392,  415,  440,  466,  494,
   523,  554,  587,  622,  659,  698,  740,  784,  831,  880,  932,  988,
   1047, 1109, 1175, 1245, 1319, 1397, 1480, 1568, 1661, 1760, 1865, 1976,
   2093, 2217, 2349, 2489, 2637, 2794, 2960, 3136, 3322, 3520, 3729, 3951,
@@ -38,11 +39,6 @@ const word noteTable[64] PROGMEM = {
   8372, 8870, 9397,
 };
 
-
-const char sine_tbl[32] PROGMEM = {
-  0x00, 0x0C, 0x18, 0x25, 0x30, 0x3C, 0x47, 0x51, 0x5A, 0x62, 0x6A, 0x70, 0x76, 0x7A, 0x7D, 0x7F,
-  0x7F, 0x7F, 0x7D, 0x7A, 0x76, 0x70, 0x6A, 0x62, 0x5A, 0x51, 0x47, 0x3C, 0x30, 0x25, 0x18, 0x0C,
-};
 
 // Look up or generate waveform for ProTracker vibrato/tremolo oscillator
 static int8_t do_osc(byte waveForm) {

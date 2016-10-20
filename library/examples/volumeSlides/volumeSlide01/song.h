@@ -24,10 +24,10 @@ Song music[] = {
   //"Track 2"
   0x00 + 36,     // NOTE ON: note = 36
   0x40, 63,      // FX: SET VOLUME: volume = 63
-  0x41, -4,      // FX: VOLUME SLIDE ON: steps = -8
-  0x9F + 32,     // DELAY: ticks = 16
+  0x41, -4,      // FX: VOLUME SLIDE ON: steps = -4
+  0x9F + 32,     // DELAY: ticks = 32
   0x43,          // FX: VOLUME SLIDE OFF
-  0x9F + 32,     // DELAY: ticks = 48
+  0x9F + 32,     // DELAY: ticks = 32
   0xFE,          // RETURN
 };
 

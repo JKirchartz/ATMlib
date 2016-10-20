@@ -4,12 +4,10 @@
 #define Song const uint8_t PROGMEM
 
 Song music[] = {
-  0x05,          // Number of tracks
+  0x03,          // Number of tracks
   0x00, 0x00,    // Address of track 0
   0x03, 0x00,    // Address of track 1
   0x07, 0x00,    // Address of track 2
-  0x13, 0x00,    // Address of track 3
-  0x17, 0x00,    // Address of track 4
   0x00,          // Channel 0 entry track (PULSE)
   0x01,          // Channel 1 entry track (SQUARE)
   0x00,          // Channel 2 entry track (TRIANGLE)
@@ -24,22 +22,13 @@ Song music[] = {
   0xFE,          // RETURN
 
   //"Track 2"
-  0x40, 0,       // FX: SET VOLUME: volume = 63
-  0x00 +  40,    // NOTE ON: note = 36
-  0xFD, 14, 3,   // REPEAT: count = 14 - track = 3
+  0x00 +  40,    // NOTE ON: note = 40
+  0x40, 0,       // FX: SET VOLUME: volume = 0
+  0x41, 4,       // FX: VOLUME SLIDE ON: steps = 4
+  0x9F + 32,     // DELAY: ticks = 32
   0x00 +  36,    // NOTE ON: note = 36
-  0xFD, 15, 4,   // REPEAT: count = 15 - track = 4
-  0x9F +  16,    // DELAY: ticks = 16
-  0xFE,          // RETURN
-
-  //"Track 3"
-  0x41, 8,       // FX: VOLUME SLIDE ON: steps = 8
-  0x9F + 2,      // DELAY: ticks = 2
-  0xFE,          // RETURN
-
-  //"Track 4"
-  0x41, -8,      // FX: VOLUME SLIDE ON: steps = -8
-  0x9F + 2,      // DELAY: ticks = 2
+  0x41, -4,      // FX: VOLUME SLIDE ON: steps = -4
+  0x9F +  32,    // DELAY: ticks = 32
   0xFE,          // RETURN
 };
 

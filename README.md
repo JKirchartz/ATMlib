@@ -26,10 +26,10 @@
 ### COMMAND LIST
 
 | **Command (_X_)** | **Parameter**        | **Type**           | **Description** |
-| ---               | ---                  | ---                | --- |
-|           0 …  62 |                      |                    | Start playing note *[__X__]* where 0 is a C1 |
+| ---               | ---                  | ---                | ---             |
+|                0  |                      |                    | Stop playing    |
 |   |
-|                63 |                      |                    | Stop playing |
+|           1 …  63 |                      |                    | Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone table](./frequencyToTone.md "Frequency to Tone table")|
 |   |
 |          64 … 159 |                      |                    | Configure effects (fx) |
 |                   | *See __fx list__*    | none/variable      | Effect is *[__X__ - 64]* |
