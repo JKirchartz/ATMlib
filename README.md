@@ -73,7 +73,7 @@
 | **B**      | add Transposition | UBYTE (8-bit) | shifts the played notes by adding *[__X__]* to the existing transposition for all playing notes.<br />**_Note:_**<br /> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
 | **C**      | set Transposition | UBYTE (8-bit) | shifts the played notes by setting the transposition to [__X__]* for all playing notes.<br />**_Note:_**<br /> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
 | **D**      | Transposition OFF |  | stops the transposition |
-| **E**      | set Tremolo or Vibrato |  | (*__Y__*)(*__Z__*) | *[__Y__]*  includes 2 parameters: WWDDDDDD Waveform (0 = sine, 1 = saw, 2= square, 3= noise), Depth. *[__Y__]* and includes 4 parameters: RTxAAAAA Retrig, TremoloOrVibrato, reserved , amount<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined|
+| **E**      | set Tremolo or Vibrato |  | (*__Y__*)(*__Z__*) | *[__Y__]*  includes 2 parameters: WWDDDDDD Waveform (0 = sine, 1 = saw, 2= square, 3= noise), Depth.<br /> *[__Z__]* and includes 4 parameters: RTxAAAAA Retrig, TremoloOrVibrato, reserved , amount<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined|
 | **F**      | Tremolo or Vibrato OFF|  | stops the tremolo or vibrato |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
