@@ -18,17 +18,17 @@ Song music[] = {
   0xFE,          // RETURN (empty track used for silent channels)
 
   //"Track 1"
-  0xFD, 32, 2,   // REPEAT: count = 32 - track = 2
+  0xFD, 31, 2,   // REPEAT: count = 32 - track = 2
   0xFE,          // RETURN
 
   //"Track 2"
-  0x00 +  40,    // NOTE ON: note = 40
+  0x00 + 41,     // NOTE ON: note = 41
   0x40, 0,       // FX: SET VOLUME: volume = 0
   0x41, 4,       // FX: VOLUME SLIDE ON: steps = 4
   0x9F + 32,     // DELAY: ticks = 32
-  0x00 +  36,    // NOTE ON: note = 36
-  0x41, -4,      // FX: VOLUME SLIDE ON: steps = -4
-  0x9F +  32,    // DELAY: ticks = 32
+  0x00 + 37,     // NOTE ON: note = 37
+  0x41, -2,      // FX: VOLUME SLIDE ON: steps = -2
+  0x9F + 32,     // DELAY: ticks = 32
   0xFE,          // RETURN
 };
 

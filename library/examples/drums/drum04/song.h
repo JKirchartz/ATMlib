@@ -20,24 +20,24 @@ Song music[] = {
   0xFE,           // RETURN (empty track used for silent channels)
 
   //"Track 1"
-  0xFD, 32, 2,    // REPEAT: count = 32 - track = 4
+  0xFD, 31, 2,    // REPEAT: count = 32 - track = 4
   0xFE,           // RETURN
 
   //"Track 2"
   
-  0xFD, 0, 3,     // REPEAT: count = 3 - track = 3
-  0xFD, 2, 4,     // REPEAT: count = 2 - track = 4
+  0xFD, 0, 3,     // REPEAT: count = 1 - track = 3
+  0xFD, 2, 4,     // REPEAT: count = 3 - track = 4
   0x9F + 4,       // DELAY: ticks = 4
-  0xFD, 0, 3,     // REPEAT: count = 3 - track = 3
-  0xFD, 0, 3,     // REPEAT: count = 3 - track = 3
-  0xFD, 0, 3,     // REPEAT: count = 3 - track = 3
-  0xFD, 0, 3,     // REPEAT: count = 3 - track = 3
+  0xFD, 0, 3,     // REPEAT: count = 1 - track = 3
+  0xFD, 0, 3,     // REPEAT: count = 1 - track = 3
+  0xFD, 0, 3,     // REPEAT: count = 1 - track = 3
+  0xFD, 0, 3,     // REPEAT: count = 1 - track = 3
   0x9F + 8,       // DELAY: ticks = 8
   0xFE,           // RETURN
 
   //"Track 3"
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0x41, -16,      // FX: VOLUME SLIDE ON: steps = -16
+  0x41, -8,       // FX: VOLUME SLIDE ON: steps = -8
   0x9F + 4,       // DELAY: ticks = 4
   0x43,           // FX: VOLUME SLIDE OFF
   0x9F + 4,       // DELAY: ticks = 4

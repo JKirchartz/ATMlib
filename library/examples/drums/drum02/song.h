@@ -18,38 +18,38 @@ Song music[] = {
   0xFE,           // RETURN (empty track used for silent channels)
 
   //"Track 1"
-  0xFD, 32, 2,    // REPEAT: count = 32 - track = 2
+  0xFD, 31, 2,    // REPEAT: count = 32 - track = 2
   0xFE,           // RETURN
 
   //"Track 2"
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0x41, -16,      // FX: VOLUME SLIDE ON: steps = -16
+  0x41, -8,      // FX: VOLUME SLIDE ON: steps = -8
   0x9F + 4,       // DELAY: ticks = 4
   0x43,           // FX: VOLUME SLIDE OFF
   
   0x9F + 12,      // DELAY: ticks = 12
 
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0x41, -4,       // FX: VOLUME SLIDE ON: steps = -4
+  0x41, -2,       // FX: VOLUME SLIDE ON: steps = -2
   0x9F + 16,      // DELAY: ticks = 16
   0x43,           // FX: VOLUME SLIDE OFF
 
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0x41, -16,      // FX: VOLUME SLIDE ON: steps = -16
+  0x41, -8,      // FX: VOLUME SLIDE ON: steps = -8
   0x9F + 4,       // DELAY: ticks = 4
   0x43,           // FX: VOLUME SLIDE OFF
 
   0x9F + 4,       // DELAY: ticks = 4
 
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0x41, -16,      // FX: VOLUME SLIDE ON: steps = -16
+  0x41, -8,      // FX: VOLUME SLIDE ON: steps = -8
   0x9F + 4,       // DELAY: ticks = 4
   0x43,           // FX: VOLUME SLIDE OFF
 
   0x9F + 4,       // DELAY: ticks = 4
 
   0x40, 32,       // FX: SET VOLUME: volume = 32
-  0x41, -4,       // FX: VOLUME SLIDE ON: steps = -4
+  0x41, -2,       // FX: VOLUME SLIDE ON: steps = -2
   0x9F + 16,      // DELAY: ticks = 16
   0x43,           // FX: VOLUME SLIDE OFF
 

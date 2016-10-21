@@ -20,7 +20,7 @@ Song music[] = {
   //"Track 1"
   0x40, 0,       // FX: SET VOLUME: volume = 0
   0x42, 2, 24,   // FX: VOLUME SLIDE ON: steps = 2 / every ticks = 24
-  0xFD, 32, 2,   // REPEAT: count = 32 - track = 2
+  0xFD, 31, 2,   // REPEAT: count = 32 - track = 2
   0xFE,          // RETURN
 
   //"Track 2"
@@ -36,6 +36,7 @@ Song music[] = {
   0x9F +  4,     // DELAY: ticks = 4
   0x00,          // NOTE OFF
   0x9F +  4,     // DELAY: ticks = 4
+  
   0xFE,          // RETURN
 };
 

@@ -30,7 +30,8 @@ osc_t osc[4];
 
 
 const word noteTable[64] PROGMEM = {
-  0, 262,  277,  294,  311,  330,  349,  370,  392,  415,  440,  466,  494,
+  0,
+  262,  277,  294,  311,  330,  349,  370,  392,  415,  440,  466,  494,
   523,  554,  587,  622,  659,  698,  740,  784,  831,  880,  932,  988,
   1047, 1109, 1175, 1245, 1319, 1397, 1480, 1568, 1661, 1760, 1865, 1976,
   2093, 2217, 2349, 2489, 2637, 2794, 2960, 3136, 3322, 3520, 3729, 3951,
@@ -38,27 +39,6 @@ const word noteTable[64] PROGMEM = {
   8372, 8870, 9397,
 };
 
-
-const char sine_tbl[32] PROGMEM = {
-  0x00, 0x0C, 0x18, 0x25, 0x30, 0x3C, 0x47, 0x51, 0x5A, 0x62, 0x6A, 0x70, 0x76, 0x7A, 0x7D, 0x7F,
-  0x7F, 0x7F, 0x7D, 0x7A, 0x76, 0x70, 0x6A, 0x62, 0x5A, 0x51, 0x47, 0x3C, 0x30, 0x25, 0x18, 0x0C,
-};
-
-// Look up or generate waveform for ProTracker vibrato/tremolo oscillator
-static int8_t do_osc(byte waveForm) {
-
-  switch (waveForm & 0xC0) {
-    case 0: // Sine
-      break;
-    case 1: // Saw
-      break;
-    case 2: // Square
-      break;
-    case 3: // Noise (random)
-      break;
-  }
-
-}
 
 struct ch_t {
   const byte *ptr;
@@ -210,7 +190,7 @@ void ATM_playroutine() {
         }
         ch->vol = v;
       }
-      if (ch->volCount++ > (ch->volConfig & 0x7F)) {
+      if (ch->volCount++ >= (ch->volConfig & 0x7F)) {
         ch->volCount = 0;
       }
     }
@@ -226,7 +206,7 @@ void ATM_playroutine() {
         }
         ch->freq = f;
       }
-      if (ch->freqCount++ > (ch->freqConfig & 0x7F)) {
+      if (ch->freqCount++ >= (ch->freqConfig & 0x7F)) {
         ch->freqCount = 0;
       }
     }
@@ -248,25 +228,32 @@ void ATM_playroutine() {
 
     // Apply Tremolo or Vibrato
     if (ch->treviDepth) {
-      if (!ch->treviCount) {
+      {
         //Tremolo (0) or Vibrato (1) ?
         if (!(ch->treviConfig & 0x40)) {
-          char v;
-          v += do_osc(ch->treviDepth);
+          char v = ch->vol;
+          if (ch->treviCount & 0x80) v += ch->treviDepth & 0x1F;
+          else v -= ch->treviDepth & 0x1F;
           if (v < 0) v = 0;
           else if (v > 63) v = 63;
           ch->vol = v;
+          Serial.println(ch->vol);
         }
         else {
-          int16_t f;
-          f += do_osc(ch->treviDepth);
+          int16_t f = ch->freq;
+          if (ch->treviCount & 0x80) f += ch->treviDepth & 0x1F;
+          else f -= ch->treviDepth & 0x1F;
           if (f < 262) f = 262;
           else if (f > 9397) f = 9397;
           ch->freq = f;
+          Serial.println(ch->freq);
         }
       }
-      if (ch->treviCount++ > (ch->treviConfig & 0x1F)) {
-        ch->treviCount = 0;
+      if ((ch->treviCount & 0x1F) < (ch->treviConfig & 0x1F))
+        ch->treviCount++;
+      else {
+        if (ch->treviCount & 0x80) ch->treviCount = 0;
+        else (ch->treviCount) = 0x80;
       }
     }
 
@@ -331,8 +318,8 @@ void ATM_playroutine() {
               ch->tranConfig = 0;
               break;
             case 14: // SET Tremolo or Vibrato
-              ch->treviDepth = pgm_read_byte(ch->ptr++);
-              ch->treviConfig = pgm_read_byte(ch->ptr++);
+              ch->treviDepth = pgm_read_word(ch->ptr++);
+              ch->treviConfig = pgm_read_word(ch->ptr++);
               break;
             case 15: // Tremolo or Vibrato  OFF
               ch->treviDepth = 0;
