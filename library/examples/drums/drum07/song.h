@@ -21,8 +21,8 @@ Song music[] = {                // total song in bytes = 55
   0x40, 0,                      // FX: SET VOLUME: volume = 0
   0xFE,                         // RETURN
 
-  //"Track 1"                   // ticks = 32 * 64 = 2048, bytes = 4
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (64 ticks)
+  //"Track 1"                   // ticks = 2048, bytes = 4
+  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 64 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 64, bytes = 9
@@ -41,8 +41,8 @@ Song music[] = {                // total song in bytes = 55
   0x00,                         // NOTE OFF (delay 1 tick)
   0xFE,                         // RETURN
 
-  //"Track 4"                   // ticks = 32 * 64 = 2048, bytes = 4
-  0xFD, 31, 5,                  // REPEAT: count = 32 - track = 5 (32 ticks)
+  //"Track 4"                   // ticks = 2048, bytes = 4
+  0xFD, 31, 5,                  // REPEAT: count = 32 - track = 5 (32 * 64 ticks)
   0xFE,                         // RETURN
 
   //"Track 5"                   // ticks = 64, bytes = 9

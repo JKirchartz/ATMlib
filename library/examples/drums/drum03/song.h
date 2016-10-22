@@ -20,11 +20,11 @@ Song music[] = {                // total song in bytes = 52
   0x40, 0,                      // FX: SET VOLUME: volume = 0
   0xFE,                         // RETURN (empty track used for silent channels)
 
-  //"Track 1"                   // ticks = 32 * 128 = 4096, bytes = 4
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2
+  //"Track 1"                   // ticks = 4096, bytes = 4
+  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 *128 ticks)
   0xFE,                         // RETURN
 
-  //"Track 2"                   // ticks = (112 + 16), bytes = 14
+  //"Track 2"                   // ticks = 128, bytes = 14
   0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3  (32 ticks)
   0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4  (16 ticks)
   0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3  (32 ticks)

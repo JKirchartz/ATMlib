@@ -18,9 +18,9 @@ Song music[] = {                // total song in bytes = 28
   0x40, 0,                      // FX: SET VOLUME: volume = 0
   0xFE,                         // RETURN
 
-  //"Track 1"                   // ticks = 1, bytes = 8
+  //"Track 1"                   // ticks = 1025, bytes = 8
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2
+  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 32 ticks)
   0x4F,                         // TREMOLO or VIBRATO OFF
   0x00,                         // NOTE OFF (delay 1 tick)
   0xFE,                         // RETURN

@@ -18,8 +18,8 @@ Song music[] = {                // total song in bytes = 52
   0x40, 0,                      // FX: SET VOLUME: volume = 0
   0xFE,                         // RETURN (empty track used for silent channels)
 
-  //"Track 1"                   // ticks = 32 * 64 = 2048, bytes = 4
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (64 ticks)
+  //"Track 1"                   // ticks = 2048, bytes = 4
+  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 64 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 64, bytes = 34
