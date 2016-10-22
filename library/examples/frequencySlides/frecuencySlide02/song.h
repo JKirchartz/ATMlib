@@ -3,7 +3,7 @@
 
 #define Song const uint8_t PROGMEM
 
-Song music[] = {                // total song in bytes = 28 
+Song music[] = {                // total song in bytes = 31 
                                 // setup bytes 11
   0x03,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0
@@ -22,14 +22,16 @@ Song music[] = {                // total song in bytes = 28
   0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2
   0xFE,                         // RETURN
 
-  //"Track 2"                   // ticks = 64, bytes = 10
-  0x00 + 37,                    // NOTE ON: note = 37 (delay 1 tick)
+  //"Track 2"                   // ticks = 32, bytes = 13
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0x44, -2,                     // FX: FREQUENCY SLIDE ON: steps = -2
-  0x9F + 31,                    // DELAY: ticks = 31
+  0x00 + 1,                     // NOTE ON: note = 1 (delay 1 tick)
+  0x44, -65,                    // FX: FREQUENCY SLIDE ON: steps = -65
+  0x41, -16,                    // FX: VOLUME SLIDE ON: steps = -16
+  0x9F + 4,                     // DELAY: ticks = 4
   0x46,                         // FX: FREQUENCY SLIDE OFF
+  0x43,                         // FX: VOLUME SLIDE OFF
   0x00,                         // NOTE OFF (delay 1 tick)
-  0x9F + 31,                    // DELAY: ticks = 31
+  0x9F + 26,                    // DELAY: ticks = 26
   0xFE,                         // RETURN
 };
 

@@ -21,14 +21,14 @@ Song music[] = {
   //"Track 1"
   0x40, 63,                     // FX: SET VOLUME: volume = 63
   0xFD, 32, 2,                  // REPEAT: count = 32 - track = 2
-  0xFE,                         // RETURN (empty track used for silent channels)
+  0xFE,                         // RETURN
 
   //"Track 2"
-  0x00 +  36,                   // NOTE ON: note = 36
+  0x00 +  36,                   // NOTE ON: note = 36 (delay 1 tick)
   0x47, 0x43, 0x00 + 0x00 + 16, // FX: ARPEGGIO ON: notes =  +4 +3 / don't play third note = OFF / ritrigger = OFF / ticks = 16
   0xFD, 47, 3,                  // REPEAT: count = 47 - track = 3
   0x48,                         // FX: ARPEGGIO OFF
-  0x3F,                         // NOTE OFF
+  0x3F,                         // NOTE OFF (delay 1 tick)
   0xFE,                         // RETURN
 
   //"Track 3"

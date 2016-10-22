@@ -32,7 +32,7 @@ Song music[] = {
   0x00 + 36,                    //   NOTE ON: note = 36 (delay 1 tick)
   0x47, 0x43, 0x00,             //   FX: ARPEGGIO ON: notes =  +4 +3 / don't play third note = OFF / ritrigger = OFF / ticks = 16
   0x9F +  7,                    //   DELAY: 7 ticks
-  0x3F,                         //   NOTE OFF (delay 1 tick)
+  0x00,                         //   NOTE OFF (delay 1 tick)
   0x48,                         //   ARP OFF
   0x9F + 15,                    //   DELAY: 15 ticks
                                 // } ticks == 48, bytes = 10
@@ -42,7 +42,7 @@ Song music[] = {
   0x00 + 34,                    //   NOTE ON: note = 34 (delay 1 tick)
   0x47, 0x43, 0x00,             //   FX: ARPEGGIO ON: notes =  +4 +3 / don't play third note = OFF / ritrigger = OFF / ticks = 16
   0x9F +  7,                    //   DELAY: 7 ticks
-  0x3F,                         //   NOTE OFF (delay 1 tick)
+  0x00,                         //   NOTE OFF (delay 1 tick)
   0x48,                         //   ARP OFF
   0x9F + 15,                    //   DELAY: 15 ticks
                                 // } ticks == 48, bytes = 10
