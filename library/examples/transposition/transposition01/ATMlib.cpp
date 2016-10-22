@@ -86,6 +86,10 @@ struct ch_t {
   byte treviDepth;
   byte treviConfig;
   byte treviCount;
+
+  //Glissando
+  char glisConfig;
+  byte glisCount;
 };
 
 ch_t channel[4];
@@ -179,6 +183,21 @@ void ATM_playroutine() {
       } else ch->reCount++;
     }
 
+    //Apply Glissando
+    if (ch->glisConfig)
+    {
+      if (ch->glisCount >= (ch->glisConfig & 0x7F))
+      {
+        if (ch->glisConfig & 0x80)ch->note -= 1;
+        else ch->note += 1;
+        if (ch->note < 1) ch->note = 1;
+        else if (ch->note > 63) ch->note = 63;
+        ch->freq = pgm_read_word(&noteTable[ch->note]);
+        ch->glisCount = 0;
+      }
+      else ch->glisCount++;
+    }
+
     // Apply volume slides
     if (ch->volSlide) {
       if (!ch->volCount) {
@@ -201,7 +220,7 @@ void ATM_playroutine() {
         uint16_t f = ch->freq;
         f += ch ->freqSlide;
         if (!(ch->freqConfig & 0x80)) {
-          if (f < 262) f = 262;
+          if (f < 0) f = 0;
           else if (f > 9397) f = 9397;
         }
         ch->freq = f;
@@ -243,7 +262,7 @@ void ATM_playroutine() {
           int16_t f = ch->freq;
           if (ch->treviCount & 0x80) f += ch->treviDepth & 0x1F;
           else f -= ch->treviDepth & 0x1F;
-          if (f < 262) f = 262;
+          if (f < 0) f = 0;
           else if (f > 9397) f = 9397;
           ch->freq = f;
           Serial.println(ch->freq);
@@ -255,6 +274,7 @@ void ATM_playroutine() {
         if (ch->treviCount & 0x80) ch->treviCount = 0;
         else (ch->treviCount) = 0x80;
       }
+
     }
 
     if (ch->delay) {
@@ -323,6 +343,12 @@ void ATM_playroutine() {
               break;
             case 15: // Tremolo or Vibrato  OFF
               ch->treviDepth = 0;
+              break;
+            case 16: // Glissando
+              ch->glisConfig = pgm_read_byte(ch->ptr++);
+              break;
+            case 17: // glissando OFF
+              ch->glisConfig = 0;
               break;
           }
         } else if (cmd < 224) {

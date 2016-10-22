@@ -220,7 +220,7 @@ void ATM_playroutine() {
         uint16_t f = ch->freq;
         f += ch ->freqSlide;
         if (!(ch->freqConfig & 0x80)) {
-          if (f < 262) f = 262;
+          if (f < 0) f = 0;
           else if (f > 9397) f = 9397;
         }
         ch->freq = f;
@@ -262,7 +262,7 @@ void ATM_playroutine() {
           int16_t f = ch->freq;
           if (ch->treviCount & 0x80) f += ch->treviDepth & 0x1F;
           else f -= ch->treviDepth & 0x1F;
-          if (f < 262) f = 262;
+          if (f < 0) f = 0;
           else if (f > 9397) f = 9397;
           ch->freq = f;
           Serial.println(ch->freq);
