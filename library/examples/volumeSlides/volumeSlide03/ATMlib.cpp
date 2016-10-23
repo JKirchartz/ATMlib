@@ -256,7 +256,6 @@ void ATM_playroutine() {
           if (v < 0) v = 0;
           else if (v > 63) v = 63;
           ch->vol = v;
-          Serial.println(ch->vol);
         }
         else {
           int16_t f = ch->freq;
@@ -265,7 +264,6 @@ void ATM_playroutine() {
           if (f < 0) f = 0;
           else if (f > 9397) f = 9397;
           ch->freq = f;
-          Serial.println(ch->freq);
         }
       }
       if ((ch->treviCount & 0x1F) < (ch->treviConfig & 0x1F))
@@ -364,7 +362,7 @@ void ATM_playroutine() {
           // Stack PUSH
           ch->stackCounter[ch->stackIndex] = ch->counter;
           ch->stackTrack[ch->stackIndex] = ch->track; // note 1
-          ch->counter = cmd == 252 ? 1 : pgm_read_byte(ch->ptr++);
+          ch->counter = cmd == 252 ? 0 : pgm_read_byte(ch->ptr++);
           ch->track = pgm_read_byte(ch->ptr++);
           ch->stackPointer[ch->stackIndex] = ch->ptr - trackBase;
           ch->stackIndex++;
