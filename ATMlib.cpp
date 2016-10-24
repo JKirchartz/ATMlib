@@ -152,6 +152,8 @@ void ATMSynth::playPause() {
 void ATMSynth::stop() {
   TIMSK4 = 0; // Disable interrupt
   trackCount = 0; // Unload melody
+  trackList = 0;
+  trackBase = 0;
 }
 
 // Sets tempo
@@ -354,7 +356,7 @@ void ATM_playroutine() {
           ch->delay = cmd - 159;
         } else if (cmd == 224) {
           // 224: LONG DELAY
-          ch->delay = read_vle(&ch->ptr) + 65;
+          ch->delay = read_vle(&ch->ptr) + 129;
         } else if (cmd < 252) {
           // 225 … 251 : RESERVED
         } else if (cmd == 252 || cmd == 253) {
