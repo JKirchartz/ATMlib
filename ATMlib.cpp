@@ -154,6 +154,9 @@ void ATMSynth::stop() {
   trackCount = 0; // Unload melody
   trackList = 0;
   trackBase = 0;
+  for (unsigned n = 0; n < 4; n++) {
+    channel[n].ptr = 0;
+  }
 }
 
 // Sets tempo
@@ -182,14 +185,13 @@ void ATM_playroutine() {
       if (ch->reCount >= (ch->reConfig & 0x03)) {
         osc[n].freq = pgm_read_word(&noteTable[ch->reConfig >> 2]);
         ch->reCount = 0;
-      } else ch->reCount++;
+      }
+      else ch->reCount++;
     }
 
     //Apply Glissando
-    if (ch->glisConfig)
-    {
-      if (ch->glisCount >= (ch->glisConfig & 0x7F))
-      {
+    if (ch->glisConfig) {
+      if (ch->glisCount >= (ch->glisConfig & 0x7F)) {
         if (ch->glisConfig & 0x80)ch->note -= 1;
         else ch->note += 1;
         if (ch->note < 1) ch->note = 1;
@@ -211,9 +213,7 @@ void ATM_playroutine() {
         }
         ch->vol = v;
       }
-      if (ch->volCount++ >= (ch->volConfig & 0x7F)) {
-        ch->volCount = 0;
-      }
+      if (ch->volCount++ >= (ch->volConfig & 0x7F)) ch->volCount = 0;
     }
 
     // Apply frequency slides
@@ -227,15 +227,12 @@ void ATM_playroutine() {
         }
         ch->freq = f;
       }
-      if (ch->freqCount++ >= (ch->freqConfig & 0x7F)) {
-        ch->freqCount = 0;
-      }
+      if (ch->freqCount++ >= (ch->freqConfig & 0x7F)) ch->freqCount = 0;
     }
 
     // Apply Arpeggio
     if (ch->arpNotes && ch->note) {
-      if ((ch->arpCount & 0x1F) < (ch->arpTiming & 0x1F))
-        ch->arpCount++;
+      if ((ch->arpCount & 0x1F) < (ch->arpTiming & 0x1F)) ch->arpCount++;
       else {
         if ((ch->arpCount & 0xE0) == 0x00) ch->arpCount = 0x20;
         else if ((ch->arpCount & 0xE0) == 0x20 && !(ch->arpTiming & 0x40)) ch->arpCount = 0x40;
@@ -249,27 +246,24 @@ void ATM_playroutine() {
 
     // Apply Tremolo or Vibrato
     if (ch->treviDepth) {
-      {
-        //Tremolo (0) or Vibrato (1) ?
-        if (!(ch->treviConfig & 0x40)) {
-          char v = ch->vol;
-          if (ch->treviCount & 0x80) v += ch->treviDepth & 0x1F;
-          else v -= ch->treviDepth & 0x1F;
-          if (v < 0) v = 0;
-          else if (v > 63) v = 63;
-          ch->vol = v;
-        }
-        else {
-          int16_t f = ch->freq;
-          if (ch->treviCount & 0x80) f += ch->treviDepth & 0x1F;
-          else f -= ch->treviDepth & 0x1F;
-          if (f < 0) f = 0;
-          else if (f > 9397) f = 9397;
-          ch->freq = f;
-        }
+      //Tremolo (0) or Vibrato (1) ?
+      if (!(ch->treviConfig & 0x40)) {
+        char v = ch->vol;
+        if (ch->treviCount & 0x80) v += ch->treviDepth & 0x1F;
+        else v -= ch->treviDepth & 0x1F;
+        if (v < 0) v = 0;
+        else if (v > 63) v = 63;
+        ch->vol = v;
       }
-      if ((ch->treviCount & 0x1F) < (ch->treviConfig & 0x1F))
-        ch->treviCount++;
+      else {
+        int16_t f = ch->freq;
+        if (ch->treviCount & 0x80) f += ch->treviDepth & 0x1F;
+        else f -= ch->treviDepth & 0x1F;
+        if (f < 0) f = 0;
+        else if (f > 9397) f = 9397;
+        ch->freq = f;
+      }
+      if ((ch->treviCount & 0x1F) < (ch->treviConfig & 0x1F)) ch->treviCount++;
       else {
         if (ch->treviCount & 0x80) ch->treviCount = 0;
         else (ch->treviCount) = 0x80;
@@ -277,17 +271,15 @@ void ATM_playroutine() {
 
     }
 
-    if (ch->delay) {
-      ch->delay--;
-    } else {
-
+    if (ch->delay) ch->delay--;
+    else {
       do {
         byte cmd = pgm_read_byte(ch->ptr++);
         if (cmd < 64) {
           // 0 … 63 : NOTE ON/OFF
           if (ch->note = cmd) ch->note += ch->tranConfig;
           ch->freq = pgm_read_word(&noteTable[ch->note]);
-          if (ch->arpTiming & 32) ch->arpCount = 0; // ARP retriggering
+          if (ch->arpTiming & 0x20) ch->arpCount = 0; // ARP retriggering
           ch->delay = 1;
         } else if (cmd < 160) {
           // 64 … 159 : SETUP FX
@@ -395,7 +387,6 @@ void ATM_playroutine() {
       } while (ch->delay == 0);
 
       ch->delay--;
-
     }
 
     if (!ch->mute) {

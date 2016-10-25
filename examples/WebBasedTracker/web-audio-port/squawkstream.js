@@ -7,12 +7,13 @@
 
 // Note frequencies (scales with sample rate for now)
 var noteTable = [
+     0,
    262,  277,  294,  311,  330,  349,  370,  392,  415,  440,  466,  494,
    523,  554,  587,  622,  659,  698,  740,  784,  831,  880,  932,  988,
   1047, 1109, 1175, 1245, 1319, 1397, 1480, 1568, 1661, 1760, 1865, 1976,
   2093, 2217, 2349, 2489, 2637, 2794, 2960, 3136, 3322, 3520, 3729, 3951,
   4186, 4435, 4699, 4978, 5274, 5588, 5920, 6272, 6645, 7040, 7459, 7902,
-  8372, 8870, 9397,    0, 
+  8372, 8870, 9397, 
 ];
 
 function SquawkStream(sampleRate) {
@@ -40,18 +41,55 @@ function SquawkStream(sampleRate) {
 
   // Channel class - contains the core mysic data processing code
   function Channel(id) {
-    var ptr          = 0; // Pointer (into stream)
-    var ctr          = 0; // Counter (for looping)
+    var ptr          = 0;     // Pointer (into stream)
+    var note        = 0;
+
+    // Nesting
     var stackPointer = new Array();
     var stackCounter = new Array();
+    var stackTrack = new Array(); // note 1
     var stackIndex   = 0;
+
+    // Looping
     var delay        = 0;
+    var counter      = 0;     // Counter (for looping)
     var track        = 0;
 
-    // fx
+    // External FX
+    //var freq         = 0;
+    //var vol          = 0;
+    //boolean mute     = 0;
+
+    // Volume fx
     var volSlide     = 0;
     var volConfig    = 0;
     var volCount     = 0;
+
+    // Frequency FX
+    var freqSlide   = 0;
+    var freqConfig  = 0;
+    var freqCount   = 0;
+
+    // Arpeggio FX
+    var arpNotes    = 0;     // notes: base, base+[7:4], base+[7:4]+[3:0]
+    var arpTiming   = 0;     // [7] = reserved, [6] = not third note ,[5] = retrigger, [4:0] = tick count
+    var arpCount    = 0;
+
+    // Retrig
+    var reConfig    = 0;     // [7:2] = , [1:0] = speed
+    var reCount     = 0;
+
+    // transposition
+    var tranConfig  = 0;
+
+    //Tremolo or Vibrato
+    var treviDepth  = 0;
+    var treviConfig = 0;
+    var treviCount  = 0;
+
+    //Glissando
+    var glisConfig  = 0;
+    var glisCount   = 0;
 
     // == BIG-ENDIAN DATA ACCESS FUNCTIONS == //
     function readByte() { return typeof data == "function" ? data() : data[ptr++]; }
@@ -81,14 +119,112 @@ function SquawkStream(sampleRate) {
 
     // All hail "THE PLAYROUTINE"
     function _play() {
-      if(delay > 0) {
-        delay--;
-      } else {
+
+      // TODO: run effects here
+      if(noise.checked) synth.setFrequency(3, 1);
+
+      // Noise retriggering
+      if (reConfig != 0) {
+        if (reCount >= (reConfig & 0x03)) {
+          synth.setFrequency(id, noteTable[reConfig >> 2]);
+          reCount = 0;
+        } else reCount++;
+      }
+
+      //Apply Glissando -> WORKING HURRAY :)
+      if (glisConfig != 0) {
+        if (glisCount >= (glisConfig & 0x7F))
+        {
+          if ((glisConfig & 0x80) != 0)note -= 1;
+          else note += 1;
+          if (note < 1) note = 1;
+          else if (note > 63) note = 63;
+          synth.setFrequency(id, noteTable[note]);
+          glisCount = 0;
+        }
+        else glisCount++;
+      }
+
+      // Apply volume slides
+      if (volSlide != 0) {
+        if (volCount == 0) {
+          var v = this.vol;
+          //v += volSlide;
+          //if ((volConfig & 0x80) != 0) {
+          //  if (v < 0) v = 0;
+          //  else if (v > 63) v = 63;
+          //}
+          v = v + 10;
+          synth.setVolume(id,v);
+        }
+        if (volCount++ >= (volConfig & 0x7F)) volCount = 0;
+      }
+
+      // Apply frequency slides
+      if ( freqSlide != 0) {
+        //if (!freqCount) {
+          //uint16_t f = freq;
+          //f += ch ->freqSlide;
+          //if (!(freqConfig & 0x80)) {
+            //if (f < 0) f = 0;
+            //else if (f > 9397) f = 9397;
+          //}
+          //freq = f;
+        //}
+        //if (freqCount++ >= (freqConfig & 0x7F)) freqCount = 0;
+      }
+
+      // Apply Arpeggio
+      if ((arpNotes != 0)  && (note != 0)) {
+        if ((arpCount & 0x1F) < (arpTiming & 0x1F)) arpCount++;
+        else {
+          if ((arpCount & 0xE0) == 0) arpCount = 32;
+          else if (((arpCount & 0xE0) == 32) && ((arpTiming & 0x40) == 0)) arpCount = 64;
+          else arpCount = 0;
+          var arpNote = note;
+          if ((arpCount & 0xE0) != 0) arpNote += (arpNotes >> 4);
+          if ((arpCount & 0xE0) == 64) arpNote += (arpNotes & 15);
+          synth.setFrequency(id, noteTable[arpNote + tranConfig]);
+        }
+      }
+
+      // Apply Tremolo or Vibrato
+      if (treviDepth != 0) {
+        //Tremolo (0) or Vibrato (1) ?
+        //if (!(treviConfig & 0x40)) {
+          //char v = vol;
+          //if (treviCount & 0x80) v += treviDepth & 0x1F;
+          //else v -= treviDepth & 0x1F;
+          //if (v < 0) v = 0;
+          //else if (v > 63) v = 63;
+          //vol = v;
+        //}
+        //else {
+          //int16_t f = freq;
+          //if (treviCount & 0x80) f += treviDepth & 0x1F;
+          //else f -= treviDepth & 0x1F;
+          //if (f < 0) f = 0;
+          //else if (f > 9397) f = 9397;
+          //freq = f;
+        //}
+        //if ((treviCount & 0x1F) < (treviConfig & 0x1F)) treviCount++;
+        //else {
+          //if (treviCount & 0x80) treviCount = 0;
+          //else (treviCount) = 0x80;
+        //}
+      }
+
+
+
+      if(delay != 0) delay--;
+      else {
         do {
           var cmd = readByte();
           if(cmd < 64) {
             // 0 … 63 : NOTE ON/OFF
-            synth.setFrequency(id, noteTable[cmd]);
+            if ((note = cmd) != 0) note += tranConfig;
+            synth.setFrequency(id, noteTable[note]);
+            if ((arpTiming & 0x20) != 0) arpCount = 0; // ARP retriggering
             delay = 1;
           } else if(cmd < 160) {
             // 64 … 159 : SETUP FX
@@ -107,6 +243,51 @@ function SquawkStream(sampleRate) {
               case 3: // Slide volume OFF (same as 0x01 0x00)
                 volSlide = 0;
                 break;
+              case 4: // Slide frequency ON
+                freqSlide = readByte();
+                break;
+              case 5: // Slide frequency ON advanced
+                freqSlide = readByte();
+                freqConfig = readByte();
+                break;
+              case 6: // Slide frequency OFF
+                freqSlide = 0;
+                break;
+              case 7: // Set Arpeggio
+                arpNotes = readByte();    // 0x40 + 0x03
+                arpTiming = readByte();   // 0x80 + 0x40 + 0x20 + amount
+                break;
+              case 8: // Arpeggio off
+                arpNotes = 0;
+                break;
+              case 9: // Set Retriggering (noise)
+                reConfig = readByte();    // RETRIG: point = 1 (*4), speed = 0 (0 = fastest, 1 = faster , 2 = fast)
+                break;
+              case 10: // Retriggering (noise) OFF
+                reConfig = 0;
+                break;
+              case 11: // ADD Transposition
+                tranConfig += readByte();
+                break;
+              case 12: // SET Transposition
+                tranConfig = readByte();
+                break;
+              case 13: // Transposition OFF
+                tranConfig = 0;
+                break;
+              case 14: // SET Tremolo or Vibrato
+                treviDepth = readByte();
+                treviConfig = readByte();
+                break;
+              case 15: // Tremolo or Vibrato  OFF
+                treviDepth = 0;
+                break;
+              case 16: // Glissando
+                glisConfig = readByte();
+                break;
+              case 17: // glissando OFF
+                glisConfig = 0;
+                break;
             }
           } else if(cmd < 224) {
             // 160 … 223 : DELAY
@@ -119,24 +300,18 @@ function SquawkStream(sampleRate) {
           } else if(cmd == 252 || cmd == 253) {
             // 252 (253) : CALL (REPEATEDLY)
             // Stack PUSH
-            stackCounter[stackIndex] = ctr;
-            ctr = cmd == 252 ? 1 : readByte();
+            stackCounter[stackIndex] = counter;
+            stackTrack[stackIndex] = track;
+            counter = cmd == 252 ? 0 : readByte();
             track = readByte();
             stackPointer[stackIndex] = ptr;
             stackIndex++;
             ptr = trackAddress(track);
           } else if(cmd == 254) {
             // 254 : RETURN
-            if(ctr > 0) {
+            if(counter > 0) {
               // Repeat track
-              ctr--;
-              // Note to self: This is broken!
-              // Loops last called track instead of playing track.
-              // Possible solutions:
-              //   Search for track based on address?
-              //     Pro: No extra RAM Con: Slow
-              //   Push "track" to stack
-              //     Pro: Fast Con: Requires extra RAM
+              counter--;
               ptr = trackAddress(track);
             } else {
               // Check stack depth
@@ -147,7 +322,8 @@ function SquawkStream(sampleRate) {
                 // Stack POP
                 stackIndex--;
                 ptr = stackPointer[stackIndex];
-                ctr = stackCounter[stackIndex];
+                counter = stackCounter[stackIndex];
+                track = stackTrack[stackIndex]; // note 1
               }
             }
           } else if(cmd == 255) {
@@ -157,20 +333,8 @@ function SquawkStream(sampleRate) {
         } while(delay == 0);
         // Apply volume slides
         delay--;
-        if(volSlide) {
-          if(!volCount) {
-            var v = osc[n].vol;
-            v += volSlide;
-            if(!(volConfig & 0x80)) {
-              if(v < 0) v = 0;
-              else if(v > 255) v = 0;
-            }
-          }
-        if(volCount++ > (volConfig & 0x7F)) volCount = 0;
+
       }
-      }
-      // TODO: run effects here
-      if(noise.checked) synth.setFrequency(3, 1);
     }
     
     // References

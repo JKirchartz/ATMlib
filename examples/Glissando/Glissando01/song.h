@@ -11,8 +11,8 @@ Song music[] = {                // total song in bytes = 31
   0x09, 0x00,                   // Address of track 2
   0x01,                         // Channel 0 entry track (PULSE)
   0x00,                         // Channel 1 entry track (SQUARE)
-  0x06,                         // Channel 2 entry track (TRIANGLE)
-  0x03,                         // Channel 3 entry track (NOISE)
+  0x00,                         // Channel 2 entry track (TRIANGLE)
+  0x00,                         // Channel 3 entry track (NOISE)
 
   //"Track 0"                   // ticks = 0, bytes = 3
   0x40, 0,                      // FX: SET VOLUME: volume = 0
