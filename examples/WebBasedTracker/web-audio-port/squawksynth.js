@@ -66,10 +66,20 @@ function SquawkSynth() {
   function _setFrequency(oscillator, freq) {
     osc[oscillator].freq = freq;
   }
+
+    // Read frequency (UBYTE)
+  function _readFrequency(oscillator) {
+    return osc[oscillator].freq;
+  }
   
   // Set volume (UBYTE)
   function _setVolume(oscillator, vol) {
     osc[oscillator].vol = vol;
+  }
+
+  // Read volume (UBYTE)
+  function _readVolume(oscillator) {
+    return osc[oscillator].vol;
   }
   
   // Set tick time in samples (UWORD)
@@ -103,7 +113,9 @@ function SquawkSynth() {
   
   // References
   this.setFrequency = _setFrequency;
+  this.readFrequency = _readFrequency;
   this.setVolume = _setVolume;
+  this.readVolume = _readVolume;
   this.setTick = _setTick;
   this.connect = _connect;
   this.sample = _sample;

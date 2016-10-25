@@ -145,33 +145,32 @@ function SquawkStream(sampleRate) {
         else glisCount++;
       }
 
-      // Apply volume slides
+      // Apply volume slides -> WORKING HURRAY :)
       if (volSlide != 0) {
         if (volCount == 0) {
-          var v = this.vol;
-          //v += volSlide;
-          //if ((volConfig & 0x80) != 0) {
-          //  if (v < 0) v = 0;
-          //  else if (v > 63) v = 63;
-          //}
-          v = v + 10;
-          synth.setVolume(id,v);
+          var v = synth.readVolume(id);
+          v += volSlide;
+          if ((volConfig & 0x80) != 0) {
+            if (v < 0) v = 0;
+            else if (v > 63) v = 63;
+          }
+          synth.setVolume(id, v);
         }
         if (volCount++ >= (volConfig & 0x7F)) volCount = 0;
       }
 
-      // Apply frequency slides
+      // Apply frequency slides -> WORKING HURRAY :)
       if ( freqSlide != 0) {
-        //if (!freqCount) {
-          //uint16_t f = freq;
-          //f += ch ->freqSlide;
-          //if (!(freqConfig & 0x80)) {
-            //if (f < 0) f = 0;
-            //else if (f > 9397) f = 9397;
-          //}
-          //freq = f;
-        //}
-        //if (freqCount++ >= (freqConfig & 0x7F)) freqCount = 0;
+        if (freqCount == 0) {
+          var f = synth.readFrequency(id);
+          f += freqSlide;
+          if ((freqConfig & 0x80) != 0) {
+            if (f < 0) f = 0;
+            else if (f > 9397) f = 9397;
+          }
+          synth.setFrequency(id, f);
+        }
+        if (freqCount++ >= (freqConfig & 0x7F)) freqCount = 0;
       }
 
       // Apply Arpeggio
