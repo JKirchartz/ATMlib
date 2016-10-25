@@ -190,27 +190,27 @@ function SquawkStream(sampleRate) {
       // Apply Tremolo or Vibrato
       if (treviDepth != 0) {
         //Tremolo (0) or Vibrato (1) ?
-        //if (!(treviConfig & 0x40)) {
-          //char v = vol;
-          //if (treviCount & 0x80) v += treviDepth & 0x1F;
-          //else v -= treviDepth & 0x1F;
-          //if (v < 0) v = 0;
-          //else if (v > 63) v = 63;
-          //vol = v;
-        //}
-        //else {
-          //int16_t f = freq;
-          //if (treviCount & 0x80) f += treviDepth & 0x1F;
-          //else f -= treviDepth & 0x1F;
-          //if (f < 0) f = 0;
-          //else if (f > 9397) f = 9397;
-          //freq = f;
-        //}
-        //if ((treviCount & 0x1F) < (treviConfig & 0x1F)) treviCount++;
-        //else {
-          //if (treviCount & 0x80) treviCount = 0;
-          //else (treviCount) = 0x80;
-        //}
+        if ((treviConfig & 0x40) == 0) {
+          var v = synth.readVolume(id);
+          if ((treviCount & 0x80) != 0) v += (treviDepth & 0x1F);
+          else v -= (treviDepth & 0x1F);
+          if (v < 0) v = 0;
+          else if (v > 63) v = 63;
+          vol = v;
+        }
+        else {
+          var f = synth.readFrequency(id);
+          if ((treviCount & 0x80) != 0) f += treviDepth & 0x1F;
+          else f -= treviDepth & 0x1F;
+          if (f < 0) f = 0;
+          else if (f > 9397) f = 9397;
+          synth.setFrequency(id, f);
+        }
+        if ((treviCount & 0x1F) < (treviConfig & 0x1F)) treviCount++;
+        else {
+          if ((treviCount & 0x80) != 0) treviCount = 0;
+          else treviCount = 128;
+        }
       }
 
 
