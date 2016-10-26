@@ -37,7 +37,7 @@ Song music[] = {                // total song in bytes = 61
 
   //"Track 4"                   // ticks = 63, bytes = 13
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0x41, -16,                    // FX: VOLUME SLIDE ON: steps = -8
+  0x41, -16,                    // FX: VOLUME SLIDE ON: steps = -16
   0x9F + 16,                    // DELAY: 16 ticks
   0x40, 32,                     // FX: SET VOLUME: volume = 32
   0x41, -8,                     // FX: VOLUME SLIDE ON: steps = -8
