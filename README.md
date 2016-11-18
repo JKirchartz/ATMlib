@@ -75,6 +75,8 @@
 | **D**      | Transposition OFF |  | stops the transposition |
 | **E**      | set Tremolo or Vibrato (*__Y__*)(*__Z__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__Y__]*  includes 2 parameters: WWAAAAAA Waveform (0 = sine, 1 = saw, 2= square, 3= noise), Depth.<br /> *[__Z__]* and includes 4 parameters: RTxBBBBB Retrig, TremoloOrVibrato, reserved , rate<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined|
 | **F**      | Tremolo or Vibrato OFF|  | stops the tremolo or vibrato |
+| **10**      | SET Glissando|  |  |
+| **11**      | Glissando OFF|  | stops the Glissando |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
 
