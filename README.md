@@ -73,9 +73,9 @@
 | **B**      | add Transposition (*__X__*)| UBYTE (8-bit) | shifts the played notes by adding *[__X__]* to the existing transposition for all playing notes.<br />**_Note:_**<br /> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
 | **C**      | set Transposition (*__X__*)| UBYTE (8-bit) | shifts the played notes by setting the transposition to [__X__]* for all playing notes.<br />**_Note:_**<br /> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
 | **D**      | Transposition OFF |  | stops the transposition |
-| **E**      | set Tremolo or Vibrato (*__Y__*)(*__Z__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__Y__]*  includes 2 parameters: WWAAAAAA Waveform (0 = sine, 1 = saw, 2= square, 3= noise), Depth.<br /> *[__Z__]* and includes 4 parameters: RTxBBBBB Retrig, TremoloOrVibrato, reserved , rate<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined|
+| **E**      | set Tremolo or Vibrato (*__Y__*)(*__Z__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__Y__]* sets Depth.<br /> *[__Z__]* includes 4 parameters: RTxBBBBB Retrig, TremoloOrVibrato, reserved , rate<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined|
 | **F**      | Tremolo or Vibrato OFF|  | stops the tremolo or vibrato |
-| **10**      | SET Glissando|  |  |
+| **10**      | SET Glissando (*__X__*)| UBYTE (8-bit) | *[__X__]* includes 2 parameters: VTTTTTTT  Value ( 0 = go 1 note up, 1 = go 1 note down) and Ticks (amount of ticks, between each step)
 | **11**      | Glissando OFF|  | stops the Glissando |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
@@ -93,6 +93,6 @@
 * Transposition (also for microtonals): play [notes](https://en.wikipedia.org/wiki/Musical_note "note wikipedia") in a different key, or fine tune notes to provide microtonals; frequencies that are in between notes.
 * Tremolo: a slight, rapid and regular fluctuation in the amplitude/volume of a [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia").
 * Vibrato: a slight, rapid and regular fluctuation in the [pitch](https://en.wikipedia.org/wiki/Pitch_(music) "pitch wikipedia") of a [note](https://en.wikipedia.org/wiki/Musical_note "note wikipedia").
-* Envelopes (instruments): the [attack, sustain, and decay](https://en.wikipedia.org/wiki/Synthesizer#Attack_Decay_Sustain_Release_.28ADSR.29_envelope "envelope wikipedia") of a sound.
 * Glissando: controls if and how a gradual frequency slide "snaps" to adjacent notes.
+* Envelopes (instruments): the [attack, sustain, and decay](https://en.wikipedia.org/wiki/Synthesizer#Attack_Decay_Sustain_Release_.28ADSR.29_envelope "envelope wikipedia") of a sound.
 * Note cut (with delay and automation): provides a method to stutter and adjust note timing.
