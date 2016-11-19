@@ -77,7 +77,7 @@
 | **64+15**      | Tremolo or Vibrato OFF|  | stops the tremolo or vibrato |
 | **64+16**      | SET Glissando (*__X__*)| UBYTE (8-bit) | *[__X__]* includes 2 parameters: VTTTTTTT  Value ( 0 = go 1 note up, 1 = go 1 note down) and Ticks (amount of ticks, between each step) |
 | **64+17**      | Glissando OFF|  | stops the Glissando |
-| **64+18**      | SET Note Cut (*__X__*)| UBYTE (8-bit) | *[__X__]* sets the equal amount of ticks between note ON and OFF
+| **64+18**      | SET Note Cut (*__X__*)(*__Y__*)| UBYTE (8-bit) UBYTE (8-bit) | *[__X__]* using 0xFF activates Note Cut and *[__Y__]* sets the equal amount of ticks between note ON and OFF
 | **64+19**      | Note Cut Off|  | stops the Note Cut |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
