@@ -80,16 +80,20 @@ struct ch_t {
   byte reCount;
 
   // transposition
-  char tranConfig;
+  char transConfig;
 
-  //Tremolo or Vibrato
+  // Tremolo or Vibrato
   byte treviDepth;
   byte treviConfig;
   byte treviCount;
 
-  //Glissando
+  // Glissando
   char glisConfig;
   byte glisCount;
+
+  // Note cut
+  byte noteConfig;
+  byte noteCount;
 };
 
 ch_t channel[4];
@@ -239,8 +243,8 @@ void ATM_playroutine() {
         else ch->arpCount = 0x00;
         byte arpNote = ch->note;
         if ((ch->arpCount & 0xE0) != 0x00) arpNote += (ch->arpNotes >> 4);
-        if ((ch->arpCount & 0xE0) == 0x40) arpNote += (ch->arpNotes & 15);
-        ch->freq = pgm_read_word(&noteTable[arpNote + ch->tranConfig]);
+        if ((ch->arpCount & 0xE0) == 0x40) arpNote += (ch->arpNotes & 0x0F);
+        ch->freq = pgm_read_word(&noteTable[arpNote + ch->transConfig]);
       }
     }
 
@@ -266,9 +270,18 @@ void ATM_playroutine() {
       if ((ch->treviCount & 0x1F) < (ch->treviConfig & 0x1F)) ch->treviCount++;
       else {
         if (ch->treviCount & 0x80) ch->treviCount = 0;
-        else (ch->treviCount) = 0x80;
+        else ch->treviCount = 0x80;
       }
+    }
 
+    // Apply Note Cut
+    if (ch->noteConfig) {
+      if (ch->noteCount < ch->noteConfig) ch->noteCount++;
+      else {
+        ch->noteCount = 0;
+        if (ch->freq) ch->freq = 0;
+        else ch->freq = pgm_read_word(&noteTable[ch->note]);
+      }
     }
 
     if (ch->delay) ch->delay--;
@@ -277,7 +290,7 @@ void ATM_playroutine() {
         byte cmd = pgm_read_byte(ch->ptr++);
         if (cmd < 64) {
           // 0 … 63 : NOTE ON/OFF
-          if (ch->note = cmd) ch->note += ch->tranConfig;
+          if (ch->note = cmd) ch->note += ch->transConfig;
           ch->freq = pgm_read_word(&noteTable[ch->note]);
           if (ch->arpTiming & 0x20) ch->arpCount = 0; // ARP retriggering
           ch->delay = 1;
@@ -321,13 +334,13 @@ void ATM_playroutine() {
               ch->reConfig = 0;
               break;
             case 11: // ADD Transposition
-              ch->tranConfig += (char)pgm_read_byte(ch->ptr++);
+              ch->transConfig += (char)pgm_read_byte(ch->ptr++);
               break;
             case 12: // SET Transposition
-              ch->tranConfig = pgm_read_byte(ch->ptr++);
+              ch->transConfig = pgm_read_byte(ch->ptr++);
               break;
             case 13: // Transposition OFF
-              ch->tranConfig = 0;
+              ch->transConfig = 0;
               break;
             case 14: // SET Tremolo or Vibrato
               ch->treviDepth = pgm_read_word(ch->ptr++);
@@ -339,8 +352,14 @@ void ATM_playroutine() {
             case 16: // Glissando
               ch->glisConfig = pgm_read_byte(ch->ptr++);
               break;
-            case 17: // glissando OFF
+            case 17: // Glissando OFF
               ch->glisConfig = 0;
+              break;
+            case 18: // Set Note cut
+              ch->noteConfig = pgm_read_byte(ch->ptr++);
+              break;
+            case 19: // Note cut OFF
+              ch->noteConfig = 0;
               break;
           }
         } else if (cmd < 224) {
