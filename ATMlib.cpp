@@ -112,9 +112,10 @@ static inline const byte *getTrackPointer(byte track) {
 
 ATMSynth ATM;
 
-// Initializes ATMSynth
-// Sets up the ports, and the sample grinding ISR
-void ATMSynth::begin(uint16_t hz) {
+
+void ATMSynth::play(const byte *song, uint16_t hz, uint16_t new_tempo) {
+  // Initializes ATMSynth
+  // Sets up the ports, and the sample grinding ISR
   sample_rate = hz;
   cia = sample_rate / tick_rate;
 
@@ -128,10 +129,9 @@ void ATMSynth::begin(uint16_t hz) {
   OCR4C  = 0xFF;          // Resolution to 8-bit (TOP=0xFF)
   OCR4A  = 0x80;
   TIMSK4 = 0b00000100;
-}
 
-// Load a melody stream and start grinding samples
-void ATMSynth::play(const byte *song) {
+
+  // Load a melody stream and start grinding samples
   // Read track count
   trackCount = pgm_read_byte(song++);
   // Store track list pointer
@@ -142,28 +142,22 @@ void ATMSynth::play(const byte *song) {
   for (unsigned n = 0; n < 4; n++) {
     channel[n].ptr = getTrackPointer(pgm_read_byte(song++));
   }
+
+  // Sets tempo
+  tick_rate = new_tempo;
+  cia = sample_rate / tick_rate; // not atomic?
 }
+
 
 // Start grinding samples or Pause playback
 void ATMSynth::playPause() {
-  TIMSK4 = TIMSK4 ^ 0b00000100; // Disable interrupt
+  TIMSK4 = TIMSK4 ^ 0b00000100; // switch between disable/anable interrupt
 }
 
 // Stop playing, unload melody
 void ATMSynth::stop() {
   TIMSK4 = 0; // Disable interrupt
-  trackCount = 0; // Unload melody
-  trackList = 0;
-  trackBase = 0;
-  for (unsigned n = 0; n < 4; n++) {
-    channel[n].ptr = 0;
-  }
-}
-
-// Sets tempo
-void ATMSynth::tempo(uint16_t new_tempo) {
-  tick_rate = new_tempo;
-  cia = sample_rate / tick_rate; // not atomic?
+  memset(channel,0,sizeof(channel));
 }
 
 void mutebeforexfx(byte ch) {
@@ -284,7 +278,6 @@ void ATM_playroutine() {
           if (ch->note = cmd) ch->note += ch->transConfig;
           ch->freq = pgm_read_word(&noteTable[ch->note]);
           if (ch->arpTiming & 0x20) ch->arpCount = 0; // ARP retriggering
-          ch->delay = 1;
         } else if (cmd < 160) {
           // 64 … 159 : SETUP FX
           switch (cmd - 64) {

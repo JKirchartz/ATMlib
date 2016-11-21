@@ -25,21 +25,17 @@ class ATMSynth {
   public:
     ATMSynth() {};
 
-    // Initialize Squawk to generate samples at sample_rate Hz
-    void begin(uint16_t sample_rate);
-
     // Load and play specified song
     // song needs to point to PROGMEM data
-    void play(const byte *song);
+    // Initialize Squawk to generate samples at sample_rate Hz
+    // Change the tempo - default is 50
+    void play(const byte *song, uint16_t hz, uint16_t new_tempo);
 
     // Play or Pause playback
     void playPause();
 
     // Stop playback (unloads song)
     void stop();
-
-    // Change the tempo - default is 50
-    void tempo(uint16_t tempo);
 
 };
 
