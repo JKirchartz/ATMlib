@@ -173,6 +173,7 @@ void ATM_playroutine() {
       else ch->reCount++;
     }
 
+
     //Apply Glissando
     if (ch->glisConfig) {
       if (ch->glisCount >= (ch->glisConfig & 0x7F)) {
@@ -186,11 +187,11 @@ void ATM_playroutine() {
       else ch->glisCount++;
     }
 
+
     // Apply volume/frequency slides
     if (ch->volfreSlide) {
       // Volume (0) or Frequency (1) slide?
-      if (!(ch->volfreConfig & 0x40))
-      {
+      if (!(ch->volfreConfig & 0x40)) {
         if (!ch->volfreCount) {
           int16_t v = ch->vol;
           v += ch->volfreSlide;
@@ -213,8 +214,9 @@ void ATM_playroutine() {
           ch->freq = f;
         }
       }
-      if (ch->volfreCount++ >= (ch->volfreConfig & 0x7F)) ch->volfreCount = 0;
+      if (ch->volfreCount++ >= (ch->volfreConfig & 0x3F)) ch->volfreCount = 0;
     }
+
 
     // Apply Arpeggio or Note Cut
     if (ch->arpNotes && ch->note) {
@@ -232,6 +234,7 @@ void ATM_playroutine() {
         ch->freq = pgm_read_word(&noteTable[arpNote + ch->transConfig]);
       }
     }
+
 
     // Apply Tremolo or Vibrato
     if (ch->treviDepth) {
@@ -276,7 +279,6 @@ void ATM_playroutine() {
               ch->vol = pgm_read_byte(ch->ptr++);
               break;
 
-
             case 1: // Slide volume ON
               ch->volfreSlide = pgm_read_byte(ch->ptr++);
               ch->volfreConfig = 0x00;
@@ -289,7 +291,6 @@ void ATM_playroutine() {
               ch->volfreSlide = 0;
               break;
 
-
             case 4: // Slide frequency ON
               ch->volfreSlide = pgm_read_byte(ch->ptr++);
               ch->volfreConfig = 0x40;
@@ -301,7 +302,6 @@ void ATM_playroutine() {
             case 6: // Slide frequency OFF
               ch->volfreSlide = 0;
               break;
-
 
             case 7: // Set Arpeggio
               ch->arpNotes = pgm_read_byte(ch->ptr++);    // 0x40 + 0x03
@@ -326,8 +326,6 @@ void ATM_playroutine() {
             case 13: // Transposition OFF
               ch->transConfig = 0;
               break;
-
-
             case 14: // SET Tremolo
               ch->treviDepth = pgm_read_word(ch->ptr++);
               ch->treviConfig = pgm_read_word(ch->ptr++);
@@ -343,7 +341,6 @@ void ATM_playroutine() {
             case 17: // Vibrato  OFF
               ch->treviDepth = 0;
               break;
-
 
             case 18: // Glissando
               ch->glisConfig = pgm_read_byte(ch->ptr++);

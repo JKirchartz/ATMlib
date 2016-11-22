@@ -53,9 +53,9 @@ Song music[] = {                // total song in bytes = 60
 
   //"track 6"                   // ticks = 64, bytes = 9
   0x40, 32,                     // FX: SET VOLUME: volume = 32
-  0x4E, 1, 0x00 + 0x00 + 30,    // SET TREMOLO OR VIBRATO: depth = 16 / retrig = OFF / TorV = TREMOLO / rate = 3
+  0x4E, 1, 0x00 + 30,           // SET TREMOLO: depth = 16 / retrig = OFF / rate = 3
   0x9F + 64,                    // DELAY: 64 ticks
-  0x4F,                         // TREMOLO OR VIBRATO OFF
+  0x4F,                         // TREMOLO OFF
 
   0xFE,                         // RETURN
 

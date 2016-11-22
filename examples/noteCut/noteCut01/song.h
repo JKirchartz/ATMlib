@@ -25,7 +25,7 @@ Song music[] = {                // total song in bytes = 76
 
   //"Track 2"                   // ticks = 64, bytes = 9
   0x00 + 36,                    // NOTE ON: note = 36
-  0x52, 0xFF, 0,                // FX: NOTE CUT: notes = FF = note cut active / ticks  = 0 between switching note ON and note OFF
+  0x54, 0,                      // FX: NOTE CUT: ticks  = 0 between switching note ON and note OFF
   0x9F + 64,                    // DELAY: 64 ticks
   0x00 + 39,                    // NOTE ON: note = 36
   0x9F + 64,                    // DELAY: 64 ticks

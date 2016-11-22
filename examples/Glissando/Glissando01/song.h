@@ -25,11 +25,11 @@ Song music[] = {                // total song in bytes = 31
 
   //"Track2"                    // ticks = 96, bytes = 11
   0x00 + 25,                    // NOTE ON: note = 25
-  0x50,  0x80 +2,               // FX: SET GLISSANDO: ticks = 2;
+  0x52, 0x80  +2,               // FX: SET GLISSANDO: ticks = 2;
   0x9F + 32,                    // DELAY: 32 ticks
-  0x50,  0x00 +2,               // FX: SET GLISSANDO: ticks = 2;
+  0x52, 0x00  +2,               // FX: SET GLISSANDO: ticks = 2;
   0x9F + 32,                    // DELAY: 32 ticks
-  0x51,                         // FX: GLISSANDO OFF
+  0x53,                         // FX: GLISSANDO OFF
   0x00,                         // NOTE OFF
   0x9F + 32,                    // DELAY: 32 ticks
   0xFE,                         // RETURN

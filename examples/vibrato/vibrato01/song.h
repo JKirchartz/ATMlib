@@ -21,13 +21,13 @@ Song music[] = {                // total song in bytes = 28
   //"Track 1"                   // ticks = 1024, bytes = 8
   0x40, 63,                     // FX: SET VOLUME: volume = 63
   0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 32 ticks)
-  0x4F,                         // TREMOLO or VIBRATO OFF
+  0x4F,                         // VIBRATO OFF
   0x00,                         // NOTE OFF
   0xFE,                         // RETURN
 
   //"Track2"                    // ticks = 32, bytes = 6
   0x00 + 37,                    // NOTE ON: note = 25
-  0x4E, 63, 0x00 + 0x40 + 3,    // SET TREMOLO OR VIBRATO: depth = 63 / retrig = OFF / TorV = VIBRATO / rate = 3
+  0x50, 63, 0x00 + 3,           // SET VIBRATO: depth = 63 / retrig = OFF / rate = 3
   0x9F + 32,                    // DELAY: 32 ticks
   0xFE,                         // RETURN
 
