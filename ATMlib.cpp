@@ -189,7 +189,7 @@ void ATM_playroutine() {
     // Apply volume/frequency slides
     if (ch->volfreSlide) {
       // Volume (0) or Frequency (1) slide?
-      if (!(ch->volfreSlide & 0x40))
+      if (!(ch->volfreConfig & 0x40))
       {
         if (!ch->volfreCount) {
           int16_t v = ch->vol;
@@ -277,24 +277,26 @@ void ATM_playroutine() {
               break;
 
 
-            case 1: // Slide volume/frequency ON
+            case 1: // Slide volume ON
               ch->volfreSlide = pgm_read_byte(ch->ptr++);
+              ch->volfreConfig = 0x00;
               break;
-            case 2: // Slide volume/frequency ON advanced
+            case 2: // Slide volume ON advanced
               ch->volfreSlide = pgm_read_byte(ch->ptr++);
               ch->volfreConfig = pgm_read_byte(ch->ptr++);
               break;
-            case 3: // Slide volume/frequency OFF (same as 0x01 0x00)
+            case 3: // Slide volume OFF (same as 0x01 0x00)
               ch->volfreSlide = 0;
               break;
 
 
             case 4: // Slide frequency ON
-              ch->volfreSlide = pgm_read_byte(ch->ptr++)  + 0x40;
+              ch->volfreSlide = pgm_read_byte(ch->ptr++);
+              ch->volfreConfig = 0x40;
               break;
             case 5: // Slide frequency ON advanced
-              ch->volfreSlide = pgm_read_byte(ch->ptr++) + 0x40;
-              ch->volfreConfig = pgm_read_byte(ch->ptr++);
+              ch->volfreSlide = pgm_read_byte(ch->ptr++);
+              ch->volfreConfig = pgm_read_byte(ch->ptr++) + 0x40;
               break;
             case 6: // Slide frequency OFF
               ch->volfreSlide = 0;
@@ -314,6 +316,7 @@ void ATM_playroutine() {
             case 10: // Retriggering (noise) OFF
               ch->reConfig = 0;
               break;
+
             case 11: // ADD Transposition
               ch->transConfig += (char)pgm_read_byte(ch->ptr++);
               break;
