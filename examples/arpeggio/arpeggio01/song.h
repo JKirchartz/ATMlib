@@ -17,17 +17,17 @@ Song music[] = {                // total song in bytes = 27
 
   //"Track 0"                   // ticks = 0, bytes = 3
   0x40, 0,                      // FX: SET VOLUME: volume = 0
-  0xFE,                         // RETURN (empty track used for silent channels)
+  0xFE,                         // RETURN
 
   //"Track 1"                   // ticks = 2048, bytes = 6
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0xFD, 32, 2,                  // REPEAT: count = 32 - track = 2  (32 * 64 ticks)
+  0xFD, 32, 2,                  // REPEAT: count = 32 / track = 2  (32 * 64 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 64, bytes = 7
-  0x00 + 36,                    // NOTE ON: note = 36 (delay 1 tick)
+  0x00 + 36,                    // NOTE ON: note = 36
   0x47, 0x43, 0x00 + 0x00 + 20, // FX: ARPEGGIO ON: notes =  +4 +3 / don't play third note = OFF / ritrigger = OFF / ticks = 20
-  0x9F + 63,                    // DELAY: 63 ticks
+  0x9F + 64,                    // DELAY: 64 ticks
   0x48,                         // FX: ARPEGGIO OFF
   0xFE,                         // RETURN
 

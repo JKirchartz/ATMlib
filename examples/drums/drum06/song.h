@@ -21,30 +21,30 @@ Song music[] = {                // total song in bytes = 84
   0xFE,                         // RETURN
 
   //"Track 1"                   // ticks = 7168, bytes = 4
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 224 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 224 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 224, bytes = 47
-  0xFD, 14, 3,                  // REPEAT: count = 15 - track = 3  (30 ticks)
+  0xFD, 14, 3,                  // REPEAT: count = 15 / track = 3  (30 ticks)
   0x40,  0,                     // FX: SET VOLUME: volume = 0
   0x9F + 2,                     // DELAY: ticks = 2                ( 2 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
   0x9F + 8,                     // DELAY: ticks = 8                ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
   0x9F + 40,                    // DELAY: ticks = 40               (40 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
   0x9F + 8,                     // DELAY: ticks = 8                ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
   0x9F + 8,                     // DELAY: ticks = 8                ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
   0x9F + 8,                     // DELAY: ticks = 8                ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
   0x9F + 8,                     // DELAY: ticks = 8                ( 8 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4   ( 8 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4   ( 8 ticks)
   0x9F + 24,                    // DELAY: ticks = 24               (24 ticks)
   0xFE,                         // RETURN
 

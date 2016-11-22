@@ -21,20 +21,20 @@ Song music[] = {                // total song in bytes = 59
   0xFE,                         // RETURN (empty track used for silent channels)
 
   //"Track 1"                   // ticks = 160, bytes = 12
-  0xFD, 0, 2,                   // REPEAT: count = 1 - track = 2 (48 ticks)
+  0xFD, 0, 2,                   // REPEAT: count = 1 / track = 2 (48 ticks)
   0x9F + 8,                     // DELAY: ticks = 8              ( 8 ticks)
-  0xFD, 0, 2,                   // REPEAT: count = 1 - track = 2 (48 ticks)
+  0xFD, 0, 2,                   // REPEAT: count = 1 / track = 2 (48 ticks)
   0x9F + 8,                     // DELAY: ticks = 8              ( 8 ticks)
-  0xFD, 0, 2,                   // REPEAT: count = 1 - track = 2 (48 ticks)
+  0xFD, 0, 2,                   // REPEAT: count = 1 / track = 2 (48 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 48, bytes = 15
-  0xFD,  5, 3,                  // REPEAT: count = 6 - track = 3 (12 ticks)
+  0xFD,  5, 3,                  // REPEAT: count = 6 / track = 3 (12 ticks)
   0x40,  0,                     // FX: SET VOLUME: volume = 0
   0x9F + 4,                     // DELAY: ticks = 4              ( 4 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4 ( 4 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4 ( 4 ticks)
   0x9F + 12,                    // DELAY: ticks = 12             (12 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4 ( 4 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4 ( 4 ticks)
   0x9F + 12,                    // DELAY: ticks = 12             (12 ticks)
   0xFE,                         // RETURN
 

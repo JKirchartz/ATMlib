@@ -19,7 +19,7 @@ Song music[] = {                // total song in bytes = 38
   0xFE,                         // RETURN
 
   //"Track 1"                   // ticks = 2048, bytes = 4
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 *64 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 *64 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 64, bytes = 20

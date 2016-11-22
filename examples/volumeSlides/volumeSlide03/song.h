@@ -16,12 +16,12 @@ Song music[] = {                // total song in bytes = 36
 
   //"Track 0"                   // ticks = 0, bytes = 3
   0x40, 0,                      // FX: SET VOLUME: volume = 0
-  0xFE,                         // RETURN (empty track used for silent channels)
+  0xFE,                         // RETURN
 
   //"Track 1"                   // ticks = 768, bytes = 9
   0x40, 0,                      // FX: SET VOLUME: volume = 0
   0x42, 2, 24,                  // FX: VOLUME SLIDE ON: steps = 2 / every ticks = 24
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 24 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 24 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 24, bytes = 13

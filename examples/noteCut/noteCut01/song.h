@@ -20,19 +20,19 @@ Song music[] = {                // total song in bytes = 76
 
   //"Track 1"                   // ticks = 2048, bytes = 6
   0x40, 16,                     // FX: SET VOLUME: volume = 63
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 64 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 64 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 64, bytes = 9
   0x00 + 36,                    // NOTE ON: note = 36
   0x52, 0xFF, 0,                // FX: NOTE CUT: notes = FF = note cut active / ticks  = 0 between switching note ON and note OFF
-  0x9F + 64,                    // DELAY: 63 ticks
-  0x00 + 39,                    // NOTE ON: note = 36 (delay 1 tick)
-  0x9F + 64,                    // DELAY: 63 ticks
-  0x00 + 41,                    // NOTE ON: note = 36 (delay 1 tick)
-  0x9F + 64,                    // DELAY: 63 ticks
-  0x00 + 39,                    // NOTE ON: note = 36 (delay 1 tick)
-  0x9F + 64,                    // DELAY: 63 ticks
+  0x9F + 64,                    // DELAY: 64 ticks
+  0x00 + 39,                    // NOTE ON: note = 36
+  0x9F + 64,                    // DELAY: 64 ticks
+  0x00 + 41,                    // NOTE ON: note = 36
+  0x9F + 64,                    // DELAY: 64 ticks
+  0x00 + 39,                    // NOTE ON: note = 36
+  0x9F + 64,                    // DELAY: 64 ticks
   0xFE,                         // RETURN
 
 };

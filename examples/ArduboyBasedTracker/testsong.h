@@ -61,12 +61,12 @@ Song testmusic[] = {   // A) Sample music =>
 
   //"Track 4"
   0x40, 48,      // FX: SET VOLUME: volume = 48
-  0xFD, 32, 3,   // REPEAT: count = 32 - track = 3
+  0xFD, 32, 3,   // REPEAT: count = 32 / track = 3
 
   0xFE,          // RETURN
 
   //"Track 5"
-  0xFD, 32, 6,   // REPEAT: count = 32 - track = 6
+  0xFD, 32, 6,   // REPEAT: count = 32 / track = 6
   0xFE,          // RETURN
 
   //"Track 6"
@@ -117,7 +117,7 @@ Song testmusic[] = {   // A) Sample music =>
 
   //"Track 7"
   0x40, 63,      // FX: SET VOLUME: volume = 00
-  0xFD, 128, 8,   // REPEAT: count = 32 - track = 8
+  0xFD, 128, 8,   // REPEAT: count = 32 / track = 8
 
   0xFE,          // RETURN
 

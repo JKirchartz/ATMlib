@@ -25,10 +25,10 @@ Song music[] = {                // total song in bytes = 52
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 128, bytes = 14
-  0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3  (32 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 - track = 4  (16 ticks)
-  0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3  (32 ticks)
-  0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3  (32 ticks)
+  0xFD, 0, 3,                   // REPEAT: count = 1 / track = 3  (32 ticks)
+  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4  (16 ticks)
+  0xFD, 0, 3,                   // REPEAT: count = 1 / track = 3  (32 ticks)
+  0xFD, 0, 3,                   // REPEAT: count = 1 / track = 3  (32 ticks)
   0x9F + 16,                    // DELAY: ticks = 16              (16 ticks)
   0xFE,                         // RETURN
 

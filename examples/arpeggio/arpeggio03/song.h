@@ -23,36 +23,36 @@ Song music[] = {                // total song in bytes = 76
 
   //"Track 1"                   // ticks = 3072, bytes = 6
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 96 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 96 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 96, bytes = 21
-  0x00 + 24,                    // NOTE ON: note = 24 (delay 1 tick)
-  0x9F + 23,                    // DELAY: 23 ticks
-  0x00 + 36,                    // NOTE ON: note = 36 (delay 1 tick)
+  0x00 + 24,                    // NOTE ON: note = 24
+  0x9F + 24,                    // DELAY: 24 ticks
+  0x00 + 36,                    // NOTE ON: note = 36
   0x47, 0x43, 0x00 + 0x00 + 0,  // FX: ARPEGGIO ON: notes =  +4 +3 / don't play third note = OFF / ritrigger = OFF / ticks = 0
-  0x9F +  7,                    // DELAY: 7 ticks
-  0x00,                         // NOTE OFF (delay 1 tick)
+  0x9F +  8,                    // DELAY: 8 ticks
+  0x00,                         // NOTE OFF
   0x48,                         // FX: ARPEGGIO OFF
-  0x9F + 15,                    // DELAY: 15 ticks
-  0x00 + 22,                    // NOTE ON: note = 22 (delay 1 tick)
-  0x9F + 23,                    // DELAY: 23 ticks
-  0x00 + 34,                    // NOTE ON: note = 34 (delay 1 tick)
+  0x9F + 16,                    // DELAY: 16 ticks
+  0x00 + 22,                    // NOTE ON: note = 22
+  0x9F + 24,                    // DELAY: 24 ticks
+  0x00 + 34,                    // NOTE ON: note = 34
   0x47, 0x43, 0x00 + 0x00 + 0,  // FX: ARPEGGIO ON: notes =  +4 +3 / don't play third note = OFF / ritrigger = OFF / ticks = 0
-  0x9F +  7,                    // DELAY: 7 ticks
-  0x00,                         // NOTE OFF (delay 1 tick)
+  0x9F +  8,                    // DELAY: 8 ticks
+  0x00,                         // NOTE OFF
   0x48,                         // FX: ARPEGGIO OFF
-  0x9F + 15,                    // DELAY: 15 ticks
+  0x9F + 16,                    // DELAY: 16 ticks
   0xFE,                         // RETURN
 
   //"Track 3"                   // ticks = 3072, bytes = 4
-  0xFD, 31, 4,                  // REPEAT: count = 32 - track = 4  (32 * 96 ticks)
+  0xFD, 31, 4,                  // REPEAT: count = 32 / track = 4  (32 * 96 ticks)
   0xFE,                         // RETURN
 
   //"Track 4"                   // ticks = 96, bytes = 18
-  0xFD, 1, 5,                   // REPEAT: count = 2 - track = 5  (24 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (24 ticks)
   0x9F + 12,                    // DELAY: 12 ticks
-  0xFD, 1, 5,                   // REPEAT: count = 2 - track = 5  (24 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (24 ticks)
   0x9F + 12,                    // DELAY: 12 ticks
   0x49, 4 + 0,                  // FX: RETRIG: point = 1 (*4), speed = 0 (fastest)
   0x40, 48,                     // FX: SET VOLUME: volume = 63

@@ -19,19 +19,19 @@ Song music[] = {                // total song in bytes = 31
   0xFE,                         // RETURN (empty track used for silent channels)
 
   //"Track 1"                   // ticks = 1024, bytes = 4
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 32 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 32 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 32, bytes = 13
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0x00 + 1,                     // NOTE ON: note = 1 (delay 1 tick)
+  0x00 + 1,                     // NOTE ON: note = 1
   0x44, -65,                    // FX: FREQUENCY SLIDE ON: steps = -65
   0x41, -16,                    // FX: VOLUME SLIDE ON: steps = -16
   0x9F + 4,                     // DELAY: ticks = 4
   0x46,                         // FX: FREQUENCY SLIDE OFF
   0x43,                         // FX: VOLUME SLIDE OFF
-  0x00,                         // NOTE OFF (delay 1 tick)
-  0x9F + 26,                    // DELAY: ticks = 26
+  0x00,                         // NOTE OFF
+  0x9F + 28,                    // DELAY: ticks = 32
   0xFE,                         // RETURN
 };
 

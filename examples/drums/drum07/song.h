@@ -22,13 +22,13 @@ Song music[] = {                // total song in bytes = 55
   0xFE,                         // RETURN
 
   //"Track 1"                   // ticks = 2048, bytes = 4
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 64 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 64 ticks)
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 64, bytes = 9
-  0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3  ( 6 ticks)
+  0xFD, 0, 3,                   // REPEAT: count = 1 / track = 3  ( 6 ticks)
   0x9F + 10,                    // DELAY: ticks = 10              (10 ticks)
-  0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3  ( 6 ticks)
+  0xFD, 0, 3,                   // REPEAT: count = 1 / track = 3  ( 6 ticks)
   0x9F + 42,                    // DELAY: ticks = 42              (42 ticks)
   0xFE,                         // RETURN
 
@@ -42,7 +42,7 @@ Song music[] = {                // total song in bytes = 55
   0xFE,                         // RETURN
 
   //"Track 4"                   // ticks = 2048, bytes = 4
-  0xFD, 31, 5,                  // REPEAT: count = 32 - track = 5 (32 * 64 ticks)
+  0xFD, 31, 5,                  // REPEAT: count = 32 / track = 5 (32 * 64 ticks)
   0xFE,                         // RETURN
 
   //"Track 5"                   // ticks = 64, bytes = 9

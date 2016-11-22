@@ -25,13 +25,13 @@ Song music[] = {                // total song in bytes = 76
 
   //"Track 1"                   // ticks = 2048, bytes = 6
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 64 ticks) 
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 64 ticks) 
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 64, bytes = 9
-  0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3 ( 6 ticks)
+  0xFD, 0, 3,                   // REPEAT: count = 1 / track = 3 ( 6 ticks)
   0x9F + 10,                    // DELAY: ticks = 10             (10 ticks)
-  0xFD, 0, 3,                   // REPEAT: count = 1 - track = 3 ( 6 ticks)
+  0xFD, 0, 3,                   // REPEAT: count = 1 / track = 3 ( 6 ticks)
   0x9F + 42,                    // DELAY: ticks = 42             (42 ticks)
   0xFE,                         // RETURN
 
@@ -46,12 +46,12 @@ Song music[] = {                // total song in bytes = 76
 
   //"Track 4"                   // ticks = 32 * 64 = 2048, bytes = 6
   0x40, 0,                      // FX: SET VOLUME: volume = 0
-  0xFD, 31, 5,                  // REPEAT: count = 32 - track = 5 (64 ticks) 
+  0xFD, 31, 5,                  // REPEAT: count = 32 / track = 5 (64 ticks) 
   0xFE,                         // RETURN
 
   //"Track 5"                   // ticks = 64, bytes = 7
-  0xFD, 5, 7,                   // REPEAT: count = 6 - track = 7  (48 ticks)
-  0xFD, 0, 6,                   // REPEAT: count = 1 - track = 6  (16 ticks) 
+  0xFD, 5, 7,                   // REPEAT: count = 6 / track = 7  (48 ticks)
+  0xFD, 0, 6,                   // REPEAT: count = 1 / track = 6  (16 ticks) 
   0xFE,                         // RETURN
 
   //"Track 6"                   // ticks = 16, bytes = 7

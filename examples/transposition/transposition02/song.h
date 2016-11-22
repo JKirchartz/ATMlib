@@ -3,7 +3,7 @@
 
 #define Song const uint8_t PROGMEM
 
-Song music[] = {                // total song in bytes = 79
+Song music[] = {                // total song in bytes = 78
   //                            // setup bytes 19
   0x07,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0
@@ -23,27 +23,27 @@ Song music[] = {                // total song in bytes = 79
   0xFE,                         // RETURN
 
   //"Track 1"                   // ticks = 2048, bytes = 21
-  0xFD, 3, 3,                   // REPEAT: count = 32 - track = 2  (32 * 64 ticks)
+  0xFD, 3, 3,                   // REPEAT: count = 32 / track = 2  (32 * 64 ticks)
   0x4B, 3,                      // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 3, 3,                   // REPEAT: count = 32 - track = 2  (32 * 64 ticks)
+  0xFD, 3, 3,                   // REPEAT: count = 32 / track = 2  (32 * 64 ticks)
   0x4B, -1,                     // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 3, 3,                   // REPEAT: count = 32 - track = 2  (32 * 64 ticks)
+  0xFD, 3, 3,                   // REPEAT: count = 32 / track = 2  (32 * 64 ticks)
   0x4B, -2,                     // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 3, 3,                   // REPEAT: count = 32 - track = 2  (32 * 64 ticks)
+  0xFD, 3, 3,                   // REPEAT: count = 32 / track = 2  (32 * 64 ticks)
   0xFC, 1,                      // GOTO: track = 1
   0xFE,                         // RETURN
 
   //"Track 2"                   // ticks = 2048, bytes = 6
-  0xFD, 31, 5,                  // REPEAT: count = 32 - track = 5  (32 * 64 ticks)
+  0xFD, 31, 5,                  // REPEAT: count = 32 / track = 5  (32 * 64 ticks)
   0xFC, 2,                      // GOTO: track = 2
   0xFE,                         // RETURN
 
   //"Track 3"                   // ticks = 64, bytes = 4
-  0x00 + 49,                    // NOTE ON: note = 22 (delay 1 tick)
-  0xFC, 4,                      // GOTO: track = 4 (63 ticks)
+  0x00 + 49,                    // NOTE ON: note = 22
+  0xFC, 4,                      // GOTO: track = 4 (64 ticks)
   0xFE,                         // RETURN
 
-  //"Track 4"                   // ticks = 63, bytes = 13
+  //"Track 4"                   // ticks = 64, bytes = 13
   0x40, 63,                     // FX: SET VOLUME: volume = 63
   0x41, -16,                    // FX: VOLUME SLIDE ON: steps = -16
   0x9F + 16,                    // DELAY: 16 ticks
@@ -51,20 +51,19 @@ Song music[] = {                // total song in bytes = 79
   0x41, -8,                     // FX: VOLUME SLIDE ON: steps = -8
   0x9F + 4,                     // DELAY: 4 ticks
   0x43,                         // FX: VOLUME SLIDE OFF
-  0x9F + 43,                    // DELAY: 43 ticks
+  0x9F + 44,                    // DELAY: 44 ticks
   0xFE,                         // RETURN
 
   //"Track 5"                   // ticks = 64, bytes = 4
-  0x00 + 13,                    // NOTE ON: note = 13 (delay 1 tick)
-  0xFC, 6,                      // GOTO: track = 6 (63 ticks)
+  0x00 + 13,                    // NOTE ON: note = 13
+  0xFC, 6,                      // GOTO: track = 6 (64 ticks)
   0xFE,                         // RETURN
 
-  //"track 6"                   // ticks = 63, bytes = 9
+  //"track 6"                   // ticks = 64, bytes = 8
   0x40, 32,                     // FX: SET VOLUME: volume = 32
   0x4E, 1, 0x00 + 0x00 + 30,    // SET TREMOLO OR VIBRATO: depth = 16 / retrig = OFF / TorV = TREMOLO / rate = 3
-  0x9F + 62,                    // DELAY: 62 ticks
+  0x9F + 64,                    // DELAY: 64 ticks
   0x4F,                         // TREMOLO OR VIBRATO OFF
-  0x9F + 1,                     // DELAY: 1 ticks
   0xFE,                         // RETURN
 };
 

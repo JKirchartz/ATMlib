@@ -20,18 +20,18 @@ Song music[] = {                // total song in bytes = 31
 
   //"Track 1"                   // ticks = 3072, bytes = 6
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0xFD, 31, 2,                  // REPEAT: count = 32 - track = 2 (32 * 96 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 96 ticks)
   0xFE,                         // RETURN
 
   //"Track2"                    // ticks = 96, bytes = 11
-  0x00 + 25,                    // NOTE ON: note = 25 (delay 1 tick)
+  0x00 + 25,                    // NOTE ON: note = 25
   0x50,  0x80 +2,               // FX: SET GLISSANDO: ticks = 2;
   0x9F + 32,                    // DELAY: 32 ticks
   0x50,  0x00 +2,               // FX: SET GLISSANDO: ticks = 2;
   0x9F + 32,                    // DELAY: 32 ticks
   0x51,                         // FX: GLISSANDO OFF
-  0x00,                         // NOTE OFF (delay 1 tick)
-  0x9F + 30,                    // DELAY: 30 ticks
+  0x00,                         // NOTE OFF
+  0x9F + 32,                    // DELAY: 32 ticks
   0xFE,                         // RETURN
   
 };

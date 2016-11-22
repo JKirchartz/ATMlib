@@ -19,34 +19,34 @@ Song music[] = {                // total song in bytes = 103
   0x00,                         // Channel 2 entry track (TRIANGLE)
   0x03,                         // Channel 3 entry track (NOISE)
 
-  //"Track 0"                    // ticks = 64, bytes = 5
+  //"Track 0"                   // ticks = 64, bytes = 5
   0x40, 0,                      // FX: SET VOLUME: volume = 0
   0x9F + 63,                    // DELAY: 63 ticks
   0xFE,                         // RETURN
 
-  //"Track 1"                    // ticks = 2048, bytes = 4
-  0xFD, 3, 4,                   // REPEAT: count = 4 - track = 4  (4 * 512 ticks)
+  //"Track 1"                   // ticks = 2048, bytes = 4
+  0xFD, 3, 4,                   // REPEAT: count = 4 / track = 4  (4 * 512 ticks)
   0xFE,                         // RETURN
 
-  //"Track 2"                    // ticks = 2048, bytes = 5
-  0xFD, 31, 6,                  // REPEAT: count = 32 - track = 5  (32 * 64 ticks)
+  //"Track 2"                   // ticks = 2048, bytes = 5
+  0xFD, 31, 6,                  // REPEAT: count = 32 / track = 5  (32 * 64 ticks)
   0x00,                         // NOTE OFF
   0xFE,                         // RETURN
 
   //"Track 3"                   // ticks = 2048, bytes = 7
-  0xFD, 7,  0,                  // REPEAT: count = 8 - track = 8 (8 *64 ticks)
+  0xFD, 7,  0,                  // REPEAT: count = 8 / track = 8 (8 *64 ticks)
   0x9F + 8,                     // DELAY: 4 ticks
-  0xFD, 23, 7,                  // REPEAT: count = 24 - track = 8 (24 *64 ticks)
+  0xFD, 23, 7,                  // REPEAT: count = 24 / track = 8 (24 *64 ticks)
   0xFE,                         // RETURN
 
   //"Track 4"                   // ticks = 512, bytes = 21
-  0xFD, 1, 5,                   // REPEAT: count = 2 - track = 5  (2 * 64 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)
   0x4B, 3,                      // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 1, 5,                   // REPEAT: count = 2 - track = 5  (2 * 64 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)
   0x4B, -1,                     // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 1, 5,                   // REPEAT: count = 2 - track = 5  (2 * 64 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)
   0x4B, 3,                      // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 1, 5,                   // REPEAT: count = 2 - track = 5  (2 * 64 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)
   0x4B, -5,                     // FX: ADD TRANSPOSITION: notes = 3
   0xFE,                         // RETURN
 
@@ -62,7 +62,7 @@ Song music[] = {                // total song in bytes = 103
   0x9F + 43,                    // DELAY: 43 ticks
   0xFE,                         // RETURN
 
-  //"track 6"                    // ticks = 64, bytes = 10
+  //"track 6"                   // ticks = 64, bytes = 10
   0x00 + 13,                    // NOTE ON: note = 23 (delay 1 tick)
   0x40, 32,                     // FX: SET VOLUME: volume = 32
   0x4E, 1, 0x00 + 0x00 + 30,    // SET TREMOLO OR VIBRATO: depth = 16 / retrig = OFF / TorV = TREMOLO / rate = 3
@@ -71,7 +71,7 @@ Song music[] = {                // total song in bytes = 103
   0x9F + 1,                     // DELAY: 1 ticks
   0xFE,                         // RETURN
 
-  //"track 7"                    // ticks = 64, bytes = 20
+  //"track 7"                   // ticks = 64, bytes = 20
   0x40, 32,                     // FX: SET VOLUME: volume = 32
   0x9F + 1,                     // DELAY: ticks = 1
   0x40,  0,                     // FX: SET VOLUME: volume = 0

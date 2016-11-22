@@ -66,8 +66,8 @@ struct ch_t {
   byte freqConfig;
   byte freqCount;
 
-  // Arpeggio FX
-  byte arpNotes;       // notes: base, base+[7:4], base+[7:4]+[3:0]
+  // Arpeggio or Note Cut FX
+  byte arpNotes;       // notes: base, base+[7:4], base+[7:4]+[3:0], if FF => note cut ON
   byte arpTiming;      // [7] = reserved, [6] = not third note ,[5] = retrigger, [4:0] = tick count
   byte arpCount;
 
@@ -108,16 +108,17 @@ static inline const byte *getTrackPointer(byte track) {
 
 ATMSynth ATM;
 
-
 void ATMSynth::play(const byte *song, uint16_t sample_rate, uint16_t tick_rate) {
+
+  // cleanUp stuff first
+  memset(channel,0,sizeof(channel));
+
   // Initializes ATMSynth
   // Sets tempo
   // Sets up the ports, and the sample grinding ISR
   cia = sample_rate / tick_rate;
-
   osc[3].freq = 0x0001; // Seed LFSR
   channel[3].freq = 0x0001; // xFX
-
   pinMode(5, OUTPUT);
   pinMode(13, OUTPUT);
   TCCR4A = 0b01000010;    // Fast-PWM 8-bit
@@ -140,22 +141,23 @@ void ATMSynth::play(const byte *song, uint16_t sample_rate, uint16_t tick_rate) 
   }
 }
 
-
-// Start grinding samples or Pause playback
-void ATMSynth::playPause() {
-  TIMSK4 = TIMSK4 ^ 0b00000100; // toggle disable/enable interrupt
-}
-
 // Stop playing, unload melody
 void ATMSynth::stop() {
   TIMSK4 = 0; // Disable interrupt
   memset(channel,0,sizeof(channel));
 }
 
+// Start grinding samples or Pause playback
+void ATMSynth::playPause() {
+  TIMSK4 = TIMSK4 ^ 0b00000100; // toggle disable/enable interrupt
+}
+
+// Mute music on a channel, so it's ready for Sound Effects
 void mutebeforexfx(byte ch) {
   channel[ch].mute = true;
 }
 
+// Unmute music on a channel, after having played Sound Effects
 void unmuteafterfx(byte ch) {
   channel[ch].mute = false;
 }
