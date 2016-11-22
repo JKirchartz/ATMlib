@@ -56,34 +56,29 @@ struct ch_t {
   byte vol;
   bool mute;
 
-  // Volume FX
-  char volSlide;
-  byte volConfig;
-  byte volCount;
-
-  // Frequency FX
-  char freqSlide;
-  byte freqConfig;
-  byte freqCount;
+  // Volume & Frequency FX
+  char volfreSlide;
+  byte volfreConfig;
+  byte volfreCount;
 
   // Arpeggio or Note Cut FX
   byte arpNotes;       // notes: base, base+[7:4], base+[7:4]+[3:0], if FF => note cut ON
   byte arpTiming;      // [7] = reserved, [6] = not third note ,[5] = retrigger, [4:0] = tick count
   byte arpCount;
 
-  // Retrig
+  // Retrig FX
   byte reConfig;       // [7:2] = , [1:0] = speed
   byte reCount;
 
-  // transposition
+  // transposition FX
   char transConfig;
 
-  // Tremolo or Vibrato
+  // Tremolo or Vibrato FX
   byte treviDepth;
   byte treviConfig;
   byte treviCount;
 
-  // Glissando
+  // Glissando FX
   char glisConfig;
   byte glisCount;
 
@@ -191,32 +186,34 @@ void ATM_playroutine() {
       else ch->glisCount++;
     }
 
-    // Apply volume slides
-    if (ch->volSlide) {
-      if (!ch->volCount) {
-        int16_t v = ch->vol;
-        v += ch->volSlide;
-        if (!(ch->volConfig & 0x80)) {
-          if (v < 0) v = 0;
-          else if (v > 63) v = 63;
-        }
-        ch->vol = v;
+    // Apply volume/frequency slides
+    if (ch->volfreSlide) {
+      // Volume (0) or Frequency (1) slide?
+      if (!(ch->volfreSlide & 0x40))
+      {
+        if (!ch->volfreCount) {
+          int16_t v = ch->vol;
+          v += ch->volfreSlide;
+          if (!(ch->volfreConfig & 0x80))
+          {
+            if (v < 0) v = 0;
+            else if (v > 63) v = 63;
+          }
+          ch->vol = v;
+        } 
       }
-      if (ch->volCount++ >= (ch->volConfig & 0x7F)) ch->volCount = 0;
-    }
-
-    // Apply frequency slides
-    if (ch-> freqSlide) {
-      if (!ch->freqCount) {
-        uint16_t f = ch->freq;
-        f += ch ->freqSlide;
-        if (!(ch->freqConfig & 0x80)) {
-          if (f < 0) f = 0;
-          else if (f > 9397) f = 9397;
+      else {
+        if (!ch->volfreCount) {
+          uint16_t f = ch->freq;
+          f += ch ->volfreSlide;
+          if (!(ch->volfreConfig & 0x80)) {
+            if (f < 0) f = 0;
+            else if (f > 9397) f = 9397;
+          }
+          ch->freq = f;
         }
-        ch->freq = f;
       }
-      if (ch->freqCount++ >= (ch->freqConfig & 0x7F)) ch->freqCount = 0;
+      if (ch->volfreCount++ >= (ch->volfreConfig & 0x7F)) ch->volfreCount = 0;
     }
 
     // Apply Arpeggio or Note Cut
@@ -238,7 +235,7 @@ void ATM_playroutine() {
 
     // Apply Tremolo or Vibrato
     if (ch->treviDepth) {
-      //Tremolo (0) or Vibrato (1) ?
+      // Tremolo (0) or Vibrato (1) ?
       if (!(ch->treviConfig & 0x40)) {
         char v = ch->vol;
         if (ch->treviCount & 0x80) v += ch->treviDepth & 0x1F;
@@ -278,26 +275,32 @@ void ATM_playroutine() {
             case 0: // Set volume
               ch->vol = pgm_read_byte(ch->ptr++);
               break;
-            case 1: // Slide volume ON
-              ch->volSlide = pgm_read_byte(ch->ptr++);
+
+
+            case 1: // Slide volume/frequency ON
+              ch->volfreSlide = pgm_read_byte(ch->ptr++);
               break;
-            case 2: // Slide volume ON advanced
-              ch->volSlide = pgm_read_byte(ch->ptr++);
-              ch->volConfig = pgm_read_byte(ch->ptr++);
+            case 2: // Slide volume/frequency ON advanced
+              ch->volfreSlide = pgm_read_byte(ch->ptr++);
+              ch->volfreConfig = pgm_read_byte(ch->ptr++);
               break;
-            case 3: // Slide volume OFF (same as 0x01 0x00)
-              ch->volSlide = 0;
+            case 3: // Slide volume/frequency OFF (same as 0x01 0x00)
+              ch->volfreSlide = 0;
               break;
+
+
             case 4: // Slide frequency ON
-              ch->freqSlide = pgm_read_byte(ch->ptr++);
+              ch->volfreSlide = pgm_read_byte(ch->ptr++)  + 0x40;
               break;
             case 5: // Slide frequency ON advanced
-              ch->freqSlide = pgm_read_byte(ch->ptr++);
-              ch->freqConfig = pgm_read_byte(ch->ptr++);
+              ch->volfreSlide = pgm_read_byte(ch->ptr++) + 0x40;
+              ch->volfreConfig = pgm_read_byte(ch->ptr++);
               break;
             case 6: // Slide frequency OFF
-              ch->freqSlide = 0;
+              ch->volfreSlide = 0;
               break;
+
+
             case 7: // Set Arpeggio
               ch->arpNotes = pgm_read_byte(ch->ptr++);    // 0x40 + 0x03
               ch->arpTiming = pgm_read_byte(ch->ptr++);   // 0x40 (no third note) + 0x20 (toggle retrigger) + amount
@@ -320,24 +323,36 @@ void ATM_playroutine() {
             case 13: // Transposition OFF
               ch->transConfig = 0;
               break;
-            case 14: // SET Tremolo or Vibrato
+
+
+            case 14: // SET Tremolo
               ch->treviDepth = pgm_read_word(ch->ptr++);
               ch->treviConfig = pgm_read_word(ch->ptr++);
               break;
-            case 15: // Tremolo or Vibrato  OFF
+            case 15: // Tremolo OFF
               ch->treviDepth = 0;
               break;
-            case 16: // Glissando
+
+            case 16: // SET Vibrato
+              ch->treviDepth = pgm_read_word(ch->ptr++);
+              ch->treviConfig = pgm_read_word(ch->ptr++) + 0x40;
+              break;
+            case 17: // Vibrato  OFF
+              ch->treviDepth = 0;
+              break;
+
+
+            case 18: // Glissando
               ch->glisConfig = pgm_read_byte(ch->ptr++);
               break;
-            case 17: // Glissando OFF
+            case 19: // Glissando OFF
               ch->glisConfig = 0;
               break;
-            case 18: // SET Note Cut
-              ch->arpNotes = pgm_read_byte(ch->ptr++);    // 0xFF use Note Cut
+            case 20: // SET Note Cut
+              ch->arpNotes = 0xFF;                        // 0xFF use Note Cut
               ch->arpTiming = pgm_read_byte(ch->ptr++);   // tick amount
               break;
-            case 19: // Note Cut OFF
+            case 21: // Note Cut OFF
               ch->arpNotes = 0;
               break;
           }

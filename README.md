@@ -73,12 +73,14 @@
 | **64+11**      | add Transposition (*__X__*)| UBYTE (8-bit) | shifts the played notes by adding *[__X__]* to the existing transposition for all playing notes.<br />**_Note:_**<br /> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
 | **64+12**      | set Transposition (*__X__*)| UBYTE (8-bit) | shifts the played notes by setting the transposition to [__X__]* for all playing notes.<br />**_Note:_**<br /> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
 | **64+13**      | Transposition OFF |  | stops the transposition |
-| **64+14**      | set Tremolo or Vibrato (*__Y__*)(*__Z__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__Y__]* sets Depth.<br /> *[__Z__]* includes 4 parameters: RTxBBBBB Retrig, TremoloOrVibrato, reserved , rate<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined|
-| **64+15**      | Tremolo or Vibrato OFF|  | stops the tremolo or vibrato |
-| **64+16**      | SET Glissando (*__X__*)| UBYTE (8-bit) | *[__X__]* includes 2 parameters: VTTTTTTT  Value ( 0 = go 1 note up, 1 = go 1 note down) and Ticks (amount of ticks, between each step) |
-| **64+17**      | Glissando OFF|  | stops the Glissando |
-| **64+18**      | SET Note Cut (*__X__*)(*__Y__*)| UBYTE (8-bit) UBYTE (8-bit) | *[__X__]* using 0xFF activates Note Cut and *[__Y__]* sets the equal amount of ticks between note ON and OFF
-| **64+19**      | Note Cut Off|  | stops the Note Cut |
+| **64+14**      | set Tremolo (*__X__*)(*__Y__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__X__]* sets Depth.<br /> *[__Y__]* includes 4 parameters: RTxBBBBB Retrig, TremoloOrVibrato, reserved , rate<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined in the same stack|
+| **64+15**      | Tremolo OFF|  | stops the tremolo or vibrato |
+| **64+16**      | set Vibrato (*__X__*)(*__Y__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__X__]* sets Depth.<br /> *[__Y__]* includes 4 parameters: RTxBBBBB Retrig, TremoloOrVibrato, reserved , rate<br />**_Note:_**<br /> Tremolo and Vibrato can **NOT** be combined in the same stack|
+| **64+17**      | Vibrato OFF|  | stops the vibrato |
+| **64+18**      | SET Glissando (*__X__*)| UBYTE (8-bit) | *[__X__]* includes 2 parameters: VTTTTTTT  Value ( 0 = go 1 note up, 1 = go 1 note down) and Ticks (amount of ticks, between each step) |
+| **64+19**      | Glissando OFF|  | stops the Glissando |
+| **64+20**      | SET Note Cut (*__X__*)| UBYTE (8-bit) | *[__X__]* sets the equal amount of ticks between note ON and OFF |
+| **64+21**      | Note Cut Off|  | stops the Note Cut |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
 
