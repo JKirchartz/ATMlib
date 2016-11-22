@@ -18,10 +18,6 @@ uint8_t pcm __attribute__((used)) = 128;
 bool half __attribute__((used));
 
 
-// Locals
-static uint16_t tick_rate = 25;
-static uint16_t sample_rate;
-
 //Imports
 extern uint16_t cia;
 
@@ -113,10 +109,10 @@ static inline const byte *getTrackPointer(byte track) {
 ATMSynth ATM;
 
 
-void ATMSynth::play(const byte *song, uint16_t hz, uint16_t new_tempo) {
+void ATMSynth::play(const byte *song, uint16_t sample_rate, uint16_t tick_rate) {
   // Initializes ATMSynth
+  // Sets tempo
   // Sets up the ports, and the sample grinding ISR
-  sample_rate = hz;
   cia = sample_rate / tick_rate;
 
   osc[3].freq = 0x0001; // Seed LFSR
@@ -142,16 +138,12 @@ void ATMSynth::play(const byte *song, uint16_t hz, uint16_t new_tempo) {
   for (unsigned n = 0; n < 4; n++) {
     channel[n].ptr = getTrackPointer(pgm_read_byte(song++));
   }
-
-  // Sets tempo
-  tick_rate = new_tempo;
-  cia = sample_rate / tick_rate; // not atomic?
 }
 
 
 // Start grinding samples or Pause playback
 void ATMSynth::playPause() {
-  TIMSK4 = TIMSK4 ^ 0b00000100; // switch between disable/anable interrupt
+  TIMSK4 = TIMSK4 ^ 0b00000100; // toggle disable/enable interrupt
 }
 
 // Stop playing, unload melody

@@ -14,13 +14,10 @@ void setup() {
   arduboy.start();
   // set the framerate of the game at 60 fps
   arduboy.setFrameRate(60);
-  //Initializes ATMSynth and samplerate
-  ATM.begin(15625);
+  // Initializes ATMSynth and samplerate
   // Begin playback of song.
-  ATM.play(testmusic);
   // Lower the tempo ever so slightly
-  ATM.tempo(50);
-  Serial.begin(9600);
+  ATM.play(testmusic, 15625, 50);
 }
 
 void loop() {
