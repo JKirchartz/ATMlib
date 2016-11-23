@@ -238,7 +238,6 @@ void ATM_playroutine() {
     }
 
 
-
     if (ch->delay) ch->delay--;
     else {
       do {
@@ -255,30 +254,17 @@ void ATM_playroutine() {
               ch->vol = pgm_read_byte(ch->ptr++);
               break;
 
-            case 1: // Slide volume ON
+            case 1: case 4: // Slide volume/frequency ON
               ch->volfreSlide = pgm_read_byte(ch->ptr++);
-              ch->volfreConfig = 0x00;
+              ch->volfreConfig = (cmd - 64) == 1 ? 0x00 : 0x40;
               break;
-            case 2: // Slide volume ON advanced
+            case 2: case 5: // Slide volume/frequency ON advanced
               ch->volfreSlide = pgm_read_byte(ch->ptr++);
               ch->volfreConfig = pgm_read_byte(ch->ptr++);
               break;
-            case 3: // Slide volume OFF (same as 0x01 0x00)
+            case 3: case 6: // Slide volume/frequency OFF (same as 0x01 0x00)
               ch->volfreSlide = 0;
               break;
-
-            case 4: // Slide frequency ON
-              ch->volfreSlide = pgm_read_byte(ch->ptr++);
-              ch->volfreConfig = 0x40;
-              break;
-            case 5: // Slide frequency ON advanced
-              ch->volfreSlide = pgm_read_byte(ch->ptr++);
-              ch->volfreConfig = pgm_read_byte(ch->ptr++) + 0x40;
-              break;
-            case 6: // Slide frequency OFF
-              ch->volfreSlide = 0;
-              break;
-
             case 7: // Set Arpeggio
               ch->arpNotes = pgm_read_byte(ch->ptr++);    // 0x40 + 0x03
               ch->arpTiming = pgm_read_byte(ch->ptr++);   // 0x40 (no third note) + 0x20 (toggle retrigger) + amount
@@ -292,7 +278,6 @@ void ATM_playroutine() {
             case 10: // Retriggering (noise) OFF
               ch->reConfig = 0;
               break;
-
             case 11: // ADD Transposition
               ch->transConfig += (char)pgm_read_byte(ch->ptr++);
               break;
@@ -302,22 +287,13 @@ void ATM_playroutine() {
             case 13: // Transposition OFF
               ch->transConfig = 0;
               break;
-            case 14: // SET Tremolo
+            case 14: case 16: // SET Tremolo/Vibrato
               ch->treviDepth = pgm_read_word(ch->ptr++);
-              ch->treviConfig = pgm_read_word(ch->ptr++);
+              ch->treviConfig = pgm_read_word(ch->ptr++) + ((cmd - 64) == 14 ? 0x00 : 0x40);
               break;
-            case 15: // Tremolo OFF
+            case 15: case 17: // Tremolo/Vibrato OFF
               ch->treviDepth = 0;
               break;
-
-            case 16: // SET Vibrato
-              ch->treviDepth = pgm_read_word(ch->ptr++);
-              ch->treviConfig = pgm_read_word(ch->ptr++) + 0x40;
-              break;
-            case 17: // Vibrato  OFF
-              ch->treviDepth = 0;
-              break;
-
             case 18: // Glissando
               ch->glisConfig = pgm_read_byte(ch->ptr++);
               break;
