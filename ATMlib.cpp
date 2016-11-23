@@ -56,7 +56,7 @@ struct ch_t {
   byte vol;
   bool mute;
 
-  // Volume & Frequency FX
+  // Volume & Frequency slide FX
   char volfreSlide;
   byte volfreConfig;
   byte volfreCount;
@@ -187,11 +187,42 @@ void ATM_playroutine() {
       else ch->glisCount++;
     }
 
+/*
+    // Apply volume/frequency slides (9944)
+    if (ch->volfreSlide) {
+      // Volume (0) or Frequency (1) slide?
+      if (!(ch->volfreConfig & 0x40)) {
+        if (!ch->volfreCount) {
+          char v = ch->vol;
+          v += ch->volfreSlide;
+          if (!(ch->volfreConfig & 0x80))
+          {
+            if (v < 0) v = 0;
+            else if (v > 63) v = 63;
+          }
+          ch->vol = v;
+        } 
+      }
+      else {
+        if (!ch->volfreCount) {
+          uint16_t f = ch->freq;
+          f += ch ->volfreSlide;
+          if (!(ch->volfreConfig & 0x80)) {
+            if (f < 0) f = 0;
+            else if (f > 9397) f = 9397;
+          }
+          ch->freq = f;
+        }
+      }
+      if (ch->volfreCount++ >= (ch->volfreConfig & 0x3F)) ch->volfreCount = 0;
+    }
+*/
+
     // Apply volume/frequency slides
     if (ch->volfreSlide) {
       if (!ch->volfreCount) {
-        int16_t vf = (ch->volfreConfig & 0x40) ? ch->freq : ch->vol;
-        vf += ch->volfreSlide;
+        int16_t vf = ((ch->volfreConfig & 0x40) ? ch->freq : ch->vol);
+        vf += (ch->volfreSlide);
         if (!(ch->volfreConfig & 0x80)) {
           if (vf < 0) vf = 0;
           else if (ch->volfreConfig & 0x40) if (vf > 9397) vf = 9397;
@@ -220,7 +251,7 @@ void ATM_playroutine() {
       }
     }
 
-
+/*
     // Apply Tremolo or Vibrato
     if (ch->treviDepth) {
       // Tremolo (0) or Vibrato (1) ?
@@ -246,6 +277,23 @@ void ATM_playroutine() {
         else ch->treviCount = 0x80;
       }
     }
+*/
+
+    // Apply Tremolo or Vibrato
+    if (ch->treviDepth) {
+      int16_t vt = ((ch->treviConfig & 0x40) ? ch->freq : ch->vol);
+      vt = (ch->treviCount & 0x80) ? (vt + (ch->treviDepth & 0x1F)) : (vt - (ch->treviDepth & 0x1F));
+      if (vt < 0) vt = 0;
+      else if (ch->treviConfig & 0x40) if (vt > 9397) vt = 9397;
+      else if (!(ch->treviConfig & 0x40)) if (vt > 63) vt = 63;
+      (ch->treviConfig & 0x40) ? ch->freq = vt : ch->vol = vt;
+      if ((ch->treviCount & 0x1F) < (ch->treviConfig & 0x1F)) ch->treviCount++;
+      else {
+        if (ch->treviCount & 0x80) ch->treviCount = 0;
+        else ch->treviCount = 0x80;
+      }
+    }
+
 
 
     if (ch->delay) ch->delay--;
