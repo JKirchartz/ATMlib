@@ -187,37 +187,6 @@ void ATM_playroutine() {
       else ch->glisCount++;
     }
 
-/*
-    // Apply volume/frequency slides (9944)
-    if (ch->volfreSlide) {
-      // Volume (0) or Frequency (1) slide?
-      if (!(ch->volfreConfig & 0x40)) {
-        if (!ch->volfreCount) {
-          int16_t v = ch->vol;
-          v += ch->volfreSlide;
-          if (!(ch->volfreConfig & 0x80))
-          {
-            if (v < 0) v = 0;
-            else if (v > 63) v = 63;
-          }
-          ch->vol = v;
-        } 
-      }
-      else {
-        if (!ch->volfreCount) {
-          uint16_t f = ch->freq;
-          f += ch ->volfreSlide;
-          if (!(ch->volfreConfig & 0x80)) {
-            if (f < 0) f = 0;
-            else if (f > 9397) f = 9397;
-          }
-          ch->freq = f;
-        }
-      }
-      if (ch->volfreCount++ >= (ch->volfreConfig & 0x3F)) ch->volfreCount = 0;
-    }
-*/
-
     // Apply volume/frequency slides
     if (ch->volfreSlide) {
       if (!ch->volfreCount) {
@@ -225,10 +194,8 @@ void ATM_playroutine() {
         vf += ch->volfreSlide;
         if (!(ch->volfreConfig & 0x80)) {
           if (vf < 0) vf = 0;
-          //else if (ch->volfreConfig & 0x40) if (vf > 9397) vf = 9397;
-          //else if (!(ch->volfreConfig & 0x40)) if (vf > 63) vf = 63;
-
-          //else ((ch->volfreConfig & 0x40) ? if (vf > 9397) vf = 9397 : if (vf > 63) vf = 63)
+          else if (ch->volfreConfig & 0x40) if (vf > 9397) vf = 9397;
+          else if (!(ch->volfreConfig & 0x40)) if (vf > 63) vf = 63;
         }
         (ch->volfreConfig & 0x40) ? ch->freq = vf : ch->vol = vf;
       }
@@ -245,9 +212,9 @@ void ATM_playroutine() {
         else ch->arpCount = 0x00;
         byte arpNote = ch->note;
         if ((ch->arpCount & 0xE0) != 0x00) {
-            if (ch->arpNotes == 0xFF) arpNote = 0;
-            else arpNote += (ch->arpNotes >> 4);
-          }
+          if (ch->arpNotes == 0xFF) arpNote = 0;
+          else arpNote += (ch->arpNotes >> 4);
+        }
         if ((ch->arpCount & 0xE0) == 0x40) arpNote += (ch->arpNotes & 0x0F);
         ch->freq = pgm_read_word(&noteTable[arpNote + ch->transConfig]);
       }
