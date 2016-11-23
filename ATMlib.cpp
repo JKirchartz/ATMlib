@@ -187,8 +187,8 @@ void ATM_playroutine() {
       else ch->glisCount++;
     }
 
-
-    // Apply volume/frequency slides
+/*
+    // Apply volume/frequency slides (9944)
     if (ch->volfreSlide) {
       // Volume (0) or Frequency (1) slide?
       if (!(ch->volfreConfig & 0x40)) {
@@ -213,6 +213,24 @@ void ATM_playroutine() {
           }
           ch->freq = f;
         }
+      }
+      if (ch->volfreCount++ >= (ch->volfreConfig & 0x3F)) ch->volfreCount = 0;
+    }
+*/
+
+    // Apply volume/frequency slides
+    if (ch->volfreSlide) {
+      if (!ch->volfreCount) {
+        int16_t vf = (ch->volfreConfig & 0x40) ? ch->freq : ch->vol;
+        vf += ch->volfreSlide;
+        if (!(ch->volfreConfig & 0x80)) {
+          if (vf < 0) vf = 0;
+          //else if (ch->volfreConfig & 0x40) if (vf > 9397) vf = 9397;
+          //else if (!(ch->volfreConfig & 0x40)) if (vf > 63) vf = 63;
+
+          //else ((ch->volfreConfig & 0x40) ? if (vf > 9397) vf = 9397 : if (vf > 63) vf = 63)
+        }
+        (ch->volfreConfig & 0x40) ? ch->freq = vf : ch->vol = vf;
       }
       if (ch->volfreCount++ >= (ch->volfreConfig & 0x3F)) ch->volfreCount = 0;
     }
