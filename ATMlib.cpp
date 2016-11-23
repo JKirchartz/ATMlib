@@ -70,7 +70,7 @@ struct ch_t {
   byte reConfig;       // [7:2] = , [1:0] = speed
   byte reCount;
 
-  // transposition FX
+  // Transposition FX
   char transConfig;
 
   // Tremolo or Vibrato FX
@@ -187,36 +187,6 @@ void ATM_playroutine() {
       else ch->glisCount++;
     }
 
-/*
-    // Apply volume/frequency slides (9944)
-    if (ch->volfreSlide) {
-      // Volume (0) or Frequency (1) slide?
-      if (!(ch->volfreConfig & 0x40)) {
-        if (!ch->volfreCount) {
-          char v = ch->vol;
-          v += ch->volfreSlide;
-          if (!(ch->volfreConfig & 0x80))
-          {
-            if (v < 0) v = 0;
-            else if (v > 63) v = 63;
-          }
-          ch->vol = v;
-        } 
-      }
-      else {
-        if (!ch->volfreCount) {
-          uint16_t f = ch->freq;
-          f += ch ->volfreSlide;
-          if (!(ch->volfreConfig & 0x80)) {
-            if (f < 0) f = 0;
-            else if (f > 9397) f = 9397;
-          }
-          ch->freq = f;
-        }
-      }
-      if (ch->volfreCount++ >= (ch->volfreConfig & 0x3F)) ch->volfreCount = 0;
-    }
-*/
 
     // Apply volume/frequency slides
     if (ch->volfreSlide) {
@@ -251,33 +221,6 @@ void ATM_playroutine() {
       }
     }
 
-/*
-    // Apply Tremolo or Vibrato
-    if (ch->treviDepth) {
-      // Tremolo (0) or Vibrato (1) ?
-      if (!(ch->treviConfig & 0x40)) {
-        char v = ch->vol;
-        if (ch->treviCount & 0x80) v += ch->treviDepth & 0x1F;
-        else v -= ch->treviDepth & 0x1F;
-        if (v < 0) v = 0;
-        else if (v > 63) v = 63;
-        ch->vol = v;
-      }
-      else {
-        int16_t f = ch->freq;
-        if (ch->treviCount & 0x80) f += ch->treviDepth & 0x1F;
-        else f -= ch->treviDepth & 0x1F;
-        if (f < 0) f = 0;
-        else if (f > 9397) f = 9397;
-        ch->freq = f;
-      }
-      if ((ch->treviCount & 0x1F) < (ch->treviConfig & 0x1F)) ch->treviCount++;
-      else {
-        if (ch->treviCount & 0x80) ch->treviCount = 0;
-        else ch->treviCount = 0x80;
-      }
-    }
-*/
 
     // Apply Tremolo or Vibrato
     if (ch->treviDepth) {
