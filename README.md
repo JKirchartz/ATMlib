@@ -81,6 +81,10 @@
 | **64+19**      | Glissando OFF|  | stops the Glissando |
 | **64+20**      | SET Note Cut (*__X__*)| UBYTE (8-bit) | *[__X__]* sets the equal amount of ticks between note ON and OFF |
 | **64+21**      | Note Cut Off|  | stops the Note Cut |
+| 				 | 			   |  |					   |
+|				 | 			   |  |					   |
+| **64+94**     | GOTO advanced (*__W__*)(*__X__*)(*__Y__*)(*__Z__*)|UBYTE (8-bit) UBYTE (8-bit) UBYTE (8-bit) UBYTE (8-bit) |for channel __0__ go to track __W__<br />for channel __1__ go to track __X__<br />for channel __2__ go to track __Y__<br />for channel __3__ go to track __Z__<br />**_Note:_** handy command for having an intro and a repeating song part|
+| **64+95**	 | Stop current channel | | channel is no longer being processed<br />**_Note:_** if all channels have reached STOP, the song ends |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
 
