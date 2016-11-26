@@ -10,10 +10,10 @@ Song music[] = {                // total song in bytes = 103
   0x04, 0,                      // Address of track 1
   0x08, 0,                      // Address of track 2
   0x0D, 0,                      // Address of track 3
-  0x15, 0,                      // Address of track 4
-  0x2A, 0,                      // Address of track 5
-  0x38, 0,                      // Address of track 6
-  0x42, 0,                      // Address of track 7
+  0x14, 0,                      // Address of track 4
+  0x29, 0,                      // Address of track 5
+  0x37, 0,                      // Address of track 6
+  0x41, 0,                      // Address of track 7
   0x02,                         // Channel 0 entry track (PULSE)
   0x01,                         // Channel 1 entry track (SQUARE)
   0x00,                         // Channel 2 entry track (TRIANGLE)
@@ -21,7 +21,7 @@ Song music[] = {                // total song in bytes = 103
 
   //"Track 0"                   // ticks = 64, bytes = 5
   0x40, 0,                      // FX: SET VOLUME: volume = 0
-  0x9F + 63,                    // DELAY: 63 ticks
+  0x9F + 64,                    // DELAY: 64 ticks
   0xFE,                         // RETURN
 
   //"Track 1"                   // ticks = 2048, bytes = 4
@@ -33,9 +33,8 @@ Song music[] = {                // total song in bytes = 103
   0x00,                         // NOTE OFF
   0xFE,                         // RETURN
 
-  //"Track 3"                   // ticks = 2048, bytes = 7
+  //"Track 3"                   // ticks = 2048, bytes = 6
   0xFD, 7,  0,                  // REPEAT: count = 8 / track = 8 (8 *64 ticks)
-  0x9F + 8,                     // DELAY: 4 ticks
   0xFD, 23, 7,                  // REPEAT: count = 24 / track = 8 (24 *64 ticks)
   0xFE,                         // RETURN
 
@@ -51,7 +50,7 @@ Song music[] = {                // total song in bytes = 103
   0xFE,                         // RETURN
 
   //"Track 5"                   // ticks = 64, bytes = 14
-  0x00 + 49,                    // NOTE ON: note = 49 (delay 1 tick)
+  0x00 + 49,                    // NOTE ON: note = 49
   0x40, 63,                     // FX: SET VOLUME: volume = 63
   0x41, -16,                    // FX: VOLUME SLIDE ON: steps = -8
   0x9F + 16,                    // DELAY: 16 ticks
@@ -59,16 +58,16 @@ Song music[] = {                // total song in bytes = 103
   0x41, -4,                     // FX: VOLUME SLIDE ON: steps = -4
   0x9F + 4,                     // DELAY: 4 ticks
   0x43,                         // FX: VOLUME SLIDE OFF
-  0x9F + 43,                    // DELAY: 43 ticks
+  0x9F + 44,                    // DELAY: 44 ticks
   0xFE,                         // RETURN
 
   //"track 6"                   // ticks = 64, bytes = 10
-  0x00 + 13,                    // NOTE ON: note = 23 (delay 1 tick)
+  0x00 + 13,                    // NOTE ON: note = 23
   0x40, 32,                     // FX: SET VOLUME: volume = 32
   0x4E, 1, 0x00 + 0x00 + 30,    // SET TREMOLO OR VIBRATO: depth = 16 / retrig = OFF / TorV = TREMOLO / rate = 3
   0x9F + 62,                    // DELAY: 62 ticks
   0x4F,                         // TREMOLO OR VIBRATO OFF
-  0x9F + 1,                     // DELAY: 1 ticks
+  0x9F + 2,                     // DELAY: 1 ticks
   0xFE,                         // RETURN
 
   //"track 7"                   // ticks = 64, bytes = 20

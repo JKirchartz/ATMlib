@@ -313,13 +313,13 @@ void ATM_playroutine() {
               case 21: // Note Cut OFF
                 ch->arpNotes = 0;
                 break;
-              case 158: // Goto advanced
+              case 94: // Goto advanced
                 channel[0].track = pgm_read_byte(ch->ptr++);
                 channel[1].track = pgm_read_byte(ch->ptr++);
                 channel[2].track = pgm_read_byte(ch->ptr++);
                 channel[3].track = pgm_read_byte(ch->ptr++);
                 break;
-              case 159: // Stop channel
+              case 95: // Stop channel
                 ch->stopChannel = 1;
                 break;
             }
