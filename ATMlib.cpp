@@ -172,6 +172,7 @@ __attribute__((used))
 void ATM_playroutine() {
   ch_t *ch;
 
+  // if all channels are inactive, stop playing
   if (!(ChannelActiveMute & 0xF0))
   {
     TIMSK4 = 0; // Disable interrupt
