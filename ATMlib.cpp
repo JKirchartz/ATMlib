@@ -17,6 +17,16 @@ const byte *trackBase;
 uint8_t pcm __attribute__((used)) = 128;
 bool half __attribute__((used));
 
+byte ChannelActiveMute = 0b11110000;
+//                         ||||||||
+//                         |||||||└->  0  channel 0 is muted (0 = false / 1 = true)
+//                         ||||||└-->  1  channel 1 is muted (0 = false / 1 = true)
+//                         |||||└--->  2  channel 2 is muted (0 = false / 1 = true)
+//                         ||||└---->  3  channel 3 is muted (0 = false / 1 = true)
+//                         |||└----->  4  channel 0 is Active (0 = false / 1 = true)
+//                         ||└------>  5  channel 1 is Active (0 = false / 1 = true)
+//                         |└------->  6  channel 2 is Active (0 = false / 1 = true)
+//                         └-------->  7  channel 3 is Active (0 = false / 1 = true)
 
 //Imports
 extern uint16_t cia;
@@ -82,9 +92,6 @@ struct ch_t {
   char glisConfig;
   byte glisCount;
 
-  // Stop Channel
-  bool stopChannel;
-
 };
 
 ch_t channel[4];
@@ -106,19 +113,20 @@ static inline const byte *getTrackPointer(byte track) {
 
 ATMSynth ATM;
 
-void ATMSynth::play(const byte *song, uint16_t sample_rate, uint16_t tick_rate) {
+void ATMSynth::play(const byte *song) {
 
   // cleanUp stuff first
   memset(channel,0,sizeof(channel));
 
   // Initializes ATMSynth
-  // Sets tempo
+  // Sets sample rate and tick rate
+  cia = 15625 / 25;
+
   // Sets up the ports, and the sample grinding ISR
-  cia = sample_rate / tick_rate;
+
   osc[3].freq = 0x0001; // Seed LFSR
   channel[3].freq = 0x0001; // xFX
-  pinMode(5, OUTPUT);
-  pinMode(13, OUTPUT);
+
   TCCR4A = 0b01000010;    // Fast-PWM 8-bit
   TCCR4B = 0b00000001;    // 62500Hz
   OCR4C  = 0xFF;          // Resolution to 8-bit (TOP=0xFF)
@@ -152,23 +160,29 @@ void ATMSynth::playPause() {
 
 // Mute music on a channel, so it's ready for Sound Effects
 void mutebeforexfx(byte ch) {
-  channel[ch].mute = true;
+  ChannelActiveMute ^ (1 << ch );
 }
 
 // Unmute music on a channel, after having played Sound Effects
 void unmuteafterfx(byte ch) {
-  channel[ch].mute = false;
+  ChannelActiveMute | (1 << ch );
 }
 
 __attribute__((used))
 void ATM_playroutine() {
   ch_t *ch;
 
+  if (!(ChannelActiveMute & 0xF0))
+  {
+    TIMSK4 = 0; // Disable interrupt
+    memset(channel,0,sizeof(channel));
+  }
+
   for (unsigned n = 0; n < 4; n++) {
     ch = &channel[n];
 
     // Skip Channel (stop channel)
-    if (!ch->stopChannel) {
+    if (ChannelActiveMute & (1<<(n+4))) {
 
       // Noise retriggering
       if (ch->reConfig) {
@@ -259,7 +273,6 @@ void ATM_playroutine() {
               case 0: // Set volume
                 ch->vol = pgm_read_byte(ch->ptr++);
                 break;
-  
               case 1: case 4: // Slide volume/frequency ON
                 ch->volfreSlide = pgm_read_byte(ch->ptr++);
                 ch->volfreConfig = (cmd - 64) == 1 ? 0x00 : 0x40;
@@ -313,6 +326,9 @@ void ATM_playroutine() {
               case 21: // Note Cut OFF
                 ch->arpNotes = 0;
                 break;
+              case 93: // SET tempo
+                cia = 15625 / pgm_read_byte(ch->ptr++);
+                break;
               case 94: // Goto advanced
                 channel[0].track = pgm_read_byte(ch->ptr++);
                 channel[1].track = pgm_read_byte(ch->ptr++);
@@ -320,7 +336,7 @@ void ATM_playroutine() {
                 channel[3].track = pgm_read_byte(ch->ptr++);
                 break;
               case 95: // Stop channel
-                ch->stopChannel = 1;
+                ChannelActiveMute | (1<<(n+4));
                 break;
             }
           } else if (cmd < 224) {
@@ -369,7 +385,7 @@ void ATM_playroutine() {
         ch->delay--;
       }
   
-      if (!ch->mute) {
+      if (!(ChannelActiveMute & (1 << n))) {
         if (n == 3) {
           // Half volume, no frequency for noise channel
           osc[n].vol = ch->vol >> 1;
