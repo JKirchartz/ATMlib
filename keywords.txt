@@ -17,6 +17,5 @@ tempo	KEYWORD2
 #######################################
 # Instances (KEYWORD2)
 #######################################
-ATM	KEYWORD2
 osc	KEYWORD2
-pcm KEYWORD2
+pcm	KEYWORD2

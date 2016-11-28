@@ -1,12 +1,3 @@
-/*
-  Arduboy Tracker Music Library for Arduino Leonardo "Arduboy"
-
-  2015
-  TEAM a.r.g.
-  Davey Taylor aka STG
-  JO3RI
-*/
-
 #ifndef _ATMLIB_H_
 #define _ATMLIB_H_
 #include <stddef.h>
@@ -20,10 +11,10 @@ extern uint8_t pcm;
 
 extern bool half;
 
-class ATMSynth {
+class ATMsynth {
 
   public:
-    ATMSynth() {};
+    ATMsynth() {};
 
     // Load and play specified song
     // song needs to point to PROGMEM data
@@ -39,7 +30,6 @@ class ATMSynth {
 
 };
 
-extern ATMSynth ATM;
 
 // oscillator structure
 typedef struct {

@@ -7,7 +7,7 @@
 
 Arduboy arduboy;
 Sprites sprites(arduboy);
-
+ATMsynth ATM;
 
 void setup() {
   arduboy.start();

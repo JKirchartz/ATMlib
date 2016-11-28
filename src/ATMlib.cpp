@@ -1,12 +1,3 @@
-/*
-  Arduboy Tracker Music Library for Arduino Leonardo "Arduboy"
-
-  2015
-  TEAM a.r.g.
-  Davey Taylor aka STG
-  JO3RI
-*/
-
 #include "ATMlib.h"
 
 SQUAWK_CONSTRUCT_ISR(OCR4A)
@@ -111,14 +102,13 @@ static inline const byte *getTrackPointer(byte track) {
   return trackBase + pgm_read_word(&trackList[track]);
 }
 
-ATMSynth ATM;
 
-void ATMSynth::play(const byte *song) {
+void ATMsynth::play(const byte *song) {
 
   // cleanUp stuff first
   memset(channel,0,sizeof(channel));
 
-  // Initializes ATMSynth
+  // Initializes ATMsynth
   // Sets sample rate and tick rate
   cia = 15625 / 25;
 
@@ -148,13 +138,13 @@ void ATMSynth::play(const byte *song) {
 }
 
 // Stop playing, unload melody
-void ATMSynth::stop() {
+void ATMsynth::stop() {
   TIMSK4 = 0; // Disable interrupt
   memset(channel,0,sizeof(channel));
 }
 
 // Start grinding samples or Pause playback
-void ATMSynth::playPause() {
+void ATMsynth::playPause() {
   TIMSK4 = TIMSK4 ^ 0b00000100; // toggle disable/enable interrupt
 }
 

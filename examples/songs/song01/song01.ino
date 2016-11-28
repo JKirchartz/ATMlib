@@ -7,7 +7,7 @@
 
 Arduboy arduboy;
 Sprites sprites(arduboy);
-
+ATMsynth ATM;
 
 void setup() {
   arduboy.start();
@@ -26,7 +26,7 @@ void loop() {
   arduboy.clearDisplay();
   for (byte i = 0; i < 4; i++) sprites.drawSelfMasked(32 * i, 10, TEAMarg, i);
   sprites.drawSelfMasked(43, 50, TEAM_argPart5, 0);
-  if (arduboy.justPressed(B_BUTTON)) ATM.play(music, 15625, 50);
+  if (arduboy.justPressed(B_BUTTON)) ATM.play(music);
   if (arduboy.justPressed(A_BUTTON)) ATM.stop();
   arduboy.display();
 }
