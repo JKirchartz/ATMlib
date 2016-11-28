@@ -337,7 +337,7 @@ void ATM_playroutine() {
                 channel[3].track = pgm_read_byte(ch->ptr++);
                 break;
               case 95: // Stop channel
-                ChannelActiveMute | (1<<(n+4));
+                ChannelActiveMute = ChannelActiveMute ^ (1<<(n+4));
                 break;
             }
           } else if (cmd < 224) {
