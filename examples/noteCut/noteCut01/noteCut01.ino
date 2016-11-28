@@ -16,7 +16,7 @@ void setup() {
   // Initializes ATMSynth and samplerate
   // Begin playback of song.
   // Lower the tempo ever so slightly
-  ATM.play(music, 15625, 50);
+  ATM.play(music);
 
 }
 
