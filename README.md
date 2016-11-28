@@ -1,3 +1,14 @@
+#ATMlib
+
+ATMlib stands for **Arduboy Tracker Music** and is based on [_**Squawk**_](https://github.com/stg/Squawk "Squawk Github Page") a minimalistic 8-bit software synthesizer & playroutine library for Arduino, created by Davey Taylor aka STG.
+
+While _Squawk_ provides a very nice synth, it wasn't optimized for a small footprint. Songs are not very efficient in size, so Joeri Gantois aka JO3RI asked Davey to help him work on a new songformat and so ATMlib was born.
+
+Contributers:
+
+* Davey Taylor - ATMsynth
+* Joeri Gantois - effects
+
 ### FILE/ARRAY FORMAT DESCRIPTION
 
 | **Section**              | **Field**             | **Type**        | **Description** |
@@ -29,7 +40,7 @@
 | ---               | ---                  | ---                | ---             |
 |                0  |                      |                    | Stop playing    |
 |   |
-|           1 …  63 |                      |                    | Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone](./frequencyToTone.md "Frequency to Tone table")|
+|           1 …  63 |                      |                    | Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone](./extras/frequencyToTone.md "Frequency to Tone table")|
 |   |
 |          64 … 159 |                      |                    | Configure effects (fx) |
 |                   | *See __fx list__*    | none/variable      | Effect is *[__X__ - 64]* |
