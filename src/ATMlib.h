@@ -4,6 +4,11 @@
 #include <inttypes.h>
 #include <Arduino.h>
 
+#define CH_ZERO             0
+#define CH_ONE              1
+#define CH_TWO              2
+#define CH_THREE            3
+
 extern byte trackCount;
 extern const word *trackList;
 extern const byte *trackBase;
