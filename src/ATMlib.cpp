@@ -1,6 +1,6 @@
 #include "ATMlib.h"
 
-SQUAWK_CONSTRUCT_ISR(OCR4A)
+ATMLIB_CONSTRUCT_ISR(OCR4A)
 
 byte trackCount;
 const word *trackList;
@@ -149,12 +149,12 @@ void ATMsynth::playPause() {
 }
 
 // Mute music on a channel, so it's ready for Sound Effects
-void ATMSynth::mute(byte ch) {
+void ATMsynth::mute(byte ch) {
   ChannelActiveMute ^ (1 << ch );
 }
 
 // Unmute music on a channel, after having played Sound Effects
-void ATMSynth::unmute(byte ch) {
+void ATMsynth::unmute(byte ch) {
   ChannelActiveMute | (1 << ch );
 }
 

@@ -17,9 +17,6 @@ class ATMsynth {
     ATMsynth() {};
 
     // Load and play specified song
-    // song needs to point to PROGMEM data
-    // Initialize Squawk to generate samples at sample_rate Hz
-    // Change the tempo - default is 50
     void play(const byte *song);
 
     // Play or Pause playback
@@ -57,7 +54,7 @@ static inline const byte *getTrackPointer(byte track);
 extern void ATM_playroutine() asm("ATM_playroutine");
 
 
-#define SQUAWK_CONSTRUCT_ISR(TARGET_REGISTER) \
+#define ATMLIB_CONSTRUCT_ISR(TARGET_REGISTER) \
 uint16_t __attribute__((used)) cia, __attribute__((used)) cia_count; \
 ISR(TIMER4_OVF_vect, ISR_NAKED) { \
   asm volatile( \
