@@ -149,12 +149,12 @@ void ATMsynth::playPause() {
 }
 
 // Mute music on a channel, so it's ready for Sound Effects
-void mutebeforexfx(byte ch) {
+void ATMSynth::mute(byte ch) {
   ChannelActiveMute ^ (1 << ch );
 }
 
 // Unmute music on a channel, after having played Sound Effects
-void unmuteafterfx(byte ch) {
+void ATMSynth::unmute(byte ch) {
   ChannelActiveMute | (1 << ch );
 }
 
