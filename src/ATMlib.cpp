@@ -236,7 +236,7 @@ void ATM_playroutine() {
       // Apply Tremolo or Vibrato
       if (ch->treviDepth) {
         int16_t vt = ((ch->treviConfig & 0x40) ? ch->freq : ch->vol);
-        vt = (ch->treviCount & 0x80) ? (vt + (ch->treviDepth & 0x1F)) : (vt - (ch->treviDepth & 0x1F));
+        vt = (ch->treviCount & 0x80) ? (vt + ch->treviDepth) : (vt - ch->treviDepth);
         if (vt < 0) vt = 0;
         else if (ch->treviConfig & 0x40) if (vt > 9397) vt = 9397;
         else if (!(ch->treviConfig & 0x40)) if (vt > 63) vt = 63;
