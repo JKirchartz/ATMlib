@@ -3,14 +3,14 @@
 
 #define Song const uint8_t PROGMEM
 
-Song music[] = {                // total song in bytes = 61
+Song music[] = {                // total song in bytes = 56
   //                            // setup bytes 15
   0x05,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0
   0x03, 0x00,                   // Address of track 1
-  0x11, 0x00,                   // Address of track 2
-  0x20, 0x00,                   // Address of track 3
-  0x27, 0x00,                   // Address of track 4
+  0x0E, 0x00,                   // Address of track 2
+  0x1B, 0x00,                   // Address of track 3
+  0x22, 0x00,                   // Address of track 4
   0x00,                         // Channel 0 entry track (PULSE)
   0x00,                         // Channel 1 entry track (SQUARE)
   0x00,                         // Channel 2 entry track (TRIANGLE)
@@ -20,22 +20,22 @@ Song music[] = {                // total song in bytes = 61
   0x40, 0,                      // FX: SET VOLUME: volume = 0
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
-  //"Track 1"                   // ticks = 160 / bytes = 14
+  //"Track 1"                   // ticks = 160 / bytes = 11
   0x9D, 50,                     // SET song tempo: value = 50
-  0xFD, 0, 2,                   // REPEAT: count = 1 / track = 2 (48 ticks)
+  0xFC, 2,                      // GOTO: track = 2               (48 ticks)
   0x9F + 8,                     // DELAY: ticks = 8              ( 8 ticks)
-  0xFD, 0, 2,                   // REPEAT: count = 1 / track = 2 (48 ticks)
+  0xFC, 2,                      // GOTO: track = 2               (48 ticks)
   0x9F + 8,                     // DELAY: ticks = 8              ( 8 ticks)
-  0xFD, 0, 2,                   // REPEAT: count = 1 / track = 2 (48 ticks)
+  0xFC, 2,                      // GOTO: track = 2               (48 ticks)
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
-  //"Track 2"                   // ticks = 48 / bytes = 15
-  0xFD,  5, 3,                  // REPEAT: count = 6 / track = 3 (12 ticks)
-  0x40,  0,                     // FX: SET VOLUME: volume = 0
+  //"Track 2"                   // ticks = 48 / bytes = 13
+  0xFD, 5, 3,                   // REPEAT: count = 6 / track = 3 (12 ticks)
+  0x40, 0,                      // FX: SET VOLUME: volume = 0
   0x9F + 4,                     // DELAY: ticks = 4              ( 4 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4 ( 4 ticks)
+  0xFC, 4,                      // GOTO: track = 4               ( 4 ticks)
   0x9F + 12,                    // DELAY: ticks = 12             (12 ticks)
-  0xFD, 0, 4,                   // REPEAT: count = 1 / track = 4 ( 4 ticks)
+  0xFC, 4,                      // GOTO: track = 4               ( 4 ticks)
   0x9F + 12,                    // DELAY: ticks = 12             (12 ticks)
   0xFE,                         // RETURN
 
