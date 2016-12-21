@@ -22,22 +22,22 @@ Song music[] = {                // total song in bytes = 108
   //"Track 0"                   // ticks = 64 / bytes = 4
   0x40, 0,                      // FX: SET VOLUME: volume = 0
   0x9F + 64,                    // DELAY: 64 ticks
-  0xFE,                         // RETURN
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 1"                   // ticks = 2048 / bytes = 6
   0x9D, 50,                     // SET song tempo: value = 50
   0xFD, 3, 4,                   // REPEAT: count = 4 / track = 4  (4 * 512 ticks)
-  0xFE,                         // RETURN
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 2"                   // ticks = 2048 / bytes = 5
   0xFD, 31, 6,                  // REPEAT: count = 32 / track = 5  (32 * 64 ticks)
   0x00,                         // NOTE OFF
-  0xFE,                         // RETURN
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 3"                   // ticks = 2048 / bytes = 7
   0xFD, 7,  0,                  // REPEAT: count = 8 / track = 8 (8 *64 ticks)
   0xFD, 23, 7,                  // REPEAT: count = 24 / track = 8 (24 *64 ticks)
-  0xFE,                         // RETURN
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 4"                   // ticks = 512 / bytes = 21
   0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)

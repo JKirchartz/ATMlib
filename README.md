@@ -6,8 +6,8 @@ While _Squawk_ provides a very nice synth, it wasn't optimized for a small footp
 
 Contributers:
 
-* Davey Taylor - ATMsynth
-* Joeri Gantois - effects
+* Davey Taylor - ATMsynth - Effects
+* Joeri Gantois - Effects
 
 ### FILE/ARRAY FORMAT DESCRIPTION
 
@@ -36,39 +36,39 @@ Contributers:
 
 ### COMMAND LIST
 
-| **Command (_X_)** | **Parameter**        | **Type**           | **Description** |
-| ---               | ---                  | ---                | ---             |
-|                0  |                      |                    | Stop playing    |
-|   |
-|           1 …  63 |                      |                    | Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone](./extras/frequencyToTone.md "Frequency to Tone table")|
-|   |
-|          64 … 159 |                      |                    | Configure effects (fx) |
-|                   | *See __fx list__*    | none/variable      | Effect is *[__X__ - 64]* |
-|   |
-|         160 … 223 |                      |                    | Delay for *[__X__ - 159]* ticks |
-|   |
-|               224 |                      |                    | Long delay |
-|                   | Ticks (*__Y__*)      | VLE (8/16/24-bits) | Delay for *[__Y__ + 64]* ticks |
-|   |
-|     ~~225 … 251~~ |                      |                    | ~~RESERVED~~ |
-|   |
-|               252 |                      |                    | Call/run/goto specified track |
-|                   | Track                | UBYTE (8-bits)     | Track index |
-|   |
-|               253 |                      |                    | Repeated call/run/goto specified track |
-|                   | Loop count (*__Y__*) | UBYTE (8-bits)     | Repeat *[__Y__ + 2]* times (total) |
-|                   | Track                | UBYTE (8-bits)     | Track index |
-|   |
-|               254 |                      |                    | Return/end of track marker |
-|   |
-|               255 |                      |                    | Binary data |
-|                   | Length               | VLE (8/16/24-bits) | Length in bytes of data to follow |
-|                   | Data                 | variable           | Binary data chunk (notify host application) |
+| **Command (_X_)**				| **Parameter**        | **Type**           | **Description** |
+| ---               	   		| ---                  | ---                | ---             |
+| **0<br/>0x00**				|                      |                    | Stop playing    |
+|								|
+| **1…63<br/>0x00+__X__**		| note *(__X__)*       |                    | Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone](./extras/frequencyToTone.md "Frequency to Tone table")|
+|								|
+| **64…159<br/>0x40…0x9F**		|                      |                    | Configure effects (fx) |
+|								| *See __fx list__*    | none/variable      | Effect is *[__X__ - 64]* |
+|								|
+| **160…223<br/>0x9F+__t__**	| Ticks (*__t__*)      |                    | Delay for *[__X__ - 159]* or *[__t__]* ticks<br/> **_Note:_** delay of 0 does not exist|
+|								|
+| **224<br/>0xE0**				|                      |                    | Long delay |
+|                   	   		| Ticks (*__Y__*)      | VLE (8/16/24-bits) | Delay for *[__Y__ + 64]* ticks |
+|   					   		|
+| **~~225…251~~**		  	   	|                      |                    | ~~RESERVED~~ |
+|   					   		|
+| **252<br/>0xFC**			   	|                      |                    | Call/run/goto specified track |
+|                   	   		| Track *__N__*	       | UBYTE (8-bits)     | Track index where *__N__* is the number of the track to go to|
+|   					   		|
+| **253<br/>0xFD**				|                      |                    | Repeated call/run/goto specified track |
+|                   	   		| Loop count (*__Y__*) | UBYTE (8-bits)     | Repeat *[__Y__ + 1]* times (total) |
+|                   	   		| Track  *__N__*	   | UBYTE (8-bits)     | Track index where *__N__* is the number of the track to go to|
+|   					   		|
+| **254<br/>0xFE**				|                      |                    | Return/end of track marker |
+|   					   		|
+| **255<br/>0xFF**				|                      |                    | Binary data |
+|						   		| Length               | VLE (8/16/24-bits) | Length in bytes of data to follow |
+|						   		| Data                 | variable           | Binary data chunk (notify host application) |
 
 
 ### FX LIST
 
-| **Effect** | **Parameter**    | **Type**      | **Description** |
+| **Effect**					| **Parameter**    | **Type**      | **Description** |
 | ---        | ---              | ---           | ---             |
 | **64+0<br/>64<br/>0x40**      | set Volume (*__X__*) | UBYTE (8-bit) | Set volume to *[__X__]*. <br/> **_Note:_**<br/> If the combined volume of all channels exceed 255 there may be rollover distortion. This should not be disallowed, as it may be usesful as an effects hack for the musician. There should however be a non-interfering warning when a musician enters a value above 63 for ch 1-3 or 32 for ch 4 (noise). ch 4 the volume is counted double, so 32 is actually 64 |
 | **64+1<br/>65<br/>0x41**      | slide Volume ON (*__X__*) | UBYTE (8-bit) | Slide the volume with an amount (positive or negative) of *[__X__]* for every tick.<br/> **_Note:_**<br/>  This results in a fade-in or fade-out effect. There should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4. |
@@ -80,22 +80,22 @@ Contributers:
 | **64+7<br/>71<br/>0x47**      | set Arpeggio (*__X__*)(*__Y__*) | UBYTE (8-bit) UBYTE (8-bit) | Next to the current playing note, play a second and third note *[__X__]* for every *[__Y__]* ticks. *[__X__]* includes 2 parameters: AAAABBBB, where AAAA = base + amount to second note and BBBB = second note + amount to third note.<br/> *[__Y__]* includes 4 parameters: FEDttttt, where F = reserved, E = toggle no third note, D = toggle retrigger, ttttt = tick amount.<br/>**_Note:_**<br/>Arpeggio is used for playing 3 notes out of a chord indivually |
 | **64+8<br/>72<br/>0x48**      | Arpeggio OFF |  | stops the arpeggio |
 | **64+9<br/>73<br/>0x49**      | set Retriggering (*__X__*) | UBYTE (8-bit) | Noise channel consists of white noise. By setting retriggering *[__X__]* it swithes the entrypoint at a given speed. *[__X__]*  includes 2 parameters: AAAAAABB , where AAAAAA = entry point and BB = speed (0 = fastest, 1 = faster , 2 = fast)|
-| **64+10<br/>74<br/>0x4A**      | Retriggering off | | stops the retriggering for the noise on channel 3 |
-| **64+11<br/>75<br/>0x4B**      | add Transposition (*__X__*)| UBYTE (8-bit) | shifts the played notes by adding *[__X__]* to the existing transposition for all playing notes.<br/>**_Note:_**<br/> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
-| **64+12<br/>76<br/>0x4C**      | set Transposition (*__X__*)| UBYTE (8-bit) | shifts the played notes by setting the transposition to [__X__]* for all playing notes.<br/>**_Note:_**<br/> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
-| **64+13<br/>77<br/>0x4D**      | Transposition OFF |  | stops the transposition |
-| **64+14<br/>78<br/>0x4E**      | set Tremolo (*__X__*)(*__Y__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__X__]* sets Depth.<br/> *[__Y__]* includes 4 parameters: RxxBBBBB R = Retrig, x = reserved , B = rate<br/>**_Note:_**<br/> **_Note:_** Tremolo and Vibrato can **NOT** be combined in the same stack|
-| **64+15<br/>79<br/>0x4F**      | Tremolo OFF|  | stops the tremolo or vibrato |
-| **64+16<br/>80<br/>0x50**      | set Vibrato (*__X__*)(*__Y__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__X__]* sets Depth.<br/> *[__Y__]* includes 4 parameters: RxxBBBBB R = Retrig, x = reserved , B = rate<br/>**_Note:_**<br/> **_Note:_** Tremolo and Vibrato can **NOT** be combined in the same stack|
-| **64+17<br/>81<br/>0x51**      | Vibrato OFF|  | stops the vibrato |
-| **64+18<br/>82<br/>0x52**      | SET Glissando (*__X__*)| UBYTE (8-bit) | *[__X__]* includes 2 parameters: Vttttttt  V = value ( 0 = go 1 note up, 1 = go 1 note down) and t = amount of ticks, between each step |
-| **64+19<br/>83<br/>0x53**      | Glissando OFF|  | stops the Glissando |
-| **64+20<br/>84<br/>0x54**      | SET Note Cut (*__X__*)| UBYTE (8-bit) | *[__X__]* sets the equal amount of ticks between note ON and OFF |
-| **64+21<br/>85<br/>0x55**      | Note Cut Off|  | stops the Note Cut |
-| 				 | 			   |  |					   |
-| **64+93<br/>157<br/>0x9D**		 | SET song tempo (*__X__*)| UBYTE (8-bit) | *[__X__]* (re-)sets the tempo of the song. Standard is 25. Value should be between 0 - 128 |					   |
-| **64+94<br/>158<br/>0x9E**      | GOTO advanced (*__W__*)(*__X__*)(*__Y__*)(*__Z__*)|UBYTE (8-bit) UBYTE (8-bit) UBYTE (8-bit) UBYTE (8-bit) |for channel __0__ go to track __W__<br/>for channel __1__ go to track __X__<br/>for channel __2__ go to track __Y__<br/>for channel __3__ go to track __Z__<br/>**_Note:_** handy command for having an intro and a repeating song part|
-| **64+95<br/>159<br/>0x9F**	 	 | Stop current channel | | channel is no longer being processed<br/>**_Note:_** if all channels have reached STOP, the song ends |
+| **64+10<br/>74<br/>0x4A**     | Retriggering off | | stops the retriggering for the noise on channel 3 |
+| **64+11<br/>75<br/>0x4B**     | add Transposition (*__X__*)| UBYTE (8-bit) | shifts the played notes by adding *[__X__]* to the existing transposition for all playing notes.<br/>**_Note:_**<br/> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
+| **64+12<br/>76<br/>0x4C**     | set Transposition (*__X__*)| UBYTE (8-bit) | shifts the played notes by setting the transposition to [__X__]* for all playing notes.<br/>**_Note:_**<br/> The amount of shift is limited between -127 to 127. However there should be a non-interfering warning when transposing would result in exceeding 63 or get lower than 0 |
+| **64+13<br/>77<br/>0x4D**     | Transposition OFF |  | stops the transposition |
+| **64+14<br/>78<br/>0x4E**     | set Tremolo (*__X__*)(*__Y__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__X__]* sets Depth.<br/> *[__Y__]* includes 4 parameters: RxxBBBBB R = Retrig, x = reserved , B = rate<br/>**_Note:_**<br/> **_Note:_** Tremolo and Vibrato can **NOT** be combined in the same stack|
+| **64+15<br/>79<br/>0x4F**     | Tremolo OFF|  | stops the tremolo or vibrato |
+| **64+16<br/>80<br/>0x50**     | set Vibrato (*__X__*)(*__Y__*) |UBYTE (8-bit) UBYTE (8-bit)|*[__X__]* sets Depth.<br/> *[__Y__]* includes 4 parameters: RxxBBBBB R = Retrig, x = reserved , B = rate<br/>**_Note:_**<br/> **_Note:_** Tremolo and Vibrato can **NOT** be combined in the same stack|
+| **64+17<br/>81<br/>0x51**     | Vibrato OFF|  | stops the vibrato |
+| **64+18<br/>82<br/>0x52**     | SET Glissando (*__X__*)| UBYTE (8-bit) | *[__X__]* includes 2 parameters: Vttttttt  V = value ( 0 = go 1 note up, 1 = go 1 note down) and t = amount of ticks, between each step |
+| **64+19<br/>83<br/>0x53**     | Glissando OFF|  | stops the Glissando |
+| **64+20<br/>84<br/>0x54**     | SET Note Cut (*__X__*)| UBYTE (8-bit) | *[__X__]* sets the equal amount of ticks between note ON and OFF |
+| **64+21<br/>85<br/>0x55**     | Note Cut Off|  | stops the Note Cut |
+|								|
+| **64+93<br/>157<br/>0x9D**	| SET song tempo (*__X__*)| UBYTE (8-bit) | *[__X__]* (re-)sets the tempo of the song. Standard is 25. Value should be between 0 - 128 |					   |
+| **64+94<br/>158<br/>0x9E**	| GOTO advanced (*__W__*)(*__X__*)(*__Y__*)(*__Z__*)|UBYTE (8-bit) UBYTE (8-bit) UBYTE (8-bit) UBYTE (8-bit) |for channel __0__ go to track __W__<br/>for channel __1__ go to track __X__<br/>for channel __2__ go to track __Y__<br/>for channel __3__ go to track __Z__<br/>**_Note:_** handy command for having an intro and a repeating song part|
+| **64+95<br/>159<br/>0x9F**	| Stop current channel | | channel is no longer being processed<br/>**_Note:_** if all channels have reached STOP, the song ends |
 | ~~TBD~~    | ~~TBD~~          | ~~TBD~~       | ~~TBD~~         |
 
 

@@ -18,7 +18,7 @@ Song music[] = {                // total song in bytes = 61
 
   //"Track 0"                   // ticks = 0 / bytes = 3
   0x40, 0,                      // FX: SET VOLUME: volume = 0
-  0xFE,                         // RETURN (empty track used for silent channels)
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 1"                   // ticks = 160 / bytes = 14
   0x9D, 50,                     // SET song tempo: value = 50
@@ -27,7 +27,7 @@ Song music[] = {                // total song in bytes = 61
   0xFD, 0, 2,                   // REPEAT: count = 1 / track = 2 (48 ticks)
   0x9F + 8,                     // DELAY: ticks = 8              ( 8 ticks)
   0xFD, 0, 2,                   // REPEAT: count = 1 / track = 2 (48 ticks)
-  0xFE,                         // RETURN
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 2"                   // ticks = 48 / bytes = 15
   0xFD,  5, 3,                  // REPEAT: count = 6 / track = 3 (12 ticks)

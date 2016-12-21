@@ -19,12 +19,12 @@ Song music[] = {                // total song in bytes = 57
 
   //"Track 0"                   // ticks = 0 / bytes = 3
   0x40, 0,                      // FX: SET VOLUME: volume = 0
-  0xFE,                         // RETURN
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 1"                   // ticks = 2048 / bytes = 6
   0x9D, 50,                     // SET song tempo: value = 50
   0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 64 ticks)
-  0xFE,                         // RETURN
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 2"                   // ticks = 64 / bytes = 9
   0xFD, 0, 3,                   // REPEAT: count = 1 / track = 3  ( 6 ticks)
@@ -44,7 +44,7 @@ Song music[] = {                // total song in bytes = 57
 
   //"Track 4"                   // ticks = 2048 / bytes = 4
   0xFD, 31, 5,                  // REPEAT: count = 32 / track = 5 (32 * 64 ticks)
-  0xFE,                         // RETURN
+  0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 5"                   // ticks = 64 / bytes = 9
   0x9F + 32,                    // DELAY: ticks = 32
