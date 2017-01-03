@@ -94,13 +94,7 @@ Contributers:
 **64+21<br/>85<br/>0x55**	| Note Cut OFF										|									| Stops the Note Cut
 **…**						| **…**												| **…**								| **…**
 **64+93<br/>157<br/>0x9D**	| SET song tempo (*__X__*)							| UBYTE (8-bit)						| *[__X__]* (re-)sets the tempo of the song.<br/>Standard is 25. Value should be between 0 - 127<br/>**_Note:_** the higher the tempo to more CPU it takes.
-							|													|									|
-**64+94<br/>158<br/>0x9E**	| GOTO advanced										| 									| **_Note:_** handy command for having an intro<br/>and a repeating song part
-							| (*__W__*)											| UBYTE (8-bit)						| For channel __0__ go to track __W__
-							| (*__X__*)											| UBYTE (8-bit)						| For channel __1__ go to track __X__
-							| (*__Y__*)											| UBYTE (8-bit)						| For channel __2__ go to track __Y__
-							| (*__Z__*)											| UBYTE (8-bit)						| For channel __3__ go to track __Z__
-							|													|									|
+**64+94<br/>158<br/>0x9E**	| GOTO advanced<br/><br/>(*__W__*)<br/>(*__X__*)<br/>(*__Y__*)<br/>(*__Z__*)	| <br/><br/>UBYTE (8-bit)<br/>UBYTE (8-bit)<br/>UBYTE (8-bit)<br/>UBYTE (8-bit)	| **_Note:_** handy command for having an intro<br/>and a repeating song part<br/>For channel __0__ go to track __W__<br/>For channel __1__ go to track __X__<br/>For channel __2__ go to track __Y__<br/>For channel __3__ go to track __Z__
 **64+95<br/>159<br/>0x9F**	| Stop current channel								|									| channel is no longer being processed<br/>**_Note:_** if all channels have reached STOP, the song ends
 ~~TBD~~						| ~~TBD~~											| ~~TBD~~							| ~~TBD~~
 
