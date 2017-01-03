@@ -68,35 +68,37 @@ Contributers:
 
 ### FX LIST
 
-**Effect**					| **Parameter**										| **Type**							| **Description**
----							| ------------------------							| ---------------------------		| ---
-**64+0<br/>64<br/>0x40**	| set Volume (*__X__*)								| UBYTE (8-bit) 					| Set volume to *[__X__]*.<br/>**_Note:_** If the combined volume of all channels<br/>exceed 255 there may be rollover distortion. This<br/>should not be disallowed, as it may be usesful as<br/>an effects hack for the musician. There should<br/>however be a non-interfering warning when a<br/>musician enters a value above 63 for ch 1-3 or 32<br/>for ch 4 (noise). ch 4 the volume is counted double,<br/>so 32 is actually 64.
-**64+1<br/>65<br/>0x41**	| slide Volume ON (*__X__*)							| UBYTE (8-bit) 					| Slide the volume with an amount (positive or<br/>negative) of *[__X__]* for every tick.<br/>**_Note:_** This results in a fade-in or fade-out<br/>effect. There should be a non-interfering warning<br/>when sliding would result in exceeding 63 for<br/>ch 1-3 and 32 for ch 4.
+**Effect**					| **Parameter**											| **Type**							| **Description**
+---							| ------------------------								| ---------------------------		| ---
+**64+0<br/>64<br/>0x40**	| set Volume (*__X__*)									| UBYTE (8-bit) 					| Set volume to *[__X__]*.<br/>**_Note:_** If the combined volume of all channels<br/>exceed 255 there may be rollover distortion. This<br/>should not be disallowed, as it may be usesful as<br/>an effects hack for the musician. There should<br/>however be a non-interfering warning when a<br/>musician enters a value above 63 for ch 1-3 or 32<br/>for ch 4 (noise). ch 4 the volume is counted double,<br/>so 32 is actually 64.
+**64+1<br/>65<br/>0x41**	| slide Volume ON (*__X__*)								| UBYTE (8-bit) 					| Slide the volume with an amount (positive or<br/>negative) of *[__X__]* for every tick.<br/>**_Note:_** This results in a fade-in or fade-out<br/>effect. There should be a non-interfering warning<br/>when sliding would result in exceeding 63 for<br/>ch 1-3 and 32 for ch 4.
 **64+2<br/>66<br/>0x42**	| slide Volume ON<br/>advanced (*__X__*) (*__Y__*)		| UBYTE (8-bit)<br/>UBYTE (8-bit)	| Slide the volume with an amount (positive or<br/>negative) of *[__X__]* for every [*__Y__*] ticks.<br/>*[__Y__]* includes 2 parameters: RRtttttt<br/>R = reserved and t = ticks.
-**64+3<br/>67<br/>0x43**	| slide Volume OFF									|  									| Stops the volume slide
-**64+4<br/>68<br/>0x44**	| slide Frequency ON (*__X__*)						| UBYTE (8-bit)						| Slide the frequency with an amount (positive or<br/>negative) of *[__X__]* for every tick. <br/>**_Note:_** The amount of slide is limited<br/>between -127 to 127
-**64+5<br/>69<br/>0x45**	| slide Frequency ON<br/>advanced (*__X__*) (*__Y__*)	| UBYTE (8-bit)<br/>UBYTE (8-bit)	| Slide the frequency with an amount (positive or<br/>negative) of *[__X__]* for every [*__Y__*] ticks.<br/>**_Note:_** The amount of slide and ticks devider<br/>is limited between -127 to 127
-**64+6<br/>70<br/>0x46**	| slide Frequency OFF								|  									| Stops the frequency slide
-**64+7<br/>71<br/>0x47**	| set Arpeggio (*__X__*)(*__Y__*)					| UBYTE (8-bit)<br/>UBYTE (8-bit)	| Next to the current playing note, play a second<br/>and third note *[__X__]* for every *[__Y__]* ticks.<br/>*[__X__]* includes 2 parameters: AAAABBBB, where<br/>AAAA = base + amount to second note and<br/>BBBB = second note + amount to third note.<br/>*[__Y__]* includes 4 parameters: FEDttttt,<br/>where F = reserved, E = toggle no third note,<br/>D = toggle retrigger, ttttt = tick amount.<br/>**_Note:_** Arpeggio is used for playing 3 notes<br/>out of a chord indivually
-**64+8<br/>72<br/>0x48**	| Arpeggio OFF										|									| Stops the arpeggio
-**64+9<br/>73<br/>0x49**	| set Retriggering (*__X__*)						| UBYTE (8-bit)						| Noise channel consists of white noise. By setting<br/>retriggering *[__X__]* it swithes the entrypoint at<br/>a given speed. *[__X__]*  includes 2 parameters:<br/>AAAAAABB , where AAAAAA = entry point and<br/>BB = speed (0 = fastest, 1 = faster , 2 = fast)
-**64+10<br/>74<br/>0x4A**	| Retriggering OFF									|									| Stops the retriggering for the noise on channel 3
-**64+11<br/>75<br/>0x4B**	| add Transposition (*__X__*)						| UBYTE (8-bit)						| Shifts the played notes by adding *[__X__]* to<br/>the existing transposition for all playing notes.<br/>**_Note:_** The amount of shift is limited<br/>between -127 to 127. However there should be<br/>a non-interfering warning when transposing would<br/>result in exceeding 63 or get lower than 0
-**64+12<br/>76<br/>0x4C**	| set Transposition (*__X__*)						| UBYTE (8-bit)						| Shifts the played notes by setting the transposition<br/>to [__X__]* for all playing notes.<br/>**_Note:_** The amount of shift is limited<br/>between -127 to 127. However there should be a<br/>non-interfering warning when transposing would<br/>result in exceeding 63 or get lower than 0
-**64+13<br/>77<br/>0x4D**	| Transposition OFF									|									| Stops the transposition
-**64+14<br/>78<br/>0x4E**	| set Tremolo (*__X__*)(*__Y__*)					| UBYTE (8-bit)<br/>UBYTE (8-bit)	| *[__X__]* sets Depth.<br/>*[__Y__]* includes 4 parameters<br/>RxxBBBBB R = Retrig, x = reserved , B = rate<br/>**_Note:_** Tremolo and Vibrato can **NOT**<br/>be combined in the same stack
-**64+15<br/>79<br/>0x4F**	| Tremolo OFF										|									| Stops the tremolo
-**64+16<br/>80<br/>0x50**	| set Vibrato (*__X__*)(*__Y__*)					| UBYTE (8-bit)<br/>UBYTE (8-bit)	| *[__X__]* sets Depth.<br/>*[__Y__]* includes 4 parameters<br/>RxxBBBBB R = Retrig, x = reserved , B = rate<br/>**_Note:_** Tremolo and Vibrato can **NOT**<br/>be combined in the same stack
-**64+17<br/>81<br/>0x51**	| Vibrato OFF										|									| Stops the vibrato
-**64+18<br/>82<br/>0x52**	| SET Glissando (*__X__*)							| UBYTE (8-bit)						| *[__X__]* includes 2 parameters: Vttttttt<br/>V = value ( 0 = go 1 note up, 1 = go 1 note down)<br/>and t = amount of ticks, between each step
-**64+19<br/>83<br/>0x53**	| Glissando OFF										|									| Stops the Glissando
-**64+20<br/>84<br/>0x54**	| SET Note Cut (*__X__*)							| UBYTE (8-bit)						| *[__X__]* sets the equal amount of ticks<br/>between note ON and OFF
-**64+21<br/>85<br/>0x55**	| Note Cut OFF										|									| Stops the Note Cut
-**…**						| **…**												| **…**								| **…**
-**64+93<br/>157<br/>0x9D**	| SET song tempo (*__X__*)							| UBYTE (8-bit)						| *[__X__]* (re-)sets the tempo of the song.<br/>Standard is 25. Value should be between 0 - 127<br/>**_Note:_** the higher the tempo to more CPU it takes.
+
+**64+3<br/>67<br/>0x43**	| slide Volume OFF										|  									| Stops the volume slide
+**64+4<br/>68<br/>0x44**	| slide Frequency ON (*__X__*)							| UBYTE (8-bit)						| Slide the frequency with an amount (positive or<br/>negative) of *[__X__]* for every tick. <br/>**_Note:_** The amount of slide is limited<br/>between -127 to 127
+
+**64+5<br/>69<br/>0x45**	| slide Frequency ON<br/>advanced (*__X__*) (*__Y__*)	| UBYTE (8-bit)<br/>UBYTE (8-bit)	| Slide the frequency with an amount (positive or<br/>negative) of *[__X__]* for every [*__Y__*] ticks.<br/>*[__Y__]* includes 2 parameters: RRtttttt<br/>R = reserved and t = ticks.
+**64+6<br/>70<br/>0x46**	| slide Frequency OFF									|  									| Stops the frequency slide
+**64+7<br/>71<br/>0x47**	| set Arpeggio (*__X__*)(*__Y__*)						| UBYTE (8-bit)<br/>UBYTE (8-bit)	| Next to the current playing note, play a second<br/>and third note *[__X__]* for every *[__Y__]* ticks.<br/>*[__X__]* includes 2 parameters: AAAABBBB, where<br/>AAAA = base + amount to second note and<br/>BBBB = second note + amount to third note.<br/>*[__Y__]* includes 4 parameters: FEDttttt,<br/>where F = reserved, E = toggle no third note,<br/>D = toggle retrigger, ttttt = tick amount.<br/>**_Note:_** Arpeggio is used for playing 3 notes<br/>out of a chord indivually
+**64+8<br/>72<br/>0x48**	| Arpeggio OFF											|									| Stops the arpeggio
+**64+9<br/>73<br/>0x49**	| set Retriggering (*__X__*)							| UBYTE (8-bit)						| Noise channel consists of white noise. By setting<br/>retriggering *[__X__]* it swithes the entrypoint at<br/>a given speed. *[__X__]*  includes 2 parameters:<br/>AAAAAABB , where AAAAAA = entry point and<br/>BB = speed (0 = fastest, 1 = faster , 2 = fast)
+**64+10<br/>74<br/>0x4A**	| Retriggering OFF										|									| Stops the retriggering for the noise on channel 3
+**64+11<br/>75<br/>0x4B**	| add Transposition (*__X__*)							| UBYTE (8-bit)						| Shifts the played notes by adding *[__X__]* to<br/>the existing transposition for all playing notes.<br/>**_Note:_** The amount of shift is limited<br/>between -127 to 127. However there should be<br/>a non-interfering warning when transposing would<br/>result in exceeding 63 or get lower than 0
+**64+12<br/>76<br/>0x4C**	| set Transposition (*__X__*)							| UBYTE (8-bit)						| Shifts the played notes by setting the transposition<br/>to [__X__]* for all playing notes.<br/>**_Note:_** The amount of shift is limited<br/>between -127 to 127. However there should be a<br/>non-interfering warning when transposing would<br/>result in exceeding 63 or get lower than 0
+**64+13<br/>77<br/>0x4D**	| Transposition OFF										|									| Stops the transposition
+**64+14<br/>78<br/>0x4E**	| set Tremolo (*__X__*)(*__Y__*)						| UBYTE (8-bit)<br/>UBYTE (8-bit)	| *[__X__]* sets Depth.<br/>*[__Y__]* includes 4 parameters<br/>RxxBBBBB R = Retrig, x = reserved , B = rate<br/>**_Note:_** Tremolo and Vibrato can **NOT**<br/>be combined in the same stack
+**64+15<br/>79<br/>0x4F**	| Tremolo OFF											|									| Stops the tremolo
+**64+16<br/>80<br/>0x50**	| set Vibrato (*__X__*)(*__Y__*)						| UBYTE (8-bit)<br/>UBYTE (8-bit)	| *[__X__]* sets Depth.<br/>*[__Y__]* includes 4 parameters<br/>RxxBBBBB R = Retrig, x = reserved , B = rate<br/>**_Note:_** Tremolo and Vibrato can **NOT**<br/>be combined in the same stack
+**64+17<br/>81<br/>0x51**	| Vibrato OFF											|									| Stops the vibrato
+**64+18<br/>82<br/>0x52**	| SET Glissando (*__X__*)								| UBYTE (8-bit)						| *[__X__]* includes 2 parameters: Vttttttt<br/>V = value ( 0 = go 1 note up, 1 = go 1 note down)<br/>and t = amount of ticks, between each step
+**64+19<br/>83<br/>0x53**	| Glissando OFF											|									| Stops the Glissando
+**64+20<br/>84<br/>0x54**	| SET Note Cut (*__X__*)								| UBYTE (8-bit)						| *[__X__]* sets the equal amount of ticks<br/>between note ON and OFF
+**64+21<br/>85<br/>0x55**	| Note Cut OFF											|									| Stops the Note Cut
+**…**						| **…**													| **…**								| **…**
+**64+93<br/>157<br/>0x9D**	| SET song tempo (*__X__*)								| UBYTE (8-bit)						| *[__X__]* (re-)sets the tempo of the song.<br/>Standard is 25. Value should be between 0 - 127<br/>**_Note:_** the higher the tempo to more CPU it takes.
 **64+94<br/>158<br/>0x9E**	| GOTO advanced<br/><br/>(*__W__*)<br/>(*__X__*)<br/>(*__Y__*)<br/>(*__Z__*)	| <br/><br/>UBYTE (8-bit)<br/>UBYTE (8-bit)<br/>UBYTE (8-bit)<br/>UBYTE (8-bit)	| **_Note:_** handy command for having an intro<br/>and a repeating song part<br/>For channel __0__ go to track __W__<br/>For channel __1__ go to track __X__<br/>For channel __2__ go to track __Y__<br/>For channel __3__ go to track __Z__
-**64+95<br/>159<br/>0x9F**	| Stop current channel								|									| channel is no longer being processed<br/>**_Note:_** if all channels have reached STOP, the song ends
-~~TBD~~						| ~~TBD~~											| ~~TBD~~							| ~~TBD~~
+**64+95<br/>159<br/>0x9F**	| Stop current channel									|									| channel is no longer being processed<br/>**_Note:_** if all channels have reached STOP, the song ends
+~~TBD~~						| ~~TBD~~												| ~~TBD~~							| ~~TBD~~
 
 
 
