@@ -12,7 +12,7 @@ Contributers:
 ### FILE/ARRAY FORMAT DESCRIPTION
 
 **Section**					| **Field**					| **Type**			| **Description**
-							|							| ----------------	|
+---							| ---						| ----------------	| ---
 **Track table**				|							|					| **Number of tracks and their addresses**
 							| Track counted				| UBYTE (8-bits)	| Number of tracks in the file/array
 							| Address track 127			| UWORD (16-bits)	| Location in the file/array for track 1
@@ -36,34 +36,34 @@ Contributers:
 
 ### COMMAND LIST
 
-**Command (_X_)**			| **Parameter**			| **Type**			| **Description** |
----               	   		| ---					| ---				| ---             |
-**0<br/>0x00**				|						|                    | Stop playing    |
-							|						|					
-**1…63<br/>0x00+__X__**		| note *(__X__)*		|                    | Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone](./extras/frequencyToTone.md "Frequency to Tone table")|
-							|						|
-**64…159<br/>0x40…0x9F**	|						|                    | Configure effects (fx) |
-							| *See __fx list__*		| none/variable      | Effect is *[__X__ - 64]* |
-							|						|					|
-**160…223<br/>0x9F+__t__**	| Ticks (*__t__*)		|                    | Delay for *[__X__ - 159]* or *[__t__]* ticks<br/> **_Note:_** delay of 0 does not exist|
-							|						|					|
-**224<br/>0xE0**			|                      |                    | Long delay |
-                  	   		| Ticks (*__Y__*)      | VLE (8/16/24-bits)	| Delay for *[__Y__ + 64]* ticks |
-  					   		|
-**~~225…251~~**		  	   	|                      |                    | ~~RESERVED~~ |
-  					   		|
-**252<br/>0xFC**			|                      |                    | Call/run/goto specified track |
-                  	   		| Track *__N__*	       | UBYTE (8-bits)     | Track index where *__N__* is the number of the track to go to|
-  					   		|
-**253<br/>0xFD**			|                      |                    | Repeated call/run/goto specified track |
-                  	   		| Loop count (*__Y__*) | UBYTE (8-bits)     | Repeat *[__Y__ + 1]* times (total) |
-                  	   		| Track  *__N__*	   | UBYTE (8-bits)     | Track index where *__N__* is the number of the track to go to|
-  					   		|
-**254<br/>0xFE**			|                      |                    | Return/end of track marker |
-  					   		|
-**255<br/>0xFF**			|						|                    | Binary data |
-					   		| Length               | VLE (8/16/24-bits) | Length in bytes of data to follow |
-					   		| Data                 | variable           | Binary data chunk (notify host application) |
+**Command (_X_)**			| **Parameter**			| **Type**				| **Description**
+---               	   		| ---					| ---					| ---
+**0<br/>0x00**				|						|						| Stop playing
+							|						|						|
+**1…63<br/>0x00+__X__**		| note *(__X__)*		|						| Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone](./extras/frequencyToTone.md "Frequency to Tone table")
+							|						|						|
+**64…159<br/>0x40…0x9F**	|						|						| Configure effects (fx)
+							| *See __fx list__*		| none/variable			| Effect is *[__X__ - 64]*
+							|						|						|
+**160…223<br/>0x9F+__t__**	| Ticks (*__t__*)		|						| Delay for *[__X__ - 159]* or *[__t__]* ticks<br/> **_Note:_** delay of 0 does not exist
+							|						|						|
+**224<br/>0xE0**			|						|						| Long delay
+                  	   		| Ticks (*__Y__*)		| VLE (8/16/24-bits)	| Delay for *[__Y__ + 64]* ticks
+  					   		|						|						|
+**~~225…251~~**		  	   	|						|						| ~~RESERVED~~
+  					   		|						|						|
+**252<br/>0xFC**			|						|						| Call/run/goto specified track
+                  	   		| Track *__N__*			| UBYTE (8-bits)		| Track index where *__N__* is the number of the track to go to
+  					   		|						|						|
+**253<br/>0xFD**			|						|						| Repeated call/run/goto specified track
+                  	   		| Loop count (*__Y__*)	| UBYTE (8-bits)		| Repeat *[__Y__ + 1]* times (total)
+                  	   		| Track  *__N__*		| UBYTE (8-bits)		| Track index where *__N__* is the number of the track to go to
+  					   		|						|						|
+**254<br/>0xFE**			|						|						| Return/end of track marker
+							|						|						|
+**255<br/>0xFF**			|						|						| Binary data
+							| Length				| VLE (8/16/24-bits)	| Length in bytes of data to follow
+							| data					| variable				| Binary data chunk (notify host application)
 
 
 ### FX LIST
