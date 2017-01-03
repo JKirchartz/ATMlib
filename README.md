@@ -69,7 +69,7 @@ Contributers:
 ### FX LIST
 
 **Effect**			| **Parameter**						| **Type**			| **Description**
----				| ------------------------				| ---------------------------	| ---
+-------				| ------------------------				| -----------------------------	| ---
 **64+0<br/>64<br/>0x40**	| set Volume (*__X__*)					| UBYTE (8-bit) 		| Set volume to *[__X__]*. <br/> **_Note:_** If the combined volume of all channels exceed 255 there may be rollover distortion. This should not be disallowed, as it may be usesful as an effects hack for the musician. There should however be a non-interfering warning when a musician enters a value above 63 for ch 1-3 or 32 for ch 4 (noise). ch 4 the volume is counted double, so 32 is actually 64
 **64+1<br/>65<br/>0x41**	| slide Volume ON (*__X__*)				| UBYTE (8-bit) 		| Slide the volume with an amount (positive or negative) of *[__X__]* for every tick. <br/> **_Note:_** This results in a fade-in or fade-out effect. There should be a non-interfering warning when sliding would result in exceeding 63 for ch 1-3 and 32 for ch 4.
 **64+2<br/>66<br/>0x42**	| slide Volume ON advanced (*__X__*) (*__Y__*)		| UBYTE (8-bit) UBYTE (8-bit)	| Slide the volume with an amount (positive or negative) of *[__X__]* for every [*__Y__*] ticks. <br/> *[__Y__]* includes 2 parameters: RRtttttt R = reserved and t = ticks.
