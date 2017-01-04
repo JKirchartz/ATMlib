@@ -20,7 +20,7 @@ Song music[] = {                // total song in bytes = 33
 
   //"Track 1"                   // ticks = 2048 / bytes = 8
   0x9D, 50,                     // SET song tempo: value = 50
-  0x40, 16,                     // FX: SET VOLUME: volume = 63
+  0x40, 16,                     // FX: SET VOLUME: volume = 16
   0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 64 ticks)
   0x9F,                         // FX: STOP CURRENT CHANNEL
 

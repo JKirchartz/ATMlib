@@ -3,6 +3,7 @@
 ATMLIB_CONSTRUCT_ISR(OCR4A)
 
 byte trackCount;
+byte tickRate;
 const word *trackList;
 const byte *trackBase;
 uint8_t pcm __attribute__((used)) = 128;
@@ -110,7 +111,8 @@ void ATMsynth::play(const byte *song) {
 
   // Initializes ATMsynth
   // Sets sample rate and tick rate
-  cia = 15625 / 25;
+  tickRate = 25;
+  cia = 15625 / tickRate;
 
   // Sets up the ports, and the sample grinding ISR
 
@@ -316,8 +318,13 @@ void ATM_playroutine() {
             case 21: // Note Cut OFF
               ch->arpNotes = 0;
               break;
+            case 92: // ADD tempo
+              tickRate += pgm_read_byte(ch->ptr++);
+              cia = 15625 / tickRate;
+              break;
             case 93: // SET tempo
-              cia = 15625 / pgm_read_byte(ch->ptr++);
+              tickRate = pgm_read_byte(ch->ptr++);
+              cia = 15625 / tickRate;
               break;
             case 94: // Goto advanced
               channel[0].track = pgm_read_byte(ch->ptr++);

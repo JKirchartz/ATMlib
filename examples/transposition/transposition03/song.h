@@ -39,11 +39,11 @@ Song music[] = {                // total song in bytes = 50
   //"Track 3"                   // ticks = 64 / bytes = 9
   0x41, -4,                     // FX: VOLUME SLIDE ON: steps = -4
   0x00 + 37,                    // NOTE ON: note = 37
-  0x9F + 16,                    // DELAY: ticks = 21
+  0x9F + 16,                    // DELAY: ticks = 16
   0x00 + 41,                    // NOTE ON: note = 41
-  0x9F + 16,                    // DELAY: ticks = 21
+  0x9F + 16,                    // DELAY: ticks = 16
   0x00 + 44,                    // NOTE ON: note = 44
-  0x9F + 16,                    // DELAY: ticks = 21`
+  0x9F + 16,                    // DELAY: ticks = 16
   0xFE,                         // RETURN
 
 };
