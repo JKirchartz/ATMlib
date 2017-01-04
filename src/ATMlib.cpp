@@ -58,9 +58,9 @@ struct ch_t {
   bool mute;
 
   // Volume & Frequency slide FX
-  char volfreSlide;
-  byte volfreConfig;
-  byte volfreCount;
+  char volFreSlide;
+  byte volFreConfig;
+  byte volFreCount;
 
   // Arpeggio or Note Cut FX
   byte arpNotes;       // notes: base, base+[7:4], base+[7:4]+[3:0], if FF => note cut ON
@@ -68,8 +68,8 @@ struct ch_t {
   byte arpCount;
 
   // Retrig FX
-  byte reConfig;       // [7:2] = , [1:0] = speed
-  byte reCount;
+  byte reConfig;       // [7:2] = , [1:0] = speed // used for the noise channel
+  byte reCount;        // also using this as a buffer for volume retrig on all channels
 
   // Transposition FX
   char transConfig;
@@ -197,18 +197,18 @@ void ATM_playroutine() {
   
   
     // Apply volume/frequency slides
-    if (ch->volfreSlide) {
-      if (!ch->volfreCount) {
-        int16_t vf = ((ch->volfreConfig & 0x40) ? ch->freq : ch->vol);
-        vf += (ch->volfreSlide);
-        if (!(ch->volfreConfig & 0x80)) {
+    if (ch->volFreSlide) {
+      if (!ch->volFreCount) {
+        int16_t vf = ((ch->volFreConfig & 0x40) ? ch->freq : ch->vol);
+        vf += (ch->volFreSlide);
+        if (!(ch->volFreConfig & 0x80)) {
           if (vf < 0) vf = 0;
-          else if (ch->volfreConfig & 0x40) if (vf > 9397) vf = 9397;
-          else if (!(ch->volfreConfig & 0x40)) if (vf > 63) vf = 63;
+          else if (ch->volFreConfig & 0x40) if (vf > 9397) vf = 9397;
+          else if (!(ch->volFreConfig & 0x40)) if (vf > 63) vf = 63;
         }
-        (ch->volfreConfig & 0x40) ? ch->freq = vf : ch->vol = vf;
+        (ch->volFreConfig & 0x40) ? ch->freq = vf : ch->vol = vf;
       }
-      if (ch->volfreCount++ >= (ch->volfreConfig & 0x3F)) ch->volfreCount = 0;
+      if (ch->volFreCount++ >= (ch->volFreConfig & 0x3F)) ch->volFreCount = 0;
     }
   
   
@@ -254,23 +254,25 @@ void ATM_playroutine() {
           // 0 … 63 : NOTE ON/OFF
           if (ch->note = cmd) ch->note += ch->transConfig;
           ch->freq = pgm_read_word(&noteTable[ch->note]);
+          ch->vol = ch->reCount;
           if (ch->arpTiming & 0x20) ch->arpCount = 0; // ARP retriggering
         } else if (cmd < 160) {
           // 64 … 159 : SETUP FX
           switch (cmd - 64) {
             case 0: // Set volume
               ch->vol = pgm_read_byte(ch->ptr++);
+              ch->reCount = ch->vol;
               break;
             case 1: case 4: // Slide volume/frequency ON
-              ch->volfreSlide = pgm_read_byte(ch->ptr++);
-              ch->volfreConfig = (cmd - 64) == 1 ? 0x00 : 0x40;
+              ch->volFreSlide = pgm_read_byte(ch->ptr++);
+              ch->volFreConfig = (cmd - 64) == 1 ? 0x00 : 0x40;
               break;
             case 2: case 5: // Slide volume/frequency ON advanced
-              ch->volfreSlide = pgm_read_byte(ch->ptr++);
-              ch->volfreConfig = pgm_read_byte(ch->ptr++);
+              ch->volFreSlide = pgm_read_byte(ch->ptr++);
+              ch->volFreConfig = pgm_read_byte(ch->ptr++);
               break;
             case 3: case 6: // Slide volume/frequency OFF (same as 0x01 0x00)
-              ch->volfreSlide = 0;
+              ch->volFreSlide = 0;
               break;
             case 7: // Set Arpeggio
               ch->arpNotes = pgm_read_byte(ch->ptr++);    // 0x40 + 0x03

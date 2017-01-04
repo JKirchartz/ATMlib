@@ -40,7 +40,7 @@ Contributers:
 ---               	   		| ---					| ------------------	| ---
 **0<br/>0x00**				|						|						| Stop playing
 							|						|						|
-**1…63<br/>0x00+__X__**		| note *(__X__)*		|						| Start playing note *[__X__]* where 1 is a C1. See [Frequency to Tone](./extras/frequencyToTone.md "Frequency to Tone table")
+**1…63<br/>0x00+__X__**		| note *(__X__)*		|						| Start playing note *[__X__]* where 1 is a C1.<br/>See [Frequency to Tone](./extras/frequencyToTone.md "Frequency to Tone table")<br/>**_Note:_** everytime a note is played, volume is re-triggered
 							|						|						|
 **64…159<br/>0x40…0x9F**	|						|						| Configure effects (fx)
 							| *See __fx list__*		| none/variable			| Effect is *[__X__ - 64]*
