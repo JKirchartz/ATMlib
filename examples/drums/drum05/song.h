@@ -11,6 +11,7 @@ Song music[] = {                // total song in bytes = 56
   0x0E, 0x00,                   // Address of track 2
   0x1B, 0x00,                   // Address of track 3
   0x22, 0x00,                   // Address of track 4
+  
   0x00,                         // Channel 0 entry track (PULSE)
   0x00,                         // Channel 1 entry track (SQUARE)
   0x00,                         // Channel 2 entry track (TRIANGLE)
@@ -30,13 +31,13 @@ Song music[] = {                // total song in bytes = 56
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 2"                   // ticks = 48 / bytes = 13
-  0xFD, 5, 3,                   // REPEAT: count = 6 / track = 3 (12 ticks)
+  0xFD, 5, 3,                   // REPEAT: count = 5 + 1 / track = 3 (12 ticks)
   0x40, 0,                      // FX: SET VOLUME: volume = 0
-  0x9F + 4,                     // DELAY: ticks = 4              ( 4 ticks)
-  0xFC, 4,                      // GOTO: track = 4               ( 4 ticks)
-  0x9F + 12,                    // DELAY: ticks = 12             (12 ticks)
-  0xFC, 4,                      // GOTO: track = 4               ( 4 ticks)
-  0x9F + 12,                    // DELAY: ticks = 12             (12 ticks)
+  0x9F + 4,                     // DELAY: ticks = 4                  ( 4 ticks)
+  0xFC, 4,                      // GOTO: track = 4                   ( 4 ticks)
+  0x9F + 12,                    // DELAY: ticks = 12                 (12 ticks)
+  0xFC, 4,                      // GOTO: track = 4                   ( 4 ticks)
+  0x9F + 12,                    // DELAY: ticks = 12                 (12 ticks)
   0xFE,                         // RETURN
 
   //"Track 3"                   // ticks = 2 / bytes = 7

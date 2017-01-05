@@ -14,6 +14,7 @@ Song music[] = {                // total song in bytes = 75
   0x21, 0x00,                   // Address of track 5
   0x27, 0x00,                   // Address of track 6
   0x2E, 0x00,                   // Address of track 7
+  
   0x01,                         // Channel 0 entry track (PULSE)
   0x00,                         // Channel 1 entry track (SQUARE)
   0x00,                         // Channel 2 entry track (TRIANGLE)
@@ -26,14 +27,14 @@ Song music[] = {                // total song in bytes = 75
   //"Track 1"                   // ticks = 2048 / bytes = 8
   0x9D, 50,                     // SET song tempo: value = 50
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 64 ticks) 
+  0xFD, 31, 2,                  // REPEAT: count = 31 + 1 / track = 2 (32 * 64 ticks) 
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 2"                   // ticks = 64 / bytes = 7
-  0xFC, 3,                      // GOTO: track = 3               ( 4 ticks)
-  0x9F + 12,                    // DELAY: ticks = 12             (12 ticks)
-  0xFC, 3,                      // GOTO: track = 3               ( 4 ticks)
-  0x9F + 44,                    // DELAY: ticks = 44             (44 ticks)
+  0xFC, 3,                      // GOTO: track = 3                   ( 4 ticks)
+  0x9F + 12,                    // DELAY: ticks = 12                 (12 ticks)
+  0xFC, 3,                      // GOTO: track = 3                   ( 4 ticks)
+  0x9F + 44,                    // DELAY: ticks = 44                 (44 ticks)
   0xFE,                         // RETURN
 
   //"Track 3"                   // ticks = 4 / bytes = 9
@@ -47,12 +48,12 @@ Song music[] = {                // total song in bytes = 75
 
   //"Track 4"                   // ticks = 32 * 64 = 2048 / bytes = 6
   0x40, 0,                      // FX: SET VOLUME: volume = 0
-  0xFD, 31, 5,                  // REPEAT: count = 32 / track = 5 (64 ticks) 
+  0xFD, 31, 5,                  // REPEAT: count = 31 + 1 / track = 5 (64 ticks) 
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 5"                   // ticks = 64 / bytes = 6
-  0xFD, 5, 7,                   // REPEAT: count = 6 / track = 7  (48 ticks)
-  0xFC, 6,                      // GOTO: track = 6                (16 ticks) 
+  0xFD, 5, 7,                   // REPEAT: count = 6 / track = 7      (48 ticks)
+  0xFC, 6,                      // GOTO: track = 6                    (16 ticks) 
   0xFE,                         // RETURN
 
   //"Track 6"                   // ticks = 16 / bytes = 7

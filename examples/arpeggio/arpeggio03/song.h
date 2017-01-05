@@ -12,6 +12,7 @@ Song music[] = {                // total song in bytes = 78
   0x20, 0x00,                   // Address of track 3
   0x24, 0x00,                   // Address of track 4
   0x36, 0x00,                   // Address of track 5
+  
   0x01,                         // Channel 0 entry track (PULSE)
   0x00,                         // Channel 1 entry track (SQUARE)
   0x00,                         // Channel 2 entry track (TRIANGLE)
@@ -24,7 +25,7 @@ Song music[] = {                // total song in bytes = 78
   //"Track 1"                   // ticks = 3072 / bytes = 8
   0x9D, 50,                     // SET song tempo: value = 50
   0x40, 63,                     // FX: SET VOLUME: volume = 63
-  0xFD, 31, 2,                  // REPEAT: count = 32 / track = 2 (32 * 96 ticks)
+  0xFD, 31, 2,                  // REPEAT: count = 31 + 1 / track = 2 (32 * 96 ticks)
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 2"                   // ticks = 96 / bytes = 21
@@ -47,15 +48,15 @@ Song music[] = {                // total song in bytes = 78
   0xFE,                         // RETURN
 
   //"Track 3"                   // ticks = 3072 / bytes = 4
-  0xFD, 31, 4,                  // REPEAT: count = 32 / track = 4  (32 * 96 ticks)
+  0xFD, 31, 4,                  // REPEAT: count = 31 + 1 / track = 4  (32 * 96 ticks)
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 4"                   // ticks = 96 / bytes = 18
-  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (24 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 1 + 1 / track = 5  (24 ticks)
   0x9F + 12,                    // DELAY: 12 ticks
-  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (24 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 1 + 1 / track = 5  (24 ticks)
   0x9F + 12,                    // DELAY: 12 ticks
-  0x49, 4 + 0,                  // FX: RETRIG: point = 1 (*4) / speed = 0 (fastest)
+  0x49, 4 + 0,                  // FX: RETRIG NOISE: point = 1 (*4) / speed = 0 (fastest)
   0x40, 48,                     // FX: SET VOLUME: volume = 63
   0x42, -8, 1,                  // FX: VOLUME SLIDE ON: steps = -8
   0x9F + 24,                    // DELAY:  24 ticks

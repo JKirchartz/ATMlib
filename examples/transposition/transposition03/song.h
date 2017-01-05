@@ -10,6 +10,7 @@ Song music[] = {                // total song in bytes = 50
   0x03, 0x00,                   // Address of track 1
   0x0B, 0x00,                   // Address of track 2
   0x1C, 0x00,                   // Address of track 3
+  
   0x01,                         // Channel 0 entry track (PULSE)
   0x00,                         // Channel 1 entry track (SQUARE)
   0x00,                         // Channel 2 entry track (TRIANGLE)

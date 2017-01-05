@@ -14,6 +14,7 @@ Song music[] = {                // total song in bytes = 108
   0x2B, 0,                      // Address of track 5
   0x39, 0,                      // Address of track 6
   0x43, 0,                      // Address of track 7
+  
   0x02,                         // Channel 0 entry track (PULSE)
   0x01,                         // Channel 1 entry track (SQUARE)
   0x00,                         // Channel 2 entry track (TRIANGLE)
@@ -26,27 +27,27 @@ Song music[] = {                // total song in bytes = 108
 
   //"Track 1"                   // ticks = 2048 / bytes = 6
   0x9D, 50,                     // SET song tempo: value = 50
-  0xFD, 3, 4,                   // REPEAT: count = 4 / track = 4  (4 * 512 ticks)
+  0xFD, 3, 4,                   // REPEAT: count = 3 + 1 / track = 4   (4 * 512 ticks)
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 2"                   // ticks = 2048 / bytes = 5
-  0xFD, 31, 6,                  // REPEAT: count = 32 / track = 5  (32 * 64 ticks)
+  0xFD, 31, 6,                  // REPEAT: count = 31 + 1 / track = 5  (32 * 64 ticks)
   0x00,                         // NOTE OFF
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 3"                   // ticks = 2048 / bytes = 7
-  0xFD, 7,  0,                  // REPEAT: count = 8 / track = 8 (8 *64 ticks)
-  0xFD, 23, 7,                  // REPEAT: count = 24 / track = 8 (24 *64 ticks)
+  0xFD, 7,  0,                  // REPEAT: count = 7 + 1 / track = 8   (8 *64 ticks)
+  0xFD, 23, 7,                  // REPEAT: count = 23 + 1 / track = 8  (24 *64 ticks)
   0x9F,                         // FX: STOP CURRENT CHANNEL
 
   //"Track 4"                   // ticks = 512 / bytes = 21
-  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 1 + 1 / track = 5   (2 * 64 ticks)
   0x4B, 3,                      // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 1 + 1 / track = 5   (2 * 64 ticks)
   0x4B, -1,                     // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 1 + 1 / track = 5   (2 * 64 ticks)
   0x4B, 3,                      // FX: ADD TRANSPOSITION: notes = 3
-  0xFD, 1, 5,                   // REPEAT: count = 2 / track = 5  (2 * 64 ticks)
+  0xFD, 1, 5,                   // REPEAT: count = 1 + 1 / track = 5   (2 * 64 ticks)
   0x4B, -5,                     // FX: ADD TRANSPOSITION: notes = 3
   0xFE,                         // RETURN
 
